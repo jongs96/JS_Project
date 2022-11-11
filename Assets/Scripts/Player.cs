@@ -20,8 +20,25 @@ public class Player : CharacterProperty
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) myAnim.SetBool("IsMoving", true);
-        else if(Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0) myAnim.SetBool("IsMoving", false);
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                myAnim.SetBool("IsMoving", false);
+                myAnim.SetBool("IsRunning", true);
+            }
+            else
+            {
+                myAnim.SetBool("IsRunning", false);
+                myAnim.SetBool("IsMoving", true);
+            }
+        }
+        else if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+        {
+            myAnim.SetBool("IsMoving", false);
+            myAnim.SetBool("Running", false);
+        }
+
         desireDir.x = Input.GetAxis("Horizontal");
         desireDir.y = Input.GetAxis("Vertical");
 
