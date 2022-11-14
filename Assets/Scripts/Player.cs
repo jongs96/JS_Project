@@ -6,6 +6,7 @@ public class Player : CharacterProperty
 {
     Vector2 desireDir = Vector2.zero;
     Vector2 curDir = Vector2.zero;
+    public Transform myCam;
     // Start is called before the first frame update
     enum STATE
     {
