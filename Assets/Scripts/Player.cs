@@ -36,7 +36,7 @@ public class Player : CharacterProperty
         else if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
         {
             myAnim.SetBool("IsMoving", false);
-            myAnim.SetBool("Running", false);
+            myAnim.SetBool("IsRunning", false);
         }
 
         desireDir.x = Input.GetAxis("Horizontal");
