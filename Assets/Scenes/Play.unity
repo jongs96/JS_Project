@@ -513,6 +513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myCam: {fileID: 277561162}
+  mainBody: {fileID: 1985320700}
   CrashMask:
     serializedVersion: 2
     m_Bits: 64
