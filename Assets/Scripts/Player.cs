@@ -6,7 +6,8 @@ public class Player : CharacterProperty
 {
     Vector2 desireDir = Vector2.zero;
     Vector2 curDir = Vector2.zero;
-    public Transform myCam;
+    public Transform myCam = null;
+    public Transform mainBody = null;
     // Start is called before the first frame update
     enum STATE
     {
@@ -31,7 +32,11 @@ public class Player : CharacterProperty
             else
             {
                 myAnim.SetBool("IsRunning", false);
-                myAnim.SetBool("IsMoving", true);
+                myAnim.SetBool("IsMoving", true);                
+            }
+            if (myCam.rotation.y != mainBody.rotation.y)
+            {
+                mainBody.GetComponent<RootMotion>().RotCharactor(mainBody, myCam);
             }
         }
         else if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)

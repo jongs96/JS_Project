@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpringArm : MonoBehaviour
 {
     public Transform myCam;
+    public Transform mainBody;
     public LayerMask CrashMask = default;
     public float rotSpeed = 5.0f;
     public float zoomSpeed = 3.0f;
@@ -43,16 +44,14 @@ public class SpringArm : MonoBehaviour
         //y-axis rotation with charactor
         else
         {
-            transform.parent.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * rotSpeed);
+            transform.parent.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * rotSpeed);            
         }
         curRot = Vector2.Lerp(curRot, desireRot, Time.deltaTime * SmoothRotSpeed);
 
         Quaternion x = Quaternion.Euler(new Vector3(curRot.x, 0, 0));
         Quaternion y = Quaternion.Euler(new Vector3(0, curRot.y, 0));
         transform.localRotation = y * x;
-        
-        //if (!Input.GetMouseButton(1)) transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, 0, 0));
-
+                
         //camera z-axis move
         if (Input.GetAxisRaw("Mouse ScrollWheel") > Mathf.Epsilon || Input.GetAxisRaw("Mouse ScrollWheel") < -Mathf.Epsilon)
         {
