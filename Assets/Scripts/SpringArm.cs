@@ -37,7 +37,7 @@ public class SpringArm : MonoBehaviour
         desireRot.x = Mathf.Clamp(desireRot.x, RotateRange.x, RotateRange.y);
 
         //y-axis rotation camera only
-        if (Input.GetMouseButton(1))
+        if (Input.GetKey(KeyCode.R))
         {
             desireRot.y += Input.GetAxisRaw("Mouse X") * rotSpeed;
         }

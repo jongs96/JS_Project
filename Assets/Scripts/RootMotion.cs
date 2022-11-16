@@ -27,13 +27,14 @@ public class RootMotion : MonoBehaviour
         moveDelta += GetComponent<Animator>().deltaPosition;
         transform.parent.Rotate(GetComponent<Animator>().deltaRotation.eulerAngles, Space.World);
     }
-    public void RotCharactor(Transform transform, Transform target)
+    public void RotCharactor(Transform transform, Transform target, float RotSpeed)
     {
         if (coRot != null) StopCoroutine(coRot);
-        coRot = StartCoroutine(Rotating(transform, target));
+        coRot = StartCoroutine(Rotating(transform, target, RotSpeed));
     }
-    public static IEnumerator Rotating(Transform transform, Transform cam)
+    public static IEnumerator Rotating(Transform transform, Transform cam, float RotSpeed)
     {
+        /*
         Vector3 rot;
         Vector3 camRot;
         do
@@ -46,5 +47,23 @@ public class RootMotion : MonoBehaviour
             yield return null;
         }
         while (!Mathf.Approximately(rot.y, camRot.y));
+        */
+        Vector3 rot = transform.rotation.eulerAngles;
+        Vector3 camRot = cam.rotation.eulerAngles;
+        float angle = camRot.y - rot.y;
+        float rotDir = angle < 0.0f ? -1.0f : 1.0f;
+        angle = Mathf.Abs(angle);
+
+        while (angle > Mathf.Epsilon)
+        {
+            float delta = RotSpeed * Time.deltaTime;
+            if (delta > angle)
+            {
+                delta = angle;
+            }
+            angle -= delta;
+            transform.Rotate(Vector3.up * rotDir * delta, Space.World);
+            yield return null;
+        }
     }
 }
