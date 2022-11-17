@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: b6f01f46151c7124299f4d75bba89826
+guid: 43ad024f873a69b4a87d023d0b2d931f
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Stand_defence_release
+    second: Avoid_right
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,13 +36,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Stand_defence_release
+      name: Avoid_right
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 63
       wrapMode: 0
-      orientationOffsetY: 10
+      orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0

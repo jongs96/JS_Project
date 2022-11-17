@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: b6f01f46151c7124299f4d75bba89826
+guid: 88f56f722e98a2f438259827c43e7870
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Stand_defence_release
+    second: Sit_left
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,18 +36,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Stand_defence_release
+      name: Sit_left
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 30
       wrapMode: 0
-      orientationOffsetY: 10
+      orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
