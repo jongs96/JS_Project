@@ -8,7 +8,7 @@ public class Player : CharacterProperty
     Vector2 curDir = Vector2.zero;
     public Transform myCam = null;
     public Transform mainBody = null;
-    bool IsAir = false;
+    public bool IsAir = false;
     // Start is called before the first frame update
     enum STATE
     {
