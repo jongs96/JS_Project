@@ -60,8 +60,10 @@ public class Player : CharacterProperty
         if(!IsAir && Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Jump");
-            IsAir = true;
-            myRigid.AddForce(Vector3.up * 200.0f);
+        }
+        else if(IsAir && Input.GetKeyDown(KeyCode.Space))
+        {
+            myAnim.SetTrigger("Roll");
         }
         //Sit
         if(!IsAir && Input.GetKey(KeyCode.LeftControl))
@@ -82,6 +84,12 @@ public class Player : CharacterProperty
             myAnim.SetBool("Defending", false);
         }
     }
+    public void JumpUp()
+    {
+        IsAir = true;
+        myRigid.AddForce(Vector3.up * 200.0f);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))

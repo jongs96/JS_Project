@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 293a4784a441c5c4ab0e72284bd0a320
+guid: 2089f938666e557489515c09a9103148
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Sit_Backward
+    second: Avoid_standup
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,20 +36,20 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Sit_Backward
+      name: Avoid_standup
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 70
       wrapMode: 0
-      orientationOffsetY: -0.5
+      orientationOffsetY: 35
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 1
+      loopBlendOrientation: 0
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1

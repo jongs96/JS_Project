@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: b23ea98139c3db341ba6cf8e9cefc554
+guid: 3646209c1b1cf98479a45e2becd6fbb3
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Sit_Forward
+    second: Sit_walk_Back
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Sit_Forward
+      name: Sit_walk_Back
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
