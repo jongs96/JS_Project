@@ -1,0 +1,55 @@
+[벤치마킹 게임] 세키로, 다크소울3
+
+[리소스]
+https://assetstore.unity.com/
+http://opengameart.org/
+https://www.resourcebank.or.kr/
+<3D캐릭터, 애니메이션>
+https://www.mixamo.com/
+
+<메인캐릭터>
+https://www.mixamo.com/
+캐릭터 : Paldin W/Prop J Nordstrom
+애니메이션 : pro Sword and Shield Pack
+
+<던전 & 구조물 & 배경>
+http://3drt.com/store/
+-빌딩 (Underground Passage Level/
+https://www.resourcebank.or.kr/
+@배경-여신상 
+@오브젝트 - 던전모듈러, 부서진상자, 오크통, 체스트박스, 자루, 나무상자,
+나무박스, 상자, 
+
+<몬스터>
+http://3drt.com/store/
+-몬스터 (Yeti / Felguard/ Goblin)정도
+
+assetstore
+-Devil Bulldog, (보류)spider, Toxic Frogs
+
+https://www.resourcebank.or.kr/
+-고골, 트롤
+보스 - 데스스타, 뱀인간보스, 
+
+//보스//
+https://www.mixamo.com/
+캐릭터 - Maw J Laygo, Warrok W Kurniawan
+애니메이션 - 
+
+[컨셉, 배경]
+다크소울류의 게임.
+성안의 괴물퇴치, 생존.
+
+[게임 진행]
+<UI>
+게임 시작 화면
+- GameStart(New Game, Load, Tutorial), Setting, Exit
+진행 중 Minimap, 캐릭터상태(status, hp), Shortcut keys-icons
+-팝업 : 스텟창, 종료창버튼
+
+<게임요소>
+-Save, Tutorial, Boss, 아이템 줍기, 소비사용.
+-몬스터, 골드, 골드소비 스텟상승
+
+
+주식 : 로블록스 ea

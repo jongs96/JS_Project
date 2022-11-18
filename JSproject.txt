@@ -1,0 +1,14 @@
+<조작법>
+이동 : W(↑),A(←),S(↓),D(→)
+방어 : Mouse R
+공격 : Mouse L
+앉기 : Ctrl
+점프 : Space Bar
+뛰기 : Shift W,A,S,D
+피하기 : A(←),D(→) + SpaceBar, W(↑) + SpaceBar + SpaceBar
+카메라이동 : R + Mouse Move
+
+<구현할 것.>
+공격
+<스크립트>
+공격
