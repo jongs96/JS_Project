@@ -83,6 +83,11 @@ public class Player : CharacterProperty
         {
             myAnim.SetBool("Defending", false);
         }
+        //Attack
+        if(!IsAir && Input.GetMouseButtonDown(0))
+        {
+            myAnim.SetTrigger("Attack");
+        }
     }
     public void JumpUp()
     {
