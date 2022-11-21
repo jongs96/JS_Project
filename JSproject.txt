@@ -8,7 +8,5 @@
 피하기 : A(←),D(→) + SpaceBar, W(↑) + SpaceBar + SpaceBar
 카메라이동 : R + Mouse Move
 
-<구현할 것.>
-공격
-<스크립트>
-공격
+<할 것>
+몬스터 만들고 배틀 시스템 구현.
