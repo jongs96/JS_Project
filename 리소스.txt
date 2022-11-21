@@ -21,9 +21,7 @@ https://www.resourcebank.or.kr/
 나무박스, 상자, 
 
 <몬스터>
-http://3drt.com/store/
--몬스터 (Yeti / Felguard/ Goblin)정도
-
+-skeleton warrior(Charactor- assetstore), anim(mixamo) 
 assetstore
 -Devil Bulldog, (보류)spider, Toxic Frogs
 

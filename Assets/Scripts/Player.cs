@@ -2,19 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : CharacterProperty
+public class Player : CharacterProperty, IBattle
 {
+    public bool IsLive
+    {
+        get
+        {
+            return true;
+        }
+    }
+    Transform myHeadPos;
+    public Transform HeadPos { get => myHeadPos; }
     Vector2 desireDir = Vector2.zero;
     Vector2 curDir = Vector2.zero;
     public Transform myCam = null;
     public Transform mainBody = null;
     public bool IsAir = false;
-    // Start is called before the first frame update
     enum STATE
     {
         Create, Normal, Battle, Death
     }
-    
+    public void OnDamage(float dmg)
+    {
+
+    }
+    // Start is called before the first frame update
     void Start()
     {
         
