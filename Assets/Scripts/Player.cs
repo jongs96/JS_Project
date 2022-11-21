@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Player : CharacterProperty, IBattle
 {
+    enum STATE
+    {
+        Create, Normal, Battle, Death
+    }
     public bool IsLive
     {
         get
@@ -13,15 +17,14 @@ public class Player : CharacterProperty, IBattle
     }
     Transform myHeadPos;
     public Transform HeadPos { get => myHeadPos; }
-    Vector2 desireDir = Vector2.zero;
-    Vector2 curDir = Vector2.zero;
+    public Transform AttackPos = null;
     public Transform myCam = null;
     public Transform mainBody = null;
+    Vector2 desireDir = Vector2.zero;
+    Vector2 curDir = Vector2.zero;
+    LayerMask Enemy;
     public bool IsAir = false;
-    enum STATE
-    {
-        Create, Normal, Battle, Death
-    }
+    
     public void OnDamage(float dmg)
     {
 
@@ -107,6 +110,16 @@ public class Player : CharacterProperty, IBattle
         myRigid.AddForce(Vector3.up * 200.0f);
     }
 
+    //attack function for animationevent
+    public void OnAttack()
+    {
+        Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.55f, Enemy);
+        foreach(Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            ib?.OnDamage(100.0f);
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
