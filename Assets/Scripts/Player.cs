@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using UnityEngine.EventSystems;
 
 public class Player : CharacterProperty, IBattle
 {
@@ -22,10 +23,13 @@ public class Player : CharacterProperty, IBattle
     public Transform mainBody = null;
     Vector2 desireDir = Vector2.zero;
     Vector2 curDir = Vector2.zero;
-    LayerMask Enemy;
-    public bool IsAir = false;
-    
-    public void OnDamage(float dmg)
+    public LayerMask Enemy;
+    bool IsAir = false;
+    bool IsComboable = false;
+    int ClickCount = 0;
+
+
+    public void OnDamage(float dmg, Transform target)
     {
 
     }
@@ -101,7 +105,11 @@ public class Player : CharacterProperty, IBattle
         //Attack
         if(!IsAir && Input.GetMouseButtonDown(0))
         {
-            myAnim.SetTrigger("Attack");
+            if(!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Attack");
+            if(IsComboable)//&& !EventSystem.current.IsPointerOverGameObject())
+            {
+                ClickCount++;
+            }
         }
     }
     public void JumpUp()
@@ -111,15 +119,34 @@ public class Player : CharacterProperty, IBattle
     }
 
     //attack function for animationevent
-    public void OnAttack()
+    public void AttackTarget()
     {
         Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.55f, Enemy);
         foreach(Collider col in list)
         {
             IBattle ib = col.GetComponent<IBattle>();
-            ib?.OnDamage(100.0f);
+            ib?.OnDamage(100.0f, transform);
         }
     }
+
+    public void ComboCheck(bool swich)
+    {
+        IsComboable = swich;
+        if (swich)
+        {
+            //ComboCheckStart
+            ClickCount = 0;
+        }
+        else
+        {
+            //ComboCheckEnd
+            if (ClickCount == 0)
+            {
+                myAnim.SetTrigger("Stop");
+            }
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))

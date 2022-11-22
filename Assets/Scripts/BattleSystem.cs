@@ -6,7 +6,7 @@ public interface IBattle
 {
     Transform HeadPos { get; }
     Transform transform { get; }
-    void OnDamage(float dmg);
+    void OnDamage(float dmg, Transform target);
     bool IsLive { get; }
 }
 

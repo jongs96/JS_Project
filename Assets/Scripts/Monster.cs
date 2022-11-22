@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Monster : MobMovement, IBattle
 {
+    Transform myTarget = null;
     Vector3 StartPos = Vector3.zero;
     public Stat mobStat;
     public enum STATE
@@ -24,8 +25,9 @@ public class Monster : MobMovement, IBattle
     }
     public Transform myHeadPos;
     public Transform HeadPos { get => myHeadPos; }
-    public void OnDamage(float dmg)
+    public void OnDamage(float dmg, Transform target)
     {
+        myTarget = target;
         mobStat.CurHP -= dmg;
         if(Mathf.Approximately(mobStat.CurHP, 0.0f))
         {
@@ -58,6 +60,7 @@ public class Monster : MobMovement, IBattle
                 mobStat.MoveSpeed = 2.0f;
                 mobStat.RotSpeed = 360.0f;
                 myAnim.SetBool("Battle", true);
+                FollowTarget(myTarget, mobStat.MoveSpeed, mobStat.RotSpeed, OnAttack);
                 break;
             case STATE.Death:
                 //if (myHpBar != null) Destroy(myHpBar.gameObject);
@@ -95,7 +98,14 @@ public class Monster : MobMovement, IBattle
         rndPos.y = Random.Range(-5.0f, 5.0f);
         MoveToPos(rndPos, mobStat.MoveSpeed, mobStat.RotSpeed, () => StartCoroutine(GoingToRndPos()));
     }
-
+    void OnAttack()
+    {
+        if (!myAnim.GetBool("IsAttacking"))
+        {
+            myAnim.SetTrigger("Attack");
+        }
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
