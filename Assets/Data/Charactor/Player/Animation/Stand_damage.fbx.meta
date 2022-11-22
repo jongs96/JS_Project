@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 9e53d05664ef7754ba5d998047b7331f
+guid: 5b0fa2858dc83c748a19aef61ef55a02
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Sit_damage1
+    second: Stand_damage
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Sit_damage1
+      name: Stand_damage
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 19
+      lastFrame: 21
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

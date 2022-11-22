@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class Player : CharacterProperty, IBattle
 {
-    enum STATE
+    public enum STATE
     {
-        Create, Normal, Battle, Death
+        Create, Playing, Death
     }
+    public STATE myState = STATE.Create;
     public bool IsLive
     {
         get
@@ -24,28 +25,74 @@ public class Player : CharacterProperty, IBattle
     Vector2 desireDir = Vector2.zero;
     Vector2 curDir = Vector2.zero;
     public LayerMask Enemy;
+    public Stat PlayerStat;
     bool IsAir = false;
     bool IsComboable = false;
+    bool Standby = true;
     int ClickCount = 0;
 
 
     public void OnDamage(float dmg, Transform target)
     {
-
+        PlayerStat.CurHP -= dmg;
+        if(Mathf.Approximately(PlayerStat.CurHP, 0.0f))
+        {
+            ChangeState(STATE.Death);
+        }
+        else
+        {
+            myAnim.SetTrigger("Damage");
+        }
     }
+    void ChangeState(STATE s)
+    {
+        if (myState == s) return;
+        myState = s;
+        switch (myState)
+        {
+            case STATE.Create:
+                break;
+            case STATE.Playing:                
+                break;            
+            case STATE.Death:
+                myAnim.SetTrigger("Death");
+                GetComponent<Collider>().enabled = false;
+                GetComponent<Rigidbody>().useGravity = false;
+                break;
+        }
+    }
+    void StateProcess()
+    {
+        switch (myState)
+        {
+            case STATE.Create:
+                break;
+            case STATE.Playing:
+                break;            
+            case STATE.Death:
+                break;
+        }
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        PlayerStat = new Stat(1000.0f, 100.0f, 2.2f, 360.0f, default, 100.0f);
+        ChangeState(STATE.Playing);
     }
 
     // Update is called once per frame
     void Update()
     {
+        StateProcess();
+        if(!myAnim.GetBool("IsRunning")) PlayerStat.CurEnergy += 3 * Time.deltaTime;
+        if (Mathf.Approximately(PlayerStat.CurEnergy, 0)) Standby = false;
+        if (PlayerStat.CurEnergy > 5.0) Standby = true;
         //walk and run
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && Standby)
             {
                 myAnim.SetBool("IsWalking", false);
                 myAnim.SetBool("IsRunning", true);
@@ -76,7 +123,7 @@ public class Player : CharacterProperty, IBattle
         myAnim.SetFloat("y", curDir.y);
 
         //jump
-        if(!IsAir && Input.GetKeyDown(KeyCode.Space))
+        if(!IsAir && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Jump");
         }
@@ -111,6 +158,12 @@ public class Player : CharacterProperty, IBattle
                 ClickCount++;
             }
         }
+        //JumpAttack
+        if (!IsAir && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.E) && PlayerStat.CurEnergy > 30.0f)
+        {
+            myAnim.SetTrigger("Skill");
+            PlayerStat.CurEnergy -= 30.0f;
+        }
     }
     public void JumpUp()
     {
@@ -118,7 +171,7 @@ public class Player : CharacterProperty, IBattle
         myRigid.AddForce(Vector3.up * 200.0f);
     }
 
-    //attack function for animationevent
+    //AnimationEvent Attack function
     public void AttackTarget()
     {
         Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.55f, Enemy);
@@ -126,6 +179,15 @@ public class Player : CharacterProperty, IBattle
         {
             IBattle ib = col.GetComponent<IBattle>();
             ib?.OnDamage(100.0f, transform);
+        }
+    }
+    public void AttackSkill()
+    {
+        Collider[] list = Physics.OverlapSphere(transform.position, 3.0f, Enemy);
+        foreach (Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            ib?.OnDamage(200.0f, transform);
         }
     }
 

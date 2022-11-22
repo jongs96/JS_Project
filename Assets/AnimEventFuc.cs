@@ -6,12 +6,17 @@ using UnityEngine.Events;
 public class AnimEventFuc : MonoBehaviour
 {
     public UnityEvent Attack = null;
+    public UnityEvent Skill = null;
     public UnityEvent ComboCheckStart = null;
     public UnityEvent ComboCheckEnd = null;
 
     public void OnAttack()
     {
         Attack?.Invoke();
+    }
+    public void OnSkill()
+    {
+        Skill?.Invoke();
     }
     public void OnComboCheckStart()
     {

@@ -18,6 +18,12 @@ public struct Stat
         set => curHp = Mathf.Clamp(value, 0.0f, maxHp);
     }
 
+    [SerializeField] float attackPower;
+    public float AttackPower
+    {
+        get => attackPower;
+    }
+
     [SerializeField] float moveSpeed;
     public float MoveSpeed
     {
@@ -36,15 +42,29 @@ public struct Stat
     public float curAttackDelay;
     public float AttackDelay
     {
-        get => attackDelay;
+        get => attackDelay = 0.0f;
     }
 
-    public Stat(float hp, float moveSpeed, float rotSpeed, float attackDelay)
+    [SerializeField] float maxEnergy;
+    [SerializeField] float curEnergy;
+    public float TotalEnergy
+    {
+        get => maxEnergy;
+    }
+    public float CurEnergy
+    {
+        get => curEnergy;
+        set => curEnergy = Mathf.Clamp(value, 0.0f, maxEnergy);
+    }
+
+    public Stat(float hp, float attackPower, float moveSpeed, float rotSpeed, float attackDelay, float energy)
     {
         curHp = maxHp = hp;
+        this.attackPower = attackPower;
         this.moveSpeed = moveSpeed;
         this.rotSpeed = rotSpeed;
         this.attackDelay = attackDelay;
         curAttackDelay = 0.0f;
+        curEnergy = maxEnergy = energy;
     }
 }

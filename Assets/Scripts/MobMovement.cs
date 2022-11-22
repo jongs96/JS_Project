@@ -10,6 +10,8 @@ public class MobMovement : CharacterProperty
     Coroutine coMove = null;
     Coroutine coRot = null;
 
+    public bool OutRange = false;
+
     protected void MoveToPos(Vector3 target, float movSpeed, float rotSpeed, MyAction done = null)
     {
         if (coMove != null) StopCoroutine(coMove);
@@ -84,12 +86,16 @@ public class MobMovement : CharacterProperty
     
     IEnumerator FollowingTarget(Transform target, float MovSpeed, float RotSpeed, MyAction reached)
     {
+        float MadTime = 15.0f;
+        float CurTime = 0.0f;
         float AttackRange = 1.1f;
         while (target != null)
         {
             Vector3 dir = target.position - transform.position;
             dir.y = 0.0f;
             float dist = dir.magnitude;
+            CurTime += Time.deltaTime;
+            if (MadTime < CurTime && dist > 4.0f) OutRange = true;
 
             Vector3 rot = Vector3.RotateTowards(transform.forward, dir, RotSpeed * Mathf.Deg2Rad * Time.deltaTime, 0.0f);
             transform.rotation = Quaternion.LookRotation(rot);

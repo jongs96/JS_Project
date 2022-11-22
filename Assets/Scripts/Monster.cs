@@ -7,6 +7,8 @@ public class Monster : MobMovement, IBattle
     Transform myTarget = null;
     Vector3 StartPos = Vector3.zero;
     public Stat mobStat;
+    public Transform AttackPos;
+    public LayerMask Target;
     public enum STATE
     {
         Create, Normal, Battle, Death
@@ -53,6 +55,7 @@ public class Monster : MobMovement, IBattle
                 mobStat.MoveSpeed = 0.8f;
                 mobStat.RotSpeed = 180.0f;
                 myAnim.SetBool("IsMoving", false);
+                myAnim.SetBool("Battle", false);
                 StartCoroutine(GoingToRndPos());
                 break;
             case STATE.Battle:
@@ -65,9 +68,9 @@ public class Monster : MobMovement, IBattle
             case STATE.Death:
                 //if (myHpBar != null) Destroy(myHpBar.gameObject);
                 StopAllCoroutines();
-                myAnim.SetTrigger("Death");                
-                //GetComponent<Collider>().enabled = false;
-                //GetComponent<Rigidbody>().useGravity = false;
+                myAnim.SetTrigger("Death");
+                GetComponent<Collider>().enabled = false;
+                GetComponent<Rigidbody>().useGravity = false;
                 break;
         }
     }
@@ -82,10 +85,15 @@ public class Monster : MobMovement, IBattle
                 break;
             case STATE.Battle:
                 if (!myAnim.GetBool("IsAttacking")) mobStat.curAttackDelay += Time.deltaTime;
-                //if (mySenser.myTarget != null && !mySenser.myTarget.IsLive)
-                //{
-                //    mySenser.OnLostTarget();
-                //}
+                //Lost Target
+                if(OutRange)
+                {
+                    myTarget = null;
+                    ChangeState(STATE.Normal);
+                    OutRange = false;
+                }
+                break;
+            case STATE.Death:
                 break;
         }
     }
@@ -105,12 +113,23 @@ public class Monster : MobMovement, IBattle
             myAnim.SetTrigger("Attack");
         }
     }
-    
+
+    //AnimationEvent Attack function
+    public void AttackTarget()
+    {
+        Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.5f, Target);
+        foreach (Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            ib?.OnDamage(mobStat.AttackPower, transform);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         StartPos = transform.position;
-        mobStat = new Stat(300.0f, 0.8f, 180.0f, 2.0f);
+        mobStat = new Stat(300.0f, 50.0f, 0.8f, 180.0f, 2.0f, default);
         ChangeState(STATE.Normal);
     }
 

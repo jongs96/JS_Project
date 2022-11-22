@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 5b0fa2858dc83c748a19aef61ef55a02
+guid: 948c8d632ce73694ea3dd9e6be62d2ac
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Defense_damage2
+    second: Stand_defence_damage
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Defense_damage2
+      name: Stand_defence_damage
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 21
+      lastFrame: 23
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
