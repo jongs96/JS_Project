@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.EventSystems;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Player : CharacterProperty, IBattle
 {
@@ -22,6 +23,8 @@ public class Player : CharacterProperty, IBattle
     public Transform AttackPos = null;
     public Transform myCam = null;
     public Transform mainBody = null;
+    public Slider Hpbar = null;
+    public Slider Energybar = null;
     Vector2 desireDir = Vector2.zero;
     Vector2 curDir = Vector2.zero;
     public LayerMask Enemy;
@@ -150,10 +153,10 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("Defending", false);
         }
         //Attack
-        if(!IsAir && Input.GetMouseButtonDown(0))
+        if(!IsAir && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             if(!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Attack");
-            if(IsComboable)//&& !EventSystem.current.IsPointerOverGameObject())
+            if(IsComboable)
             {
                 ClickCount++;
             }

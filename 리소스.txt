@@ -22,12 +22,6 @@ https://www.resourcebank.or.kr/
 
 <몬스터>
 -skeleton warrior(Charactor- assetstore), anim(mixamo) 
-assetstore
--Devil Bulldog, (보류)spider, Toxic Frogs
-
-https://www.resourcebank.or.kr/
--고골, 트롤
-보스 - 데스스타, 뱀인간보스, 
 
 //보스//
 https://www.mixamo.com/
