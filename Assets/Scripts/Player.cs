@@ -8,7 +8,7 @@ public class Player : CharacterProperty, IBattle
 {
     public enum STATE
     {
-        Create, Playing, Death
+        Create, Playing, Pause, Death
     }
     public STATE myState = STATE.Create;
     public bool IsLive
@@ -25,10 +25,12 @@ public class Player : CharacterProperty, IBattle
     public Transform mainBody = null;
     public Slider Hpbar = null;
     public Slider Energybar = null;
+    public GameObject EscMenu = null;
     Vector2 desireDir = Vector2.zero;
     Vector2 curDir = Vector2.zero;
     public LayerMask Enemy;
     public Stat PlayerStat;
+    public bool IsPlaying = true;
     bool IsAir = false;
     bool IsComboable = false;
     bool Standby = true;
@@ -37,8 +39,8 @@ public class Player : CharacterProperty, IBattle
 
     public void OnDamage(float dmg, Transform target)
     {
-        PlayerStat.CurHP -= dmg;
-        if(Mathf.Approximately(PlayerStat.CurHP, 0.0f))
+        PlayerStat.CurHP -= dmg;        
+        if (Mathf.Approximately(PlayerStat.CurHP, 0.0f))
         {
             ChangeState(STATE.Death);
         }
@@ -55,8 +57,12 @@ public class Player : CharacterProperty, IBattle
         {
             case STATE.Create:
                 break;
-            case STATE.Playing:                
-                break;            
+            case STATE.Playing:
+                Pause(false);
+                break;
+            case STATE.Pause:
+                Pause(true);
+                break;
             case STATE.Death:
                 myAnim.SetTrigger("Death");
                 GetComponent<Collider>().enabled = false;
@@ -71,7 +77,11 @@ public class Player : CharacterProperty, IBattle
             case STATE.Create:
                 break;
             case STATE.Playing:
-                break;            
+                Hpbar.value = PlayerStat.CurHP / PlayerStat.TotalHP;
+                Energybar.value = PlayerStat.CurEnergy / PlayerStat.TotalEnergy;
+                break;
+            case STATE.Pause:
+                break;
             case STATE.Death:
                 break;
         }
@@ -91,7 +101,7 @@ public class Player : CharacterProperty, IBattle
         StateProcess();
         if(!myAnim.GetBool("IsRunning")) PlayerStat.CurEnergy += 3 * Time.deltaTime;
         if (Mathf.Approximately(PlayerStat.CurEnergy, 0)) Standby = false;
-        if (PlayerStat.CurEnergy > 5.0) Standby = true;
+        if (PlayerStat.CurEnergy > 1.0) Standby = true;
         //walk and run
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
@@ -167,6 +177,12 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetTrigger("Skill");
             PlayerStat.CurEnergy -= 30.0f;
         }
+        //Open Menu
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ChangeState(STATE.Pause);
+            EscMenu.SetActive(true);
+        }
     }
     public void JumpUp()
     {
@@ -212,6 +228,19 @@ public class Player : CharacterProperty, IBattle
         }
     }
 
+    void Pause(bool p)
+    {
+        if(p)
+        {
+            IsPlaying = false;
+            Time.timeScale = 0.0f;
+        }
+        else
+        {
+            IsPlaying = true;
+            Time.timeScale = 1.0f;
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))

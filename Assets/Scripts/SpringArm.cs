@@ -32,44 +32,47 @@ public class SpringArm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //camera x-axis rotation
-        desireRot.x += -Input.GetAxisRaw("Mouse Y") * rotSpeed;
-        desireRot.x = Mathf.Clamp(desireRot.x, RotateRange.x, RotateRange.y);
-
-        //y-axis rotation camera only
-        if (Input.GetKey(KeyCode.R))
+        if (transform.parent.GetComponent<Player>().IsPlaying)
         {
-            desireRot.y += Input.GetAxisRaw("Mouse X") * rotSpeed;
-        }
-        //y-axis rotation with charactor
-        else
-        {
-            transform.parent.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * rotSpeed);            
-        }
-        curRot = Vector2.Lerp(curRot, desireRot, Time.deltaTime * SmoothRotSpeed);
+            //camera x-axis rotation
+            desireRot.x += -Input.GetAxisRaw("Mouse Y") * rotSpeed;
+            desireRot.x = Mathf.Clamp(desireRot.x, RotateRange.x, RotateRange.y);
 
-        Quaternion x = Quaternion.Euler(new Vector3(curRot.x, 0, 0));
-        Quaternion y = Quaternion.Euler(new Vector3(0, curRot.y, 0));
-        transform.localRotation = y * x;
-                
-        //camera z-axis move
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > Mathf.Epsilon || Input.GetAxisRaw("Mouse ScrollWheel") < -Mathf.Epsilon)
-        {
-            desireDist += Input.GetAxisRaw("Mouse ScrollWheel") * zoomSpeed;
-            desireDist = Mathf.Clamp(desireDist, ZoomRange.x, ZoomRange.y);
-        }
-        curCamDist = Mathf.Lerp(curCamDist, desireDist, Time.deltaTime * SmoothDistSpeed);
+            //y-axis rotation camera only
+            if (Input.GetKey(KeyCode.R))
+            {
+                desireRot.y += Input.GetAxisRaw("Mouse X") * rotSpeed;
+            }
+            //y-axis rotation with charactor
+            else
+            {
+                transform.parent.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * rotSpeed);
+            }
+            curRot = Vector2.Lerp(curRot, desireRot, Time.deltaTime * SmoothRotSpeed);
 
-        //avoid camera crash
-        Ray ray = new Ray();
-        ray.origin = transform.position;
-        ray.direction = -transform.forward;
-        float checkDist = Mathf.Min(curCamDist, desireDist);
-        if (Physics.Raycast(ray, out RaycastHit hit, checkDist + OffsetDist + 0.1f, CrashMask))
-        {
-            curCamDist = Vector3.Distance(transform.position, hit.point + myCam.forward * OffsetDist);
-        }
+            Quaternion x = Quaternion.Euler(new Vector3(curRot.x, 0, 0));
+            Quaternion y = Quaternion.Euler(new Vector3(0, curRot.y, 0));
+            transform.localRotation = y * x;
 
-        myCam.transform.localPosition = new Vector3(0, 0, -curCamDist);
+            //camera z-axis move
+            if (Input.GetAxisRaw("Mouse ScrollWheel") > Mathf.Epsilon || Input.GetAxisRaw("Mouse ScrollWheel") < -Mathf.Epsilon)
+            {
+                desireDist += Input.GetAxisRaw("Mouse ScrollWheel") * zoomSpeed;
+                desireDist = Mathf.Clamp(desireDist, ZoomRange.x, ZoomRange.y);
+            }
+            curCamDist = Mathf.Lerp(curCamDist, desireDist, Time.deltaTime * SmoothDistSpeed);
+
+            //avoid camera crash
+            Ray ray = new Ray();
+            ray.origin = transform.position;
+            ray.direction = -transform.forward;
+            float checkDist = Mathf.Min(curCamDist, desireDist);
+            if (Physics.Raycast(ray, out RaycastHit hit, checkDist + OffsetDist + 0.1f, CrashMask))
+            {
+                curCamDist = Vector3.Distance(transform.position, hit.point + myCam.forward * OffsetDist);
+            }
+
+            myCam.transform.localPosition = new Vector3(0, 0, -curCamDist);
+        }
     }
 }

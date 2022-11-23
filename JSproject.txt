@@ -2,11 +2,23 @@
 이동 : W(↑),A(←),S(↓),D(→)
 방어 : Mouse R
 공격 : Mouse L
+범위공격 : E
 앉기 : Ctrl
 점프 : Space Bar
 뛰기 : Shift W,A,S,D
 피하기 : A(←),D(→) + SpaceBar, W(↑) + SpaceBar + SpaceBar
 카메라이동 : R + Mouse Move
 
-<할 것>
-몬스터 만들고 배틀 시스템 구현.
+<메뉴>
+캐릭터 정보 > 캐릭터 정보창( 레벨, 직업, 스텟 (체력, 공격력, 방어력) )
+설정 -> pop up ( sound, brightness, 키설정)
+게임 종료 -> pop up( save, don't save) -> 시작UI 
+
+<시작 UI>
+이미지
+-게임 시작
+*새 게임
+*불러오기 ( slot 1,2,3)
+-게임 종료
+
+레벨업 시 스텟 3.
