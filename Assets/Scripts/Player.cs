@@ -59,9 +59,12 @@ public class Player : CharacterProperty, IBattle
                 break;
             case STATE.Playing:
                 Pause(false);
+                //Fix the cursor inside the window
+                Cursor.lockState = CursorLockMode.Locked;
                 break;
             case STATE.Pause:
                 Pause(true);
+                Cursor.lockState = CursorLockMode.Confined;
                 break;
             case STATE.Death:
                 myAnim.SetTrigger("Death");
@@ -240,6 +243,11 @@ public class Player : CharacterProperty, IBattle
             IsPlaying = true;
             Time.timeScale = 1.0f;
         }
+    }
+
+    public void ResumeGame()
+    {
+        ChangeState(STATE.Playing);
     }
     private void OnCollisionEnter(Collision collision)
     {

@@ -22,9 +22,6 @@ public class SpringArm : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Fix the cursor inside the window
-        Cursor.lockState = CursorLockMode.Locked;
-
         desireRot.x = curRot.x = transform.localRotation.eulerAngles.x;
         desireDist = curCamDist = -myCam.localPosition.z;
     }
