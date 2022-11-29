@@ -3,7 +3,6 @@
 [리소스]
 https://assetstore.unity.com/
 http://opengameart.org/
-https://www.resourcebank.or.kr/
 <3D캐릭터, 애니메이션>
 https://www.mixamo.com/
 
@@ -13,12 +12,6 @@ https://www.mixamo.com/
 애니메이션 : pro Sword and Shield Pack
 
 <던전 & 구조물 & 배경>
-http://3drt.com/store/
--빌딩 (Underground Passage Level/
-https://www.resourcebank.or.kr/
-@배경-여신상 
-@오브젝트 - 던전모듈러, 부서진상자, 오크통, 체스트박스, 자루, 나무상자,
-나무박스, 상자, 
 
 <몬스터>
 -skeleton warrior(Charactor- assetstore), anim(mixamo) 
