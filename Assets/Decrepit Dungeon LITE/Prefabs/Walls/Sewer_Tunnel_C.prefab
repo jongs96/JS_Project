@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3349214}
   - component: {fileID: 2377464}
   - component: {fileID: 6439104}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sewer_Tunnel_C
   m_TagString: Untagged
   m_Icon: {fileID: 0}

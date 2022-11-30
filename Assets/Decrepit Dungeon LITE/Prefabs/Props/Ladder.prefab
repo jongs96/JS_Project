@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400014}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ladder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: 3333430}
   - component: {fileID: 2358882}
   - component: {fileID: 6448684}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bar_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 3387634}
   - component: {fileID: 2389882}
   - component: {fileID: 6430144}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bar_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 3330192}
   - component: {fileID: 2344094}
   - component: {fileID: 6416398}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Left_Side
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 3349044}
   - component: {fileID: 2330514}
   - component: {fileID: 6458922}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bar_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -442,7 +442,7 @@ GameObject:
   - component: {fileID: 3333392}
   - component: {fileID: 2377962}
   - component: {fileID: 6420506}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bar_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 3344474}
   - component: {fileID: 2315544}
   - component: {fileID: 6418368}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bar_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -638,7 +638,7 @@ GameObject:
   - component: {fileID: 3350514}
   - component: {fileID: 2301978}
   - component: {fileID: 6436504}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Right_Side
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 491086}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tunnel_Grate_Broken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 3335822}
   - component: {fileID: 2359004}
   - component: {fileID: 6495942}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Debris_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 3317506}
   - component: {fileID: 2376366}
   - component: {fileID: 6465836}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tunnel_Grate_Broken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 3312020}
   - component: {fileID: 2362432}
   - component: {fileID: 6425774}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Debris_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

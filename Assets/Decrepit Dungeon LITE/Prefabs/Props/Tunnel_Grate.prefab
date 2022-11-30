@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3379640}
   - component: {fileID: 2390810}
   - component: {fileID: 6462822}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tunnel_Grate
   m_TagString: Untagged
   m_Icon: {fileID: 0}

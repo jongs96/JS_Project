@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 6483636}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Keychain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 400008}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Dungeon_Key_Set
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 3355336}
   - component: {fileID: 2304050}
   - component: {fileID: 6423818}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Key_C
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 3393354}
   - component: {fileID: 2397102}
   - component: {fileID: 6414794}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Key_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 3331988}
   - component: {fileID: 2368464}
   - component: {fileID: 6491660}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Key_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -31,7 +31,7 @@ public class Player : CharacterProperty, IBattle
     public LayerMask Enemy;
     public Stat PlayerStat;
     public bool IsPlaying = true;
-    bool IsAir = false;
+    public bool IsAir = false;
     bool IsComboable = false;
     bool Standby = true;
     int ClickCount = 0;
@@ -98,9 +98,25 @@ public class Player : CharacterProperty, IBattle
         ChangeState(STATE.Playing);
     }
 
+    private void FixedUpdate()
+    {
+        
+    }
     // Update is called once per frame
     void Update()
     {
+        Ray ray = new Ray();
+        ray.origin = transform.position;
+        ray.direction = -transform.up;
+        //Debug.DrawRay(transform.position, -transform.up * 1.0f, Color.red);
+        if (Physics.Raycast(ray, 1.0f, 1<<LayerMask.NameToLayer("Ground")))
+        {
+            IsAir = false;
+        }
+        else
+        {
+            IsAir = true;
+        }
         StateProcess();
         if(!myAnim.GetBool("IsRunning")) PlayerStat.CurEnergy += 3 * Time.deltaTime;
         if (Mathf.Approximately(PlayerStat.CurEnergy, 0)) Standby = false;
@@ -188,8 +204,7 @@ public class Player : CharacterProperty, IBattle
         }
     }
     public void JumpUp()
-    {
-        IsAir = true;
+    {        
         myRigid.AddForce(Vector3.up * 200.0f);
     }
 
@@ -249,6 +264,7 @@ public class Player : CharacterProperty, IBattle
     {
         ChangeState(STATE.Playing);
     }
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -263,4 +279,5 @@ public class Player : CharacterProperty, IBattle
             IsAir = true;
         }
     }
+    */
 }

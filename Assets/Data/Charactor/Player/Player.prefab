@@ -277,7 +277,7 @@ MonoBehaviour:
   mainBody: {fileID: 2296626394786074261}
   CrashMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1600
   rotSpeed: 5
   zoomSpeed: 3
   RotateRange: {x: -70, y: 80}
