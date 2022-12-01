@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: bc0432d0e519b014abe0de339f29dec9
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Kim jung chul Script
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: c6f551265114f274283389a1609bb653, type: 3}
+  - {fileID: 12800000, guid: 05718cfd7c08b5b4fa1953c651b9555c, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

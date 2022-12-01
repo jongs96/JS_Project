@@ -31,7 +31,6 @@ public class Player : CharacterProperty, IBattle
     public LayerMask Enemy;
     public Stat PlayerStat;
     public bool IsPlaying = true;
-    public bool IsAir = false;
     bool IsComboable = false;
     bool Standby = true;
     int ClickCount = 0;
@@ -82,6 +81,7 @@ public class Player : CharacterProperty, IBattle
             case STATE.Playing:
                 Hpbar.value = PlayerStat.CurHP / PlayerStat.TotalHP;
                 Energybar.value = PlayerStat.CurEnergy / PlayerStat.TotalEnergy;
+                CheckGround();
                 break;
             case STATE.Pause:
                 break;
@@ -97,26 +97,10 @@ public class Player : CharacterProperty, IBattle
         PlayerStat = new Stat(1000.0f, 100.0f, 2.2f, 360.0f, default, 100.0f);
         ChangeState(STATE.Playing);
     }
-
-    private void FixedUpdate()
-    {
-        
-    }
+    
     // Update is called once per frame
     void Update()
-    {
-        Ray ray = new Ray();
-        ray.origin = transform.position;
-        ray.direction = -transform.up;
-        //Debug.DrawRay(transform.position, -transform.up * 1.0f, Color.red);
-        if (Physics.Raycast(ray, 1.0f, 1<<LayerMask.NameToLayer("Ground")))
-        {
-            IsAir = false;
-        }
-        else
-        {
-            IsAir = true;
-        }
+    {        
         StateProcess();
         if(!myAnim.GetBool("IsRunning")) PlayerStat.CurEnergy += 3 * Time.deltaTime;
         if (Mathf.Approximately(PlayerStat.CurEnergy, 0)) Standby = false;
@@ -155,16 +139,16 @@ public class Player : CharacterProperty, IBattle
         myAnim.SetFloat("y", curDir.y);
 
         //jump
-        if(!IsAir && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.Space))
+        if(!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Jump");
         }
-        else if(IsAir && Input.GetKeyDown(KeyCode.Space))
+        else if(myAnim.GetBool("IsAir") && Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Roll");
         }
         //Sit
-        if(!IsAir && Input.GetKey(KeyCode.LeftControl))
+        if(!myAnim.GetBool("IsAir") && Input.GetKey(KeyCode.LeftControl))
         {
             myAnim.SetBool("Sitting", true);
         }
@@ -173,7 +157,7 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("Sitting", false);
         }
         //Defence
-        if (!IsAir && Input.GetMouseButton(1))
+        if (!myAnim.GetBool("IsAir") && Input.GetMouseButton(1))
         {
             myAnim.SetBool("Defending", true);
         }
@@ -182,7 +166,7 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("Defending", false);
         }
         //Attack
-        if(!IsAir && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if(!myAnim.GetBool("IsAir") && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             if(!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Attack");
             if(IsComboable)
@@ -191,7 +175,7 @@ public class Player : CharacterProperty, IBattle
             }
         }
         //JumpAttack
-        if (!IsAir && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.E) && PlayerStat.CurEnergy > 30.0f)
+        if (!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.E) && PlayerStat.CurEnergy > 30.0f)
         {
             myAnim.SetTrigger("Skill");
             PlayerStat.CurEnergy -= 30.0f;
@@ -264,20 +248,19 @@ public class Player : CharacterProperty, IBattle
     {
         ChangeState(STATE.Playing);
     }
-    /*
-    private void OnCollisionEnter(Collision collision)
+    void CheckGround()
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        Ray ray = new Ray();
+        ray.origin = transform.position;
+        ray.direction = -transform.up;
+        //Debug.DrawRay(transform.position, -transform.up * 1.0f, Color.red);
+        if (Physics.Raycast(ray, 1.0f, 1 << LayerMask.NameToLayer("Ground")))
         {
-            IsAir = false;
+            myAnim.SetBool("IsAir", false);
+        }
+        else
+        {
+            myAnim.SetBool("IsAir", true);
         }
     }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            IsAir = true;
-        }
-    }
-    */
 }
