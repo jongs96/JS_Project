@@ -26,13 +26,13 @@ public class Player : CharacterProperty, IBattle
     public Slider Hpbar = null;
     public Slider Energybar = null;
     public GameObject EscMenu = null;
-    Vector2 desireDir = Vector2.zero;
-    Vector2 curDir = Vector2.zero;
+    Vector3 desireDir = Vector3.zero;
+    Vector3 curDir = Vector3.zero;
     public LayerMask Enemy;
     public Stat PlayerStat;
     public bool IsPlaying = true;
     bool IsComboable = false;
-    bool Standby = true;
+    //bool Standby = true;
     int ClickCount = 0;
 
 
@@ -102,10 +102,11 @@ public class Player : CharacterProperty, IBattle
     void Update()
     {        
         StateProcess();
-        if(!myAnim.GetBool("IsRunning")) PlayerStat.CurEnergy += 3 * Time.deltaTime;
-        if (Mathf.Approximately(PlayerStat.CurEnergy, 0)) Standby = false;
-        if (PlayerStat.CurEnergy > 1.0) Standby = true;
+        //if(!myAnim.GetBool("IsRunning")) PlayerStat.CurEnergy += 3 * Time.deltaTime;
+        //if (Mathf.Approximately(PlayerStat.CurEnergy, 0)) Standby = false;
+        //if (PlayerStat.CurEnergy > 1.0) Standby = true;
         //walk and run
+        /*
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             if (Input.GetKey(KeyCode.LeftShift) && Standby)
@@ -128,18 +129,34 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("IsWalking", false);
             myAnim.SetBool("IsRunning", false);
         }
-
+        */
         desireDir.x = Input.GetAxis("Horizontal");
         desireDir.y = Input.GetAxis("Vertical");
+        desireDir.z = Input.GetAxis("Sprint");
 
         curDir.x = Mathf.Lerp(curDir.x, desireDir.x, Time.deltaTime * 10.0f);
         curDir.y = Mathf.Lerp(curDir.y, desireDir.y, Time.deltaTime * 10.0f);
+        curDir.z = Mathf.Lerp(curDir.z, desireDir.z, Time.deltaTime * 100.0f);
 
-        myAnim.SetFloat("x", curDir.x);
-        myAnim.SetFloat("y", curDir.y);
+        myAnim.SetFloat("Horizontal", curDir.x);
+        myAnim.SetFloat("Vertical", curDir.y);
+        myAnim.SetFloat("JudgementValue", curDir.z);
+        
+        if (curDir.x > 0.5f || curDir.y > 0.5f)
+        {
+            myAnim.SetBool("IsMoving", true);
+            if (myCam.rotation.y != mainBody.rotation.y)
+            {
+                mainBody.GetComponent<RootMotion>().RotCharactor(mainBody, myCam, 360.0f);
+            }
+        }
+        else
+        {
+            myAnim.SetBool("IsMoving", false);
+        }
 
         //jump
-        if(!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.Space))
+        if (!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Jump");
         }
@@ -190,7 +207,7 @@ public class Player : CharacterProperty, IBattle
     public void JumpUp()
     {
         myAnim.SetBool("IsAir", true);
-        myRigid.AddForce((Vector3.up + transform.forward * myAnim.GetFloat("y") + transform.right * myAnim.GetFloat("x")) * 200.0f);
+        myRigid.AddForce((Vector3.up + transform.GetChild(0).forward * myAnim.GetFloat("Vertical") + transform.GetChild(0).right * myAnim.GetFloat("Horizontal")) * 200.0f);
     }
 
     //AnimationEvent Attack function
