@@ -17,6 +17,7 @@ public class SceneMgr : MonoBehaviour
             Destroy(LoadingBar);
         }
         Inst = this;
+        DontDestroyOnLoad(gameObject);
     }
     public void QuickMoveScene(int SceneNum)
     {
@@ -39,8 +40,8 @@ public class SceneMgr : MonoBehaviour
         ao.allowSceneActivation = false;
         while(!ao.isDone)
         {
-            LoadingBar.value = ao.progress;
-            if(ao.progress >= 0.99f)
+            LoadingBar.value = ao.progress / 0.9f;
+            if(ao.progress >= 0.9f)
             {
                 LoadingBar.gameObject.SetActive(false);
                 ao.allowSceneActivation = true;
@@ -48,5 +49,9 @@ public class SceneMgr : MonoBehaviour
             yield return null;
         }
     }
-
+    public void ExitGame()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
+    }
 }

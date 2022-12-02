@@ -188,8 +188,9 @@ public class Player : CharacterProperty, IBattle
         }
     }
     public void JumpUp()
-    {        
-        myRigid.AddForce(Vector3.up * 200.0f);
+    {
+        myAnim.SetBool("IsAir", true);
+        myRigid.AddForce((Vector3.up + transform.forward * myAnim.GetFloat("y") + transform.right * myAnim.GetFloat("x")) * 200.0f);
     }
 
     //AnimationEvent Attack function
