@@ -24,7 +24,9 @@ public class RootMotion : MonoBehaviour
     }
     private void OnAnimatorMove()
     {
-        moveDelta += GetComponent<Animator>().deltaPosition;
+        Vector3 delpos = GetComponent<Animator>().deltaPosition;
+        moveDelta += delpos;
+                
         transform.parent.Rotate(GetComponent<Animator>().deltaRotation.eulerAngles, Space.World);
     }
     public void RotCharactor(Transform transform, Transform target, float RotSpeed)

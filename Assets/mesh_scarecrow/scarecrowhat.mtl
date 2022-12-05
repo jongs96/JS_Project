@@ -1,0 +1,11 @@
+# File created by luuv TSX
+# Created on: Fri May 25 10:58:28 2012 -1
+
+newmtl hut
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+d 1.0
+map_Kd scarecrowhat_tex.png 
+# End

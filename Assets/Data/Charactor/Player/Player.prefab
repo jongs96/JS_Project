@@ -1107,6 +1107,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 6d749d55ac4248c43ab312092d5aaa23, type: 2}
+    - target: {fileID: 5866666021909216657, guid: f43796b75b99cc74eaa823a390df974c, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6000407479487422213, guid: f43796b75b99cc74eaa823a390df974c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 49.268528

@@ -136,13 +136,13 @@ public class Player : CharacterProperty, IBattle
 
         curDir.x = Mathf.Lerp(curDir.x, desireDir.x, Time.deltaTime * 10.0f);
         curDir.y = Mathf.Lerp(curDir.y, desireDir.y, Time.deltaTime * 10.0f);
-        curDir.z = Mathf.Lerp(curDir.z, desireDir.z, Time.deltaTime * 100.0f);
+        curDir.z = Mathf.Lerp(curDir.z, desireDir.z, Time.deltaTime * 10.0f);
 
         myAnim.SetFloat("Horizontal", curDir.x);
         myAnim.SetFloat("Vertical", curDir.y);
         myAnim.SetFloat("JudgementValue", curDir.z);
         
-        if (curDir.x > 0.5f || curDir.y > 0.5f)
+        if (Mathf.Abs(myAnim.GetFloat("Vertical")) > 0.01 || Mathf.Abs(myAnim.GetFloat("Horizontal")) > 0.01)
         {
             myAnim.SetBool("IsMoving", true);
             if (myCam.rotation.y != mainBody.rotation.y)
@@ -271,8 +271,8 @@ public class Player : CharacterProperty, IBattle
         Ray ray = new Ray();
         ray.origin = transform.position;
         ray.direction = -transform.up;
-        //Debug.DrawRay(transform.position, -transform.up * 1.0f, Color.red);
-        if (Physics.Raycast(ray, 1.0f, 1 << LayerMask.NameToLayer("Ground")))
+        Debug.DrawRay(transform.position, -transform.up * 0.1f, Color.white);
+        if (Physics.Raycast(ray, 0.1f, 1 << LayerMask.NameToLayer("Ground")))
         {
             myAnim.SetBool("IsAir", false);
         }
