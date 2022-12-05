@@ -26,15 +26,17 @@ public class Player : CharacterProperty, IBattle
     public Slider Hpbar = null;
     public Slider Energybar = null;
     public GameObject EscMenu = null;
+    public delegate void MyAction();
+    MyAction goPos = null;
     Vector3 desireDir = Vector3.zero;
     Vector3 curDir = Vector3.zero;
     public LayerMask Enemy;
     public Stat PlayerStat;
     public bool IsPlaying = true;
     bool IsComboable = false;
+    bool canGo = false;
     //bool Standby = true;
-    int ClickCount = 0;
-
+    int ClickCount = 0;        
 
     public void OnDamage(float dmg, Transform target)
     {
@@ -102,34 +104,7 @@ public class Player : CharacterProperty, IBattle
     void Update()
     {        
         StateProcess();
-        //if(!myAnim.GetBool("IsRunning")) PlayerStat.CurEnergy += 3 * Time.deltaTime;
-        //if (Mathf.Approximately(PlayerStat.CurEnergy, 0)) Standby = false;
-        //if (PlayerStat.CurEnergy > 1.0) Standby = true;
-        //walk and run
-        /*
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-        {
-            if (Input.GetKey(KeyCode.LeftShift) && Standby)
-            {
-                myAnim.SetBool("IsWalking", false);
-                myAnim.SetBool("IsRunning", true);
-            }
-            else
-            {
-                myAnim.SetBool("IsRunning", false);
-                myAnim.SetBool("IsWalking", true);                
-            }
-            if (myCam.rotation.y != mainBody.rotation.y)
-            {
-                mainBody.GetComponent<RootMotion>().RotCharactor(mainBody, myCam, 360.0f);
-            }
-        }
-        else if (Mathf.Approximately(Input.GetAxis("Horizontal"), 0) && Mathf.Approximately(Input.GetAxis("Vertical"), 0))
-        {
-            myAnim.SetBool("IsWalking", false);
-            myAnim.SetBool("IsRunning", false);
-        }
-        */
+        
         desireDir.x = Input.GetAxis("Horizontal");
         desireDir.y = Input.GetAxis("Vertical");
         desireDir.z = Input.GetAxis("Sprint");
@@ -197,8 +172,13 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetTrigger("Skill");
             PlayerStat.CurEnergy -= 30.0f;
         }
+        //Move Portal
+        if(Input.GetKeyDown(KeyCode.G) && canGo)
+        {
+            goPos();
+        }
         //Open Menu
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             ChangeState(STATE.Pause);
             EscMenu.SetActive(true);
@@ -279,6 +259,21 @@ public class Player : CharacterProperty, IBattle
         else
         {
             myAnim.SetBool("IsAir", true);
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Portal"))
+        {
+            canGo = true;
+            goPos = collision.gameObject.GetComponent<Portal>().Teleportation;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Portal"))
+        {
+            canGo = false;
         }
     }
 }
