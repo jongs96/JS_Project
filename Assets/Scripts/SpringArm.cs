@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SpringArm : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class SpringArm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.parent.GetComponent<Player>().IsPlaying)
+        if (transform.parent.GetComponent<Player>().IsPlaying && !EventSystem.current.IsPointerOverGameObject())
         {
             //camera x-axis rotation
             desireRot.x += -Input.GetAxisRaw("Mouse Y") * rotSpeed;

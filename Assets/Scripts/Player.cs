@@ -61,7 +61,7 @@ public class Player : CharacterProperty, IBattle
             case STATE.Playing:
                 Pause(false);
                 //Fix the cursor inside the window
-                Cursor.lockState = CursorLockMode.Locked;
+                //Cursor.lockState = CursorLockMode.Locked;
                 break;
             case STATE.Pause:
                 Pause(true);
