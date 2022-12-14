@@ -6,9 +6,12 @@ public class Monster : MobMovement, IBattle
 {
     Transform myTarget = null;
     Vector3 StartPos = Vector3.zero;
+    Coroutine co = null;
     public Stat mobStat;
-    public Transform AttackPos;
     public LayerMask Target;
+    public Transform AttackPos;
+    public Transform ItemParents;
+    public List<ItemInfo> myItems = new List<ItemInfo>();
     public enum STATE
     {
         Create, Normal, Battle, Death
@@ -67,8 +70,10 @@ public class Monster : MobMovement, IBattle
                 break;
             case STATE.Death:
                 //if (myHpBar != null) Destroy(myHpBar.gameObject);
+                DropItem();
                 StopAllCoroutines();
                 myAnim.SetTrigger("Death");
+
                 GetComponent<Collider>().enabled = false;
                 GetComponent<Rigidbody>().useGravity = false;
                 break;
@@ -123,6 +128,29 @@ public class Monster : MobMovement, IBattle
             IBattle ib = col.GetComponent<IBattle>();
             ib?.OnDamage(mobStat.AttackPower, transform);
         }
+    }
+    public void Disappear()
+    {
+        if (co != null) StopCoroutine(co);
+        co = StartCoroutine(Disappearing());
+    }
+    IEnumerator Disappearing()
+    {
+        Color color = myRenderer.sharedMaterial.color;
+        while (myRenderer.sharedMaterial.color.a > 0.0f)
+        {
+            float delta = Time.deltaTime;
+            color.a -= delta;
+            myRenderer.sharedMaterial.color = color;
+            yield return null;
+        }
+        Destroy(gameObject);
+    }
+
+    public void DropItem()
+    {
+        GameObject obj = Instantiate(Resources.Load("DropItem/DropItem"), transform.position, Quaternion.identity, ItemParents) as GameObject;
+        obj.GetComponent<DropItem>().iteminfo = myItems[0];
     }
 
     // Start is called before the first frame update

@@ -182,6 +182,7 @@ public class Player : CharacterProperty, IBattle
         {
             ChangeState(STATE.Pause);
             EscMenu.SetActive(true);
+            EscMenu.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
     public void JumpUp()

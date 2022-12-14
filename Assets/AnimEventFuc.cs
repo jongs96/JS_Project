@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class AnimEventFuc : MonoBehaviour
 {
+    public UnityEvent EndDeath = null;
     public UnityEvent Attack = null;
     public UnityEvent Skill = null;
     public UnityEvent ComboCheckStart = null;
@@ -25,5 +26,9 @@ public class AnimEventFuc : MonoBehaviour
     public void OnComboCheckEnd()
     {
         ComboCheckEnd?.Invoke();
+    }
+    public void AfterDeath()
+    {
+        EndDeath?.Invoke();
     }
 }
