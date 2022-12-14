@@ -277,4 +277,11 @@ public class Player : CharacterProperty, IBattle
             canGo = false;
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("Item"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
 }

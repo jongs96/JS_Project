@@ -107,8 +107,8 @@ public class Monster : MobMovement, IBattle
     {
         yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
         Vector3 rndPos = transform.position;
-        rndPos.x = Random.Range(-5.0f, 5.0f);
-        rndPos.y = Random.Range(-5.0f, 5.0f);
+        rndPos.x += Random.Range(-5.0f, 5.0f);
+        rndPos.y += Random.Range(-5.0f, 5.0f);
         MoveToPos(rndPos, mobStat.MoveSpeed, mobStat.RotSpeed, () => StartCoroutine(GoingToRndPos()));
     }
     void OnAttack()
@@ -136,8 +136,8 @@ public class Monster : MobMovement, IBattle
     }
     IEnumerator Disappearing()
     {
-        Color color = myRenderer.sharedMaterial.color;
-        while (myRenderer.sharedMaterial.color.a > 0.0f)
+        Color color = myRenderer.material.color;
+        while (myRenderer.material.color.a > 0.0f)
         {
             float delta = Time.deltaTime;
             color.a -= delta;
@@ -149,7 +149,7 @@ public class Monster : MobMovement, IBattle
 
     public void DropItem()
     {
-        GameObject obj = Instantiate(Resources.Load("DropItem/DropItem"), transform.position, Quaternion.identity, ItemParents) as GameObject;
+        GameObject obj = Instantiate(Resources.Load("Item/DropItem"), transform.position, Quaternion.identity, ItemParents) as GameObject;
         obj.GetComponent<DropItem>().iteminfo = myItems[0];
     }
 
