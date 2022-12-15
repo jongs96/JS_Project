@@ -25,7 +25,6 @@ public class Player : CharacterProperty, IBattle
     public Transform mainBody = null;
     public Slider Hpbar = null;
     public Slider Energybar = null;
-    public GameObject EscMenu = null;
     public delegate void MyAction();
     MyAction goPos = null;
     Vector3 desireDir = Vector3.zero;
@@ -181,8 +180,20 @@ public class Player : CharacterProperty, IBattle
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ChangeState(STATE.Pause);
-            EscMenu.SetActive(true);
-            EscMenu.transform.GetChild(0).gameObject.SetActive(true);
+            UIManager.Inst.PauseMenu.SetActive(true);
+            UIManager.Inst.Menu.SetActive(true);
+        }
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            if(!UIManager.Inst.Inventory.activeSelf)
+                UIManager.Inst.Inventory.SetActive(true);
+            else UIManager.Inst.Inventory.SetActive(false);
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            if (!UIManager.Inst.Equip.activeSelf)
+                UIManager.Inst.Equip.SetActive(true);
+            else UIManager.Inst.Equip.SetActive(false);
         }
     }
     public void JumpUp()
@@ -281,6 +292,9 @@ public class Player : CharacterProperty, IBattle
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Item"))
         {
+            InventoryManager invenM = UIManager.Inst.Inventory.transform.Find("Content").GetComponent<InventoryManager>();
+            invenM.Slots.Add(other.gameObject);
+
             Destroy(other.gameObject);
         }
     }

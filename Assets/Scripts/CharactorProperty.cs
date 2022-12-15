@@ -46,6 +46,19 @@ public class CharacterProperty : MonoBehaviour
         }
     }
 
+    Renderer[] _allRenderer = null;
+    protected Renderer[] myAllRenderer
+    {
+        get
+        { 
+            if(_allRenderer == null)
+            {
+                _allRenderer = GetComponentsInChildren<Renderer>();
+            }
+            return _allRenderer;
+        }
+    }
+
     Collider _collider = null;
     protected Collider myCollider
     {

@@ -20,19 +20,17 @@ public class MobMovement : CharacterProperty
         coRot = StartCoroutine(Rotating(transform, target, rotSpeed));
     }
 
-    public static IEnumerator Rotating(Transform transform, Vector3 target, float rotSpeed)
+    public static IEnumerator Rotating(Transform trans, Vector3 target, float rotSpeed)
     {
-        Vector3 dir = target - transform.position;
-        if (dir.magnitude <= Mathf.Epsilon) yield break;
-        dir.Normalize();
-
-        float d = Vector3.Dot(dir, transform.forward);
-        float r = Mathf.Acos(d);
-        float angle = r * Mathf.Rad2Deg;
+        target.y = trans.position.y;
+        Vector3 dir = target - trans.position;
+        if (Mathf.Approximately(dir.magnitude, 0.0f)) yield break;
+        dir.Normalize();        
+        float angle = Vector3.Angle(dir, trans.forward);
 
         if (angle > Mathf.Epsilon)
         {
-            float rotDir = Vector3.Dot(dir, transform.right) >= 0.0f ? 1.0f : -1.0f;
+            float rotDir = Vector3.Dot(dir, trans.right) >= 0.0f ? 1.0f : -1.0f;
             while (angle > Mathf.Epsilon)
             {
                 float delta = rotSpeed * Time.deltaTime;
@@ -41,7 +39,7 @@ public class MobMovement : CharacterProperty
                     delta = angle;
                 }
                 angle -= delta;
-                transform.Rotate(Vector3.up * rotDir * delta, Space.World);
+                trans.Rotate(Vector3.up * rotDir * delta, Space.World);
                 yield return null;
             }
         }
@@ -50,7 +48,7 @@ public class MobMovement : CharacterProperty
     {
         Vector3 dir = target - transform.position;
         float dist = dir.magnitude;
-        if (dist <= Mathf.Epsilon) yield break;
+        if (Mathf.Approximately(dist,0.0f)) yield break;
         dir.Normalize();
 
         myAnim.SetBool("IsMoving", true);

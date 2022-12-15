@@ -30,6 +30,7 @@ public class Monster : MobMovement, IBattle
     }
     public Transform myHeadPos;
     public Transform HeadPos { get => myHeadPos; }
+    
     public void OnDamage(float dmg, Transform target)
     {
         myTarget = target;
@@ -108,7 +109,7 @@ public class Monster : MobMovement, IBattle
         yield return new WaitForSeconds(Random.Range(2.0f, 3.0f));
         Vector3 rndPos = transform.position;
         rndPos.x += Random.Range(-5.0f, 5.0f);
-        rndPos.y += Random.Range(-5.0f, 5.0f);
+        rndPos.z += Random.Range(-5.0f, 5.0f);
         MoveToPos(rndPos, mobStat.MoveSpeed, mobStat.RotSpeed, () => StartCoroutine(GoingToRndPos()));
     }
     void OnAttack()
@@ -141,7 +142,10 @@ public class Monster : MobMovement, IBattle
         {
             float delta = Time.deltaTime;
             color.a -= delta;
-            myRenderer.sharedMaterial.color = color;
+            foreach (Renderer rend in myAllRenderer)
+            {
+                rend.material.SetColor("_Color", color);
+            }
             yield return null;
         }
         Destroy(gameObject);
@@ -155,7 +159,7 @@ public class Monster : MobMovement, IBattle
 
     // Start is called before the first frame update
     void Start()
-    {
+    {       
         StartPos = transform.position;
         mobStat = new Stat(300.0f, 50.0f, 0.8f, 180.0f, 2.0f, default);
         ChangeState(STATE.Normal);
