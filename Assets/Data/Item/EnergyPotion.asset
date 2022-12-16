@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EnergyPotion
   m_EditorClassIdentifier: 
   type: 0
-  ItemName: EnergyPotion
+  ItemName: Energy_Potion
   Value: 20
   Droprate: 100
   MaxCount: 20

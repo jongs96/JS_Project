@@ -292,9 +292,12 @@ public class Player : CharacterProperty, IBattle
     {
         if(other.gameObject.layer == LayerMask.NameToLayer("Item"))
         {
-            InventoryManager invenM = GetComponentInChildren<InventoryManager>();
-            invenM.SlotCheck[0] = false;
-            GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), invenM.Slots[0].transform) as GameObject;
+            InventoryManager[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<InventoryManager>();//0 : consume, 1: equip
+            int type = other.GetComponent<DropItem>().iteminfo.type == ItemInfo.ItemType.Consume ? 0 : 1;
+            int num = invenM[type].GetInsertableSlotNumber();
+            if (num < 0) return; //Full Inventory
+            invenM[type].SlotCheck[num] = false;
+            GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), invenM[type].Slots[num].transform) as GameObject;
             obj.GetComponent<Item>().iteminfo = other.GetComponent<DropItem>().iteminfo;
             Destroy(other.gameObject);
         }
