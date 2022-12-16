@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour
 {
     public ItemInfo iteminfo = null;
+    TMPro.TextMeshPro Count_text = null;
+    public int ItemCount = 0;
 
     // Start is called before the first frame update
     void Start()

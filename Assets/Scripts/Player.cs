@@ -290,10 +290,19 @@ public class Player : CharacterProperty, IBattle
     }
     private void OnTriggerEnter(Collider other)
     {
+        //pick up item
         if(other.gameObject.layer == LayerMask.NameToLayer("Item"))
         {
             InventoryManager[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<InventoryManager>();//0 : consume, 1: equip
-            int type = other.GetComponent<DropItem>().iteminfo.type == ItemInfo.ItemType.Consume ? 0 : 1;
+            int type = 0;
+            for(int i = 0; i < invenM.Length; ++i)
+            {
+                if(other.GetComponent<DropItem>().iteminfo.type.ToString() == invenM[i].name)
+                {
+                    type = i;
+                    break;
+                }
+            }
             int num = invenM[type].GetInsertableSlotNumber();
             if (num < 0) return; //Full Inventory
             invenM[type].SlotCheck[num] = false;
