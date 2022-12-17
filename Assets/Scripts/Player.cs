@@ -32,6 +32,8 @@ public class Player : CharacterProperty, IBattle
     public LayerMask Enemy;
     public Stat PlayerStat;
     public bool IsPlaying = true;
+    InventoryManager Inven_Consume;
+    InventoryManager Inven_Equip;
     bool IsComboable = false;
     bool canGo = false;
     //bool Standby = true;
@@ -97,6 +99,7 @@ public class Player : CharacterProperty, IBattle
     {
         PlayerStat = new Stat(1000.0f, 100.0f, 2.2f, 360.0f, default, 100.0f);
         ChangeState(STATE.Playing);
+        AppointedInventory();
     }
     
     // Update is called once per frame
@@ -293,22 +296,40 @@ public class Player : CharacterProperty, IBattle
         //pick up item
         if(other.gameObject.layer == LayerMask.NameToLayer("Item"))
         {
-            InventoryManager[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<InventoryManager>();//0 : consume, 1: equip
-            int type = 0;
-            for(int i = 0; i < invenM.Length; ++i)
-            {
-                if(other.GetComponent<DropItem>().iteminfo.type.ToString() == invenM[i].name)
-                {
-                    type = i;
-                    break;
-                }
-            }
-            int num = invenM[type].GetInsertableSlotNumber();
-            if (num < 0) return; //Full Inventory
-            invenM[type].SlotCheck[num] = false;
-            GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), invenM[type].Slots[num].transform) as GameObject;
-            obj.GetComponent<Item>().iteminfo = other.GetComponent<DropItem>().iteminfo;
-            Destroy(other.gameObject);
+            PickupItem(other.gameObject);
         }
+    }
+    void AppointedInventory()
+    {
+        InventoryManager[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<InventoryManager>();
+        Inven_Equip = invenM[0];
+        Inven_Consume = invenM[1];
+    }
+    void PickupItem(GameObject item)
+    {
+        switch(item.GetComponent<DropItem>().iteminfo.type)
+        {
+            case ItemInfo.ItemType.Consume:
+                {
+                    int num = Inven_Consume.GetInsertableSlotNumber();
+                    if (num < 0) return; //Full Inventory
+                    Inven_Consume.SlotCheck[num] = false;
+                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), Inven_Consume.Slots[num].transform) as GameObject;
+                    obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
+                }
+                break;
+            case ItemInfo.ItemType.Equip:
+                {
+                    int num = Inven_Equip.GetInsertableSlotNumber();
+                    if (num < 0) return; //Full Inventory
+                    Inven_Equip.SlotCheck[num] = false;
+                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), Inven_Equip.Slots[num].transform) as GameObject;
+                    obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
+                }
+                break;
+            default:
+                break;
+        }
+        Destroy(item);
     }
 }

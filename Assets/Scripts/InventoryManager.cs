@@ -35,7 +35,16 @@ public class InventoryManager : MonoBehaviour
         return -1;
     }
     public void ChangeChildLocation()
-    {//버튼 위치바꾸는거 해야함.        
+    {
+        Button[] buttons = UIManager.Inst.Inventory.GetComponentsInChildren<Button>();
+        for (int i = 0; i < buttons.Length; ++i)
+        {
+            if (buttons[i].name == gameObject.name)
+            {
+                buttons[i].transform.SetAsLastSibling();
+                break;
+            }
+        }
         Transform screen = myParents.Find("__Screen__");
         screen.SetAsLastSibling();
         transform.SetAsLastSibling();
