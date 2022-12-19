@@ -9,6 +9,7 @@ public class Item : MonoBehaviour
     public Transform Count_text = null;
     public int mySlotNum;
     int _itemCount = 0;
+    [SerializeField]
     public int ItemCount
     {
         get
@@ -18,9 +19,9 @@ public class Item : MonoBehaviour
         set
         {
             _itemCount = value;
-
-            if(_itemCount >= 2)
-            {
+            Count_text.GetComponent<TMPro.TextMeshPro>().text = _itemCount.ToString();
+            if (_itemCount >= 2)
+            {                
                 Count_text.gameObject.SetActive(true);
             }
             else
