@@ -6,29 +6,32 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
     public List<GameObject> Slots = new List<GameObject>();
-    public bool[] SlotCheck = new bool[28];
+    public bool[] SlotCheck = new bool[21];
     public Transform myParents;
     //public int order
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         myParents = transform.parent;
-        for(int i = 0; i < SlotCheck.Length; ++i)//initialize slotcheck
+        for (int i = 0; i < SlotCheck.Length; ++i)//initialize slotcheck
         {
             SlotCheck[i] = true;
         }
-        for(int i = 0; i < transform.childCount; ++i)
+        for (int i = 0; i < transform.childCount; ++i)
         {
             Slots.Add(transform.GetChild(i).gameObject);
         }
     }
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
     public int GetInsertableSlotNumber(GameObject item)//빈슬롯, 곂칠 수 있는템 판별
-    {
-        string itemType = item.GetComponent<DropItem>().iteminfo.type.ToString();
-        switch(itemType)
+    {        
+        switch(item.GetComponent<DropItem>().iteminfo.type)
         {
-            case "Equip":
+            case ItemInfo.ItemType.Equip:
                 for (int i = 0; i < SlotCheck.Length; ++i)
                 {
                     if (SlotCheck[i])
@@ -37,14 +40,18 @@ public class InventoryManager : MonoBehaviour
                     }
                 }
                 return -1;
-            case "Consume":
+            case ItemInfo.ItemType.Consume:
                 for (int i = 0; i < SlotCheck.Length; ++i)
                 {
-                    if (Slots[i].GetComponentInChildren<Item>().iteminfo.ItemName == item.GetComponent<DropItem>().iteminfo.ItemName
-                        && Slots[i].GetComponentInChildren<Item>().ItemCount < Slots[i].GetComponentInChildren<Item>().iteminfo.MaxCount)
+                    Item initem = Slots[i].GetComponentInChildren<Item>();
+                    if (initem != null)
                     {
-                        ++Slots[i].GetComponentInChildren<Item>().ItemCount;
-                        return -1;
+                        if (initem.iteminfo.ItemName == item.GetComponent<DropItem>().iteminfo.ItemName
+                        && initem.ItemCount < Slots[i].GetComponentInChildren<Item>().iteminfo.MaxCount)
+                        {
+                            ++Slots[i].GetComponentInChildren<Item>().ItemCount;
+                            return -1;
+                        }
                     }
                     if (SlotCheck[i])
                     {
@@ -72,7 +79,16 @@ public class InventoryManager : MonoBehaviour
         screen.SetAsLastSibling();
         transform.SetAsLastSibling();
     }
-
+    private void OnEnable()
+    {
+        //모든 아이템 Destory 후 생성. or 비교하고 다른거만 파괴 후 생성.
+        for(int i = 0; i < Slots.Count; ++i)
+        {
+            GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), Slots[i].transform) as GameObject;
+            obj.GetComponent<Item>().iteminfo = DataManager.Inst.ItemData[gameObject.name + $"{i}"].itemInfo;
+            obj.GetComponent<Item>().ItemCount= DataManager.Inst.ItemData[gameObject.name + $"{i}"].ItemCount;
+        }        
+    }    
     // Update is called once per frame
     void Update()
     {

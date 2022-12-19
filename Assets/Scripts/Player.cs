@@ -299,34 +299,13 @@ public class Player : CharacterProperty, IBattle
     }
     
     void PickupItem(GameObject item)
-    {        
-        switch (item.GetComponent<DropItem>().iteminfo.type)
-        {
-            case ItemInfo.ItemType.Consume:
-                {
-                    int num = DataManager.Inst.Inven_Consume.GetInsertableSlotNumber(item);
-                    if (num < 0)//Full Inventory or Overlab
-                    {
-                        return;
-                    }
-                    DataManager.Inst.Inven_Consume.SlotCheck[num] = false;
-                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.Inven_Consume.Slots[num].transform) as GameObject;
-                    obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
-                }
-                break;
-            case ItemInfo.ItemType.Equip:
-                {
-                    int num = DataManager.Inst.Inven_Equip.GetInsertableSlotNumber(item);
-                    if (num < 0) return; //Full Inventory
-                    DataManager.Inst.InputItemData(item);
-                    DataManager.Inst.Inven_Equip.SlotCheck[num] = false;
-                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.Inven_Equip.Slots[num].transform) as GameObject;
-                    obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
-                }
-                break;
-            default:
-                break;
-        }
+    {
+        //int num = DataManager.Inst.Inven_Consume.GetInsertableSlotNumber(item);
+        //if (num < 0) return;//Full Inventory or Overlab
+        DataManager.Inst.InputItemData(item.GetComponent<DropItem>().iteminfo);
+        //DataManager.Inst.Inven_Consume.SlotCheck[num] = false;
+        //GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.Inven_Consume.Slots[num].transform) as GameObject;
+        //obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
         Destroy(item);
     }
 }
