@@ -32,8 +32,6 @@ public class Player : CharacterProperty, IBattle
     public LayerMask Enemy;
     public Stat PlayerStat;
     public bool IsPlaying = true;
-    InventoryManager Inven_Consume;
-    InventoryManager Inven_Equip;
     bool IsComboable = false;
     bool canGo = false;
     //bool Standby = true;
@@ -99,7 +97,7 @@ public class Player : CharacterProperty, IBattle
     {
         PlayerStat = new Stat(1000.0f, 100.0f, 2.2f, 360.0f, default, 100.0f);
         ChangeState(STATE.Playing);
-        AppointedInventory();
+        //AppointedInventory();
     }
     
     // Update is called once per frame
@@ -299,31 +297,30 @@ public class Player : CharacterProperty, IBattle
             PickupItem(other.gameObject);
         }
     }
-    void AppointedInventory()
-    {
-        InventoryManager[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<InventoryManager>();
-        Inven_Equip = invenM[0];
-        Inven_Consume = invenM[1];
-    }
+    
     void PickupItem(GameObject item)
-    {
-        switch(item.GetComponent<DropItem>().iteminfo.type)
+    {        
+        switch (item.GetComponent<DropItem>().iteminfo.type)
         {
             case ItemInfo.ItemType.Consume:
                 {
-                    int num = Inven_Consume.GetInsertableSlotNumber();
-                    if (num < 0) return; //Full Inventory
-                    Inven_Consume.SlotCheck[num] = false;
-                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), Inven_Consume.Slots[num].transform) as GameObject;
+                    int num = DataManager.Inst.Inven_Consume.GetInsertableSlotNumber(item);
+                    if (num < 0)//Full Inventory or Overlab
+                    {
+                        return;
+                    }
+                    DataManager.Inst.Inven_Consume.SlotCheck[num] = false;
+                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.Inven_Consume.Slots[num].transform) as GameObject;
                     obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
                 }
                 break;
             case ItemInfo.ItemType.Equip:
                 {
-                    int num = Inven_Equip.GetInsertableSlotNumber();
+                    int num = DataManager.Inst.Inven_Equip.GetInsertableSlotNumber(item);
                     if (num < 0) return; //Full Inventory
-                    Inven_Equip.SlotCheck[num] = false;
-                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), Inven_Equip.Slots[num].transform) as GameObject;
+                    DataManager.Inst.InputItemData(item);
+                    DataManager.Inst.Inven_Equip.SlotCheck[num] = false;
+                    GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.Inven_Equip.Slots[num].transform) as GameObject;
                     obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
                 }
                 break;

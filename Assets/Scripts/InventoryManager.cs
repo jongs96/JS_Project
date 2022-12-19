@@ -13,7 +13,7 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         myParents = transform.parent;
-        for(int i = 0; i < SlotCheck.Length; ++i)
+        for(int i = 0; i < SlotCheck.Length; ++i)//initialize slotcheck
         {
             SlotCheck[i] = true;
         }
@@ -23,17 +23,40 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public int GetInsertableSlotNumber()//Search for blanks from the front
+    public int GetInsertableSlotNumber(GameObject item)//ºó½½·Ô, ÈÄ¥ ¼ö ÀÖ´ÂÅÛ ÆÇº°
     {
-        for(int i = 0; i < SlotCheck.Length; ++i)
+        string itemType = item.GetComponent<DropItem>().iteminfo.type.ToString();
+        switch(itemType)
         {
-            if(SlotCheck[i])
-            {
-                return i;
-            }
+            case "Equip":
+                for (int i = 0; i < SlotCheck.Length; ++i)
+                {
+                    if (SlotCheck[i])
+                    {
+                        return i;
+                    }
+                }
+                return -1;
+            case "Consume":
+                for (int i = 0; i < SlotCheck.Length; ++i)
+                {
+                    if (Slots[i].GetComponentInChildren<Item>().iteminfo.ItemName == item.GetComponent<DropItem>().iteminfo.ItemName
+                        && Slots[i].GetComponentInChildren<Item>().ItemCount < Slots[i].GetComponentInChildren<Item>().iteminfo.MaxCount)
+                    {
+                        ++Slots[i].GetComponentInChildren<Item>().ItemCount;
+                        return -1;
+                    }
+                    if (SlotCheck[i])
+                    {
+                        return i;
+                    }
+                }
+                return -1;
+            default:
+                return -1;
         }
-        return -1;
     }
+    
     public void ChangeChildLocation()
     {
         Button[] buttons = UIManager.Inst.Inventory.GetComponentsInChildren<Button>();
