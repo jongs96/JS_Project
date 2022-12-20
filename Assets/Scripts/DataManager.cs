@@ -9,13 +9,19 @@ public class DataManager : MonoBehaviour
     public Stat StatData;
     public int SceneNum;
     public Vector3 myPostion = Vector3.zero;
-    public InventoryManager Inven_Equip;
-    public InventoryManager Inven_Consume;
+    public Inventory Inven_Equip;
+    public Inventory Inven_Consume;
     public struct SaveItem
     {
         public ItemInfo itemInfo;
         public int Slotnum;
         public int ItemCount;
+        public SaveItem(ItemInfo iteminfo, int slotnum)
+        {
+            itemInfo = iteminfo;
+            Slotnum = slotnum;
+            ItemCount = 0;
+        }
     }
     private void Awake()
     {
@@ -25,7 +31,7 @@ public class DataManager : MonoBehaviour
 
     void AppointedInventory()//타입별 슬롯 저장.
     {
-        InventoryManager[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<InventoryManager>();
+        Inventory[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<Inventory>();
         for (int i = 0; i < invenM.Length; ++i)
         {
             switch (invenM[i].name)
@@ -41,59 +47,68 @@ public class DataManager : MonoBehaviour
             }
         }
     }
+    void GetInventorySlots(List<Transform> Label, Inventory type)//타입별 슬롯 저장.
+    {        
+        for (int i = 0; i < type.transform.childCount; ++i)
+        {
+            Label.Add(type.transform.GetChild(i));
+        }
+    }
     public void InputItemData(ItemInfo item)//데이타받고 슬롯 확인/저장.
     {
-        //Inven_Equip.GetInsertableSlotNumber()
-        //Inven_Equip.SlotCheck[num] = false;//슬롯 확인 빈슬롯 or 동일아이템
+        //슬롯 확인 빈슬롯 or 동일아이템
         //곂치는 아이템 없는경우(소비 다른템, 장비)
-        //GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), Inven_Equip.Slots[num].transform) as GameObject;
-        //obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
-        switch(item.type.ToString())
+        List<Transform> EquipSlots = new List<Transform>();
+        GetInventorySlots(EquipSlots, Inven_Equip);
+        List<Transform> ConsumeSlots = new List<Transform>();
+        GetInventorySlots(ConsumeSlots, Inven_Consume);
+
+        switch (item.type.ToString())
         {
             case "Equip":
                 for (int i = 0; i < 21; ++i)
                 {
                     if (!ItemData.ContainsKey(item.type.ToString() + $"{i}"))
                     {
-                        SaveItem inputItem = new SaveItem();
-                        inputItem.itemInfo = item;
+                        SaveItem inputItem = new SaveItem(item, i);
                         ++inputItem.ItemCount;
                         ItemData[item.type.ToString() + $"{i}"] = inputItem;
+                        SetItemToInventoryChildren(EquipSlots[i], item.type.ToString() + $"{i}");//인벤토리 자식으로 설정(생성).
                         break;
                     }
                 }
                 break;
             case "Consume":
                 for (int i = 0; i < 21; ++i)
-                {                    
-                    if (!ItemData.ContainsKey(item.type.ToString() + $"{i}"))//비어있는경우
+                {
+                    if (!ItemData.ContainsKey(item.type.ToString() + $"{i}"))//slot empty
                     {
-                        SaveItem inputItem = new SaveItem();
-                        inputItem.itemInfo = item;
+                        SaveItem inputItem = new SaveItem(item, i);
                         ++inputItem.ItemCount;
                         ItemData[item.type.ToString() + $"{i}"] = inputItem;
+                        SetItemToInventoryChildren(ConsumeSlots[i], item.type.ToString() + $"{i}");
                         break;
                     }
-                    else
+                    else if(ItemData[item.type.ToString() + $"{i}"].itemInfo.ItemName == item.ItemName
+                        && ItemData[item.type.ToString() + $"{i}"].ItemCount < item.MaxCount)//같은이름의 아이템이 있는경우
                     {
-                        if (ItemData[item.type.ToString() + $"{i}"].itemInfo.ItemName == item.ItemName
-                        && ItemData[item.type.ToString() + $"{i}"].ItemCount < 20)//같은이름의 아이템이 있는경우
-                        {
-                            SaveItem inputItem = ItemData[item.type.ToString() + $"{i}"];
-                            ++inputItem.ItemCount;
-                            ItemData[item.type.ToString() + $"{i}"] = inputItem;
-                        }
+                        SaveItem inputItem = ItemData[item.type.ToString() + $"{i}"];
+                        ++inputItem.ItemCount;
+                        ItemData[item.type.ToString() + $"{i}"] = inputItem;
+                        ++ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
+                        break;
                     }
                 }
                 break;
             default:
                 break;
-        }                
-        SaveItemData();//저장
+        }
     }
-    void SaveItemData()
+    void SetItemToInventoryChildren(Transform parent, string key)
     {
-
+        GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), parent) as GameObject;
+        obj.GetComponent<Item>().iteminfo = ItemData[key].itemInfo;
+        obj.GetComponent<Item>().ItemCount = ItemData[key].ItemCount;
     }
     // Start is called before the first frame update
     void Start()

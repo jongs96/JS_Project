@@ -10,7 +10,9 @@ public class UIManager : MonoBehaviour
     public GameObject Menu;
     public GameObject Equip;
     public GameObject Inventory;
-    public InventoryManager[] invenLabels;//type
+    public Inventory[] invenLabels;//type
+
+    public ScrollRect scrRect;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -20,12 +22,11 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
-        invenLabels = Inventory.transform.GetComponentsInChildren<InventoryManager>();
+        invenLabels = Inventory.transform.GetComponentsInChildren<Inventory>();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {        
     }
 }

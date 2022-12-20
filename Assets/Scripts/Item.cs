@@ -18,15 +18,15 @@ public class Item : MonoBehaviour
         }
         set
         {
-            _itemCount = value;
-            Count_text.GetComponent<TMPro.TextMeshPro>().text = _itemCount.ToString();
+            _itemCount = value;            
+            Count_text.GetComponent<TMPro.TMP_Text>().text = _itemCount.ToString();
             if (_itemCount >= 2)
             {                
                 Count_text.gameObject.SetActive(true);
             }
             else
             {
-                Count_text.gameObject.SetActive(true);
+                Count_text.gameObject.SetActive(false);
             }
         }
     }
@@ -41,10 +41,5 @@ public class Item : MonoBehaviour
     void Update()
     {
         
-    }
-    void ShowCountnumber()
-    {
-        Count_text.GetComponent<TMPro.TextMeshPro>().text = ItemCount.ToString();
-        if(ItemCount >= 2) Count_text.gameObject.SetActive(true);
     }
 }

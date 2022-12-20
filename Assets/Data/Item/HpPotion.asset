@@ -16,5 +16,5 @@ MonoBehaviour:
   ItemName: Hp_Potion
   Value: 500
   Droprate: 100
-  MaxCount: 20
+  MaxCount: 5
   Resource: {fileID: 1021588353636906, guid: 5a9702a9a09da804db5e73d04b707eab, type: 3}

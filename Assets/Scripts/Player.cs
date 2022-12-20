@@ -34,7 +34,6 @@ public class Player : CharacterProperty, IBattle
     public bool IsPlaying = true;
     bool IsComboable = false;
     bool canGo = false;
-    //bool Standby = true;
     int ClickCount = 0;        
 
     public void OnDamage(float dmg, Transform target)
@@ -97,7 +96,6 @@ public class Player : CharacterProperty, IBattle
     {
         PlayerStat = new Stat(1000.0f, 100.0f, 2.2f, 360.0f, default, 100.0f);
         ChangeState(STATE.Playing);
-        //AppointedInventory();
     }
     
     // Update is called once per frame
@@ -300,12 +298,7 @@ public class Player : CharacterProperty, IBattle
     
     void PickupItem(GameObject item)
     {
-        //int num = DataManager.Inst.Inven_Consume.GetInsertableSlotNumber(item);
-        //if (num < 0) return;//Full Inventory or Overlab
         DataManager.Inst.InputItemData(item.GetComponent<DropItem>().iteminfo);
-        //DataManager.Inst.Inven_Consume.SlotCheck[num] = false;
-        //GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.Inven_Consume.Slots[num].transform) as GameObject;
-        //obj.GetComponent<Item>().iteminfo = item.GetComponent<DropItem>().iteminfo;
         Destroy(item);
     }
 }
