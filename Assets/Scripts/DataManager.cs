@@ -29,7 +29,7 @@ public class DataManager : MonoBehaviour
         Inst = this;
     }
 
-    void AppointedInventory()//타입별 슬롯 저장.
+    void AppointedInventory()//타입별 inventory 저장.
     {
         Inventory[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<Inventory>();
         for (int i = 0; i < invenM.Length; ++i)

@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public GameObject Menu;
     public GameObject Equip;
     public GameObject Inventory;
+    public Transform HotKeySlot;
     public Inventory[] invenLabels;//type
 
     public ScrollRect scrRect;
