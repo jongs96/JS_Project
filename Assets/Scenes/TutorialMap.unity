@@ -13482,7 +13482,7 @@ GameObject:
   - component: {fileID: 535585210}
   - component: {fileID: 535585209}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17091,7 +17091,7 @@ GameObject:
   - component: {fileID: 649979319}
   - component: {fileID: 649979318}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18203,7 +18203,7 @@ GameObject:
   - component: {fileID: 721375622}
   - component: {fileID: 721375621}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20796,7 +20796,7 @@ GameObject:
   - component: {fileID: 839439953}
   - component: {fileID: 839439952}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21291,7 +21291,7 @@ GameObject:
   - component: {fileID: 862133579}
   - component: {fileID: 862133578}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24024,7 +24024,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1024028848
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28470,7 +28470,7 @@ GameObject:
   - component: {fileID: 1297142826}
   - component: {fileID: 1297142825}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28959,7 +28959,7 @@ GameObject:
   - component: {fileID: 1352695957}
   - component: {fileID: 1352695956}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29978,7 +29978,7 @@ GameObject:
   - component: {fileID: 1411729416}
   - component: {fileID: 1411729415}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32669,7 +32669,7 @@ GameObject:
   - component: {fileID: 1621992779}
   - component: {fileID: 1621992778}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33001,7 +33001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a1c4eca26a21a4428271cb87bcff6e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StatData:
+  PlayerStat:
     maxHp: 0
     curHp: 0
     attackPower: 0
@@ -33103,7 +33103,7 @@ GameObject:
   - component: {fileID: 1665827570}
   - component: {fileID: 1665827569}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34376,7 +34376,7 @@ GameObject:
   - component: {fileID: 1757611069}
   - component: {fileID: 1757611068}
   m_Layer: 5
-  m_Name: Stat
+  m_Name: Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
