@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
     public static DataManager Inst = null;    
     public Dictionary<string, SaveItem> ItemData = new Dictionary<string, SaveItem>();
-    public Stat StatData;
+    public Dictionary<string, int> ItemTotalCount = new Dictionary<string, int>();
+    public Stat PlayerStat;
     public int SceneNum;
     public Vector3 myPostion = Vector3.zero;
     public Inventory Inven_Equip;
     public Inventory Inven_Consume;
+    public UnityAction setSlotCount;
     public struct SaveItem
     {
         public ItemInfo itemInfo;
@@ -55,7 +58,7 @@ public class DataManager : MonoBehaviour
         }
     }
     public void InputItemData(ItemInfo item)//데이타받고 슬롯 확인/저장.
-    {
+    {   //아이템 습득시 호출, 데이타 저장 되는 함수.
         //슬롯 확인 빈슬롯 or 동일아이템
         //곂치는 아이템 없는경우(소비 다른템, 장비)
         List<Transform> EquipSlots = new List<Transform>();
@@ -87,15 +90,19 @@ public class DataManager : MonoBehaviour
                         ++inputItem.ItemCount;
                         ItemData[item.type.ToString() + $"{i}"] = inputItem;
                         SetItemToInventoryChildren(ConsumeSlots[i], item.type.ToString() + $"{i}");
+                        SetItemTotalCount(item.ItemName, true);
+                        setSlotCount?.Invoke();
                         break;
                     }
-                    else if(ItemData[item.type.ToString() + $"{i}"].itemInfo.ItemName == item.ItemName
-                        && ItemData[item.type.ToString() + $"{i}"].ItemCount < item.MaxCount)//같은이름의 아이템이 있는경우
+                    else if(ItemData[item.type.ToString() + $"{i}"].itemInfo.ItemName == item.ItemName//같은이름의 아이템이 있는경우
+                        && ItemData[item.type.ToString() + $"{i}"].ItemCount < item.MaxCount)//슬롯에 겹쳐지는 최대 갯수보다 작을 때
                     {
                         SaveItem inputItem = ItemData[item.type.ToString() + $"{i}"];
                         ++inputItem.ItemCount;
                         ItemData[item.type.ToString() + $"{i}"] = inputItem;
                         ++ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
+                        SetItemTotalCount(item.ItemName, true);
+                        setSlotCount?.Invoke();
                         break;
                     }
                 }
@@ -104,11 +111,27 @@ public class DataManager : MonoBehaviour
                 break;
         }
     }
-    void SetItemToInventoryChildren(Transform parent, string key)
+    void SetItemToInventoryChildren(Transform parent, string key)//아이템 습득시 obj생성 및 설정
     {
         GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), parent) as GameObject;
         obj.GetComponent<Item>().iteminfo = ItemData[key].itemInfo;
         obj.GetComponent<Item>().ItemCount = ItemData[key].ItemCount;
+    }
+    void SetItemTotalCount(string itemName, bool type)//increase : true, decrease : false
+    {
+        if(type)
+        {
+            if (!ItemTotalCount.ContainsKey(itemName))
+            {
+                ItemTotalCount[itemName] = 1;
+                return;
+            }
+            ++ItemTotalCount[itemName];
+        }
+        else
+        {
+            --ItemTotalCount[itemName];
+        }
     }
     // Start is called before the first frame update
     void Start()

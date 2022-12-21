@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -25,8 +26,8 @@ public class Player : CharacterProperty, IBattle
     public Transform mainBody = null;
     public Slider Hpbar = null;
     public Slider Energybar = null;
-    public delegate void MyAction();
-    MyAction goPos = null;
+    
+    UnityAction goPos = null;
     Vector3 desireDir = Vector3.zero;
     Vector3 curDir = Vector3.zero;
     public LayerMask Enemy;

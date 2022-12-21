@@ -13,7 +13,6 @@ public class HotkeySlot : MonoBehaviour,IDropHandler
         itemCount = GetTotalNumberOfItems(itemInfo.ItemName);
         GameObject obj = Instantiate(Resources.Load("Item/HotKeyItem"), transform) as GameObject;
         obj.GetComponent<HotKeyItem>().iteminfo = itemInfo;
-        obj.GetComponent<HotKeyItem>().count = itemCount;
     }
     int GetTotalNumberOfItems(string itemName)
     {
