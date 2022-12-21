@@ -7,7 +7,7 @@ public class Monster : MobMovement, IBattle
     Transform myTarget = null;
     Vector3 StartPos = Vector3.zero;
     Coroutine co = null;
-    public Stat mobStat;
+    public MobStat mobStat;
     public LayerMask Target;
     public Transform AttackPos;
     public Transform ItemParents;
@@ -161,7 +161,7 @@ public class Monster : MobMovement, IBattle
     void Start()
     {       
         StartPos = transform.position;
-        mobStat = new Stat(300.0f, 50.0f, 0.8f, 180.0f, 2.0f, default);
+        mobStat = new MobStat(30.0f, 240.0f, 50.0f, 0.8f, 180.0f, 2.0f);
         ChangeState(STATE.Normal);
     }
 

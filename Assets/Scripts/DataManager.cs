@@ -8,7 +8,8 @@ public class DataManager : MonoBehaviour
     public static DataManager Inst = null;    
     public Dictionary<string, SaveItem> ItemData = new Dictionary<string, SaveItem>();
     public Dictionary<string, int> ItemTotalCount = new Dictionary<string, int>();
-    public Stat PlayerStat;
+    public Stat PlayerStatData;
+
     public int SceneNum;
     public Vector3 myPostion = Vector3.zero;
     public Inventory Inven_Equip;
@@ -111,14 +112,14 @@ public class DataManager : MonoBehaviour
                 break;
         }
     }
-    void SetItemToInventoryChildren(Transform parent, string key)//아이템 습득시 obj생성 및 설정
+    void SetItemToInventoryChildren(Transform parent, string key)//아이템 습득시 inven에 obj생성 및 설정
     {
         GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), parent) as GameObject;
         obj.GetComponent<Item>().iteminfo = ItemData[key].itemInfo;
         obj.GetComponent<Item>().ItemCount = ItemData[key].ItemCount;
     }
     void SetItemTotalCount(string itemName, bool type)//increase : true, decrease : false
-    {
+    {//소비아이템의 총 갯수 저장
         if(type)
         {
             if (!ItemTotalCount.ContainsKey(itemName))
@@ -132,6 +133,16 @@ public class DataManager : MonoBehaviour
         {
             --ItemTotalCount[itemName];
         }
+    }
+    public void ShowAbilityWindow()//
+    {
+        Ability[] abilities = UIManager.Inst.Equip.GetComponentsInChildren<Ability>();
+        for(int i = 0; i < abilities.Length; ++i)
+        {
+            abilities[i].transform.GetChild(1).GetComponent<TMPro.TMP_Text>().text =
+                abilities[i].transform.name;
+        }
+
     }
     // Start is called before the first frame update
     void Start()

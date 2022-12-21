@@ -80,7 +80,7 @@ public class Player : CharacterProperty, IBattle
             case STATE.Create:
                 break;
             case STATE.Playing:
-                Hpbar.value = PlayerStat.CurHP / PlayerStat.TotalHP;
+                Hpbar.value = PlayerStat.CurHP / PlayerStat.MaxHP;
                 Energybar.value = PlayerStat.CurEnergy / PlayerStat.TotalEnergy;
                 CheckGround();
                 break;
@@ -95,7 +95,7 @@ public class Player : CharacterProperty, IBattle
     // Start is called before the first frame update
     void Start()
     {
-        PlayerStat = new Stat(1000.0f, 100.0f, 2.2f, 360.0f, default, 100.0f);
+        StatInitialize();
         ChangeState(STATE.Playing);
     }
     
@@ -272,6 +272,19 @@ public class Player : CharacterProperty, IBattle
         {
             myAnim.SetBool("IsAir", true);
         }
+    }
+    void StatInitialize()
+    {
+        if (SceneMgr.Inst.isNewGame)
+        {
+            PlayerStat = new Stat(1, 0, 40, 500.0f, 5, 5, 5);//새 게임
+        }
+        else//로드 게임
+        {
+
+        }
+        PlayerStat = new Stat(1, 0, 40, 500.0f, 5, 5, 5);//데이터 저장전 임시(개발용)
+        DataManager.Inst.PlayerStatData = PlayerStat;
     }
     private void OnCollisionEnter(Collision collision)
     {

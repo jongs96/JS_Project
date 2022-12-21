@@ -5,10 +5,28 @@ using UnityEngine;
 [System.Serializable]
 public struct Stat
 {
+    [SerializeField] int level;
+    public int Level
+    {
+        get => level;
+        set => level = Mathf.Clamp(value, 0, 30);
+    }
+    [SerializeField] float maxExp;
+    [SerializeField] float curExp;
+    public float MaxExp
+    {
+        get => maxExp;
+        set => maxExp = value;
+    }
+    public float CurExp
+    {
+        get => curExp;
+        set => curExp = value;
+    }
     [SerializeField] float maxHp;
     [SerializeField] float curHp;
 
-    public float TotalHP
+    public float MaxHP
     {
         get => maxHp;
     }
@@ -23,26 +41,11 @@ public struct Stat
     {
         get => attackPower;
     }
-
-    [SerializeField] float moveSpeed;
-    public float MoveSpeed
+    [SerializeField] int strength;
+    public int Strength
     {
-        get => moveSpeed;
-        set => moveSpeed = value;
-    }
-
-    [SerializeField] float rotSpeed;
-    public float RotSpeed
-    {
-        get => rotSpeed;
-        set => rotSpeed = value;
-    }
-
-    [SerializeField] float attackDelay;
-    public float curAttackDelay;
-    public float AttackDelay
-    {
-        get => attackDelay = 0.0f;
+        get => strength;
+        set => strength = value;
     }
 
     [SerializeField] float maxEnergy;
@@ -57,14 +60,43 @@ public struct Stat
         set => curEnergy = Mathf.Clamp(value, 0.0f, maxEnergy);
     }
 
-    public Stat(float hp, float attackPower, float moveSpeed, float rotSpeed, float attackDelay, float energy)
+    [SerializeField] float defensePower;
+    public float DefensePower
     {
-        curHp = maxHp = hp;
-        this.attackPower = attackPower;
-        this.moveSpeed = moveSpeed;
-        this.rotSpeed = rotSpeed;
-        this.attackDelay = attackDelay;
-        curAttackDelay = 0.0f;
-        curEnergy = maxEnergy = energy;
+        get => defensePower;
+    }
+    [SerializeField] int agility;
+    public int Agility
+    {
+        get => agility;
+        set => agility = value;
+    }
+
+    [SerializeField] float criticalPercent;
+    public float CriticalPercent
+    {
+        get => criticalPercent;
+    }
+    [SerializeField] int evation;
+    public int Evation
+    {
+        get => evation;
+        set => evation = value;
+    }
+
+    public Stat(int level, float curExp, float maxExp, float curHp, int strength, int agility, int evation)
+    {
+        this.level = level;
+        this.curExp = curExp;
+        this.maxExp = maxExp;
+        this.curHp = curHp;
+        maxHp = 400 + level * 100;
+        this.strength = strength;
+        attackPower = strength * 20;
+        this.agility = agility;
+        defensePower = agility * 20;
+        this.evation = evation;
+        criticalPercent = evation * 1.0f;
+        curEnergy = maxEnergy = 100 + level * 10;
     }
 }

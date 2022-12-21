@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class SceneMgr : MonoBehaviour
 {
     public static SceneMgr Inst = null;
+    public bool isNewGame;
     public Slider LoadingBar;
 
     private void Awake()
@@ -53,5 +54,10 @@ public class SceneMgr : MonoBehaviour
     {
         UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
+    }
+    
+    public void IsNewGame(bool check)
+    {
+        isNewGame = check;
     }
 }
