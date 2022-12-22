@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct Stat
+public class Stat
 {
     [SerializeField] int level;
     public int Level
@@ -29,6 +29,7 @@ public struct Stat
     public float MaxHP
     {
         get => maxHp;
+        set => maxHp =  400 + level * 100;
     }
     public float CurHP
     {
@@ -40,6 +41,7 @@ public struct Stat
     public float AttackPower
     {
         get => attackPower;
+        set => attackPower = strength * 20;
     }
     [SerializeField] int strength;
     public int Strength
@@ -50,9 +52,10 @@ public struct Stat
 
     [SerializeField] float maxEnergy;
     [SerializeField] float curEnergy;
-    public float TotalEnergy
+    public float MaxEnergy
     {
         get => maxEnergy;
+        set => maxEnergy = 90 + level * 10; 
     }
     public float CurEnergy
     {
@@ -64,6 +67,7 @@ public struct Stat
     public float DefensePower
     {
         get => defensePower;
+        set => defensePower = agility * 20;
     }
     [SerializeField] int agility;
     public int Agility
@@ -72,10 +76,11 @@ public struct Stat
         set => agility = value;
     }
 
-    [SerializeField] float criticalPercent;
-    public float CriticalPercent
+    [SerializeField] float criticalRate;
+    public float CriticalRate
     {
-        get => criticalPercent;
+        get => criticalRate;
+        set => criticalRate = evation * 1;
     }
     [SerializeField] int evation;
     public int Evation
@@ -84,7 +89,14 @@ public struct Stat
         set => evation = value;
     }
 
-    public Stat(int level, float curExp, float maxExp, float curHp, int strength, int agility, int evation)
+    [SerializeField] int point;
+    public int Point
+    {
+        get => point;
+        set => point = value;
+    }
+
+    public Stat(int level, float curExp, float maxExp, float curHp, int point, int strength, int agility, int evation)
     {
         this.level = level;
         this.curExp = curExp;
@@ -96,7 +108,8 @@ public struct Stat
         this.agility = agility;
         defensePower = agility * 20;
         this.evation = evation;
-        criticalPercent = evation * 1.0f;
-        curEnergy = maxEnergy = 100 + level * 10;
+        criticalRate = evation * 1.0f;
+        curEnergy = maxEnergy = 90 + level * 10;
+        this.point = point;
     }
 }

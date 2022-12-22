@@ -31,7 +31,7 @@ public class Player : CharacterProperty, IBattle
     Vector3 desireDir = Vector3.zero;
     Vector3 curDir = Vector3.zero;
     public LayerMask Enemy;
-    public Stat PlayerStat;
+    public Stat myStat;
     public bool IsPlaying = true;
     bool IsComboable = false;
     bool canGo = false;
@@ -39,8 +39,8 @@ public class Player : CharacterProperty, IBattle
 
     public void OnDamage(float dmg, Transform target)
     {
-        PlayerStat.CurHP -= dmg;        
-        if (Mathf.Approximately(PlayerStat.CurHP, 0.0f))
+        myStat.CurHP -= dmg;        
+        if (Mathf.Approximately(myStat.CurHP, 0.0f))
         {
             ChangeState(STATE.Death);
         }
@@ -80,8 +80,9 @@ public class Player : CharacterProperty, IBattle
             case STATE.Create:
                 break;
             case STATE.Playing:
-                Hpbar.value = PlayerStat.CurHP / PlayerStat.MaxHP;
-                Energybar.value = PlayerStat.CurEnergy / PlayerStat.TotalEnergy;
+                Hpbar.value = myStat.CurHP / myStat.MaxHP;
+                Energybar.value = myStat.CurEnergy / myStat.MaxEnergy;
+                //DataManager.Inst.PlayerStatData = myStat;
                 CheckGround();
                 break;
             case STATE.Pause:
@@ -166,10 +167,10 @@ public class Player : CharacterProperty, IBattle
             }
         }
         //JumpAttack
-        if (!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.E) && PlayerStat.CurEnergy > 30.0f)
+        if (!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.E) && myStat.CurEnergy > 30.0f)
         {
             myAnim.SetTrigger("Skill");
-            PlayerStat.CurEnergy -= 30.0f;
+            myStat.CurEnergy -= 30.0f;
         }
         //Move Portal
         if(Input.GetKeyDown(KeyCode.G) && canGo)
@@ -275,16 +276,15 @@ public class Player : CharacterProperty, IBattle
     }
     void StatInitialize()
     {
-        if (SceneMgr.Inst.isNewGame)
-        {
-            PlayerStat = new Stat(1, 0, 40, 500.0f, 5, 5, 5);//새 게임
-        }
-        else//로드 게임
-        {
+        //if (SceneMgr.Inst.isNewGame)//새 게임
+        //{
+        myStat = new Stat(1, 0, 40, 500.0f, 0, 5, 5, 5);
+        //}
+        //else//로드 게임
+        //{
 
-        }
-        PlayerStat = new Stat(1, 0, 40, 500.0f, 5, 5, 5);//데이터 저장전 임시(개발용)
-        DataManager.Inst.PlayerStatData = PlayerStat;
+        //}
+        DataManager.Inst.PlayerStatData = myStat;
     }
     private void OnCollisionEnter(Collision collision)
     {

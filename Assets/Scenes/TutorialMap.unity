@@ -616,6 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 1665827569}
 --- !u!1 &45583502
 GameObject:
   m_ObjectHideFlags: 0
@@ -4615,6 +4616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 649979318}
 --- !u!1001 &258483145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18160,6 +18162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 839439952}
 --- !u!1001 &719124728
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21242,6 +21245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 862133578}
 --- !u!1 &860222753
 GameObject:
   m_ObjectHideFlags: 0
@@ -22998,6 +23002,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 1757611068}
 --- !u!1 &933811815
 GameObject:
   m_ObjectHideFlags: 0
@@ -24089,7 +24094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1024028848
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29025,6 +29030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 1352695956}
 --- !u!1 &1352695954
 GameObject:
   m_ObjectHideFlags: 0
@@ -29282,6 +29288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 1411729415}
 --- !u!1 &1362377372
 GameObject:
   m_ObjectHideFlags: 0
@@ -30848,6 +30855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 1297142825}
 --- !u!1 &1495177387
 GameObject:
   m_ObjectHideFlags: 0
@@ -32024,6 +32032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 1621992778}
 --- !u!1 &1566802036
 GameObject:
   m_ObjectHideFlags: 0
@@ -33130,8 +33139,9 @@ MonoBehaviour:
     curEnergy: 0
     defensePower: 0
     agility: 0
-    criticalPercent: 0
+    criticalRate: 0
     evation: 0
+    point: 0
   SceneNum: 0
   myPostion: {x: 0, y: 0, z: 0}
   Inven_Equip: {fileID: 0}
@@ -41039,6 +41049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 721375621}
 --- !u!1001 &1868067121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45806,7 +45817,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1951403158}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1024028847}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1951403158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47701,6 +47724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc411c92a62f0749a749f486b937fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statValue: {fileID: 535585209}
 --- !u!1 &2112599181
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Ability : MonoBehaviour
 {
+    public TMPro.TMP_Text statValue;
     // Start is called before the first frame update
     void Start()
     {

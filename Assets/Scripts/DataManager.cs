@@ -134,16 +134,7 @@ public class DataManager : MonoBehaviour
             --ItemTotalCount[itemName];
         }
     }
-    public void ShowAbilityWindow()//
-    {
-        Ability[] abilities = UIManager.Inst.Equip.GetComponentsInChildren<Ability>();
-        for(int i = 0; i < abilities.Length; ++i)
-        {
-            abilities[i].transform.GetChild(1).GetComponent<TMPro.TMP_Text>().text =
-                abilities[i].transform.name;
-        }
-
-    }
+    
     // Start is called before the first frame update
     void Start()
     {
