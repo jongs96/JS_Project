@@ -15,6 +15,9 @@ public class DataManager : MonoBehaviour
     public Inventory Inven_Equip;
     public Inventory Inven_Consume;
     public UnityAction setSlotCount;
+
+    List<Transform> EquipSlots = new List<Transform>();
+    List<Transform> ConsumeSlots = new List<Transform>();
     public struct SaveItem
     {
         public ItemInfo itemInfo;
@@ -62,11 +65,6 @@ public class DataManager : MonoBehaviour
     {   //아이템 습득시 호출, 데이타 저장 되는 함수.
         //슬롯 확인 빈슬롯 or 동일아이템
         //곂치는 아이템 없는경우(소비 다른템, 장비)
-        List<Transform> EquipSlots = new List<Transform>();
-        GetInventorySlots(EquipSlots, Inven_Equip);
-        List<Transform> ConsumeSlots = new List<Transform>();
-        GetInventorySlots(ConsumeSlots, Inven_Consume);
-
         switch (item.type.ToString())
         {
             case "Equip":
@@ -112,6 +110,52 @@ public class DataManager : MonoBehaviour
                 break;
         }
     }
+    public void OutPutItemData(ItemInfo item)//아이템 사용
+    {
+        switch (item.type.ToString())
+        {
+            case "Equip":
+                for (int i = 0; i < 21; ++i)
+                {
+                    if (ItemData.ContainsKey(item.type.ToString() + $"{i}"))
+                    {
+                        ItemData.Remove(item.type.ToString() + $"{i}");//데이터 삭제.
+                        Destroy(EquipSlots[i].GetChild(0).gameObject);//사용한 장비 삭제
+                        break;
+                    }
+                }
+                break;
+            case "Consume":
+                for (int i = 0; i < 21; ++i)
+                {
+                    if (ItemData.ContainsKey(item.type.ToString() + $"{i}"))
+                    {
+                        SaveItem outputItem = new SaveItem(item, ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount);
+                        --outputItem.ItemCount;
+                        if (outputItem.ItemCount == 0)
+                        {
+                            ItemData.Remove(item.type.ToString() + $"{i}");
+                            Destroy(ConsumeSlots[i].GetChild(0).gameObject);
+                        }
+                        else
+                        {
+                            ItemData[item.type.ToString() + $"{i}"] = outputItem;
+                            --ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
+                        }
+                        SetItemTotalCount(item.ItemName, false);
+                        setSlotCount?.Invoke();
+                        break;
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
     void SetItemToInventoryChildren(Transform parent, string key)//아이템 습득시 inven에 obj생성 및 설정
     {
         GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), parent) as GameObject;
@@ -139,11 +183,13 @@ public class DataManager : MonoBehaviour
     void Start()
     {
         AppointedInventory();
+        GetInventorySlots(EquipSlots, Inven_Equip);
+        GetInventorySlots(ConsumeSlots, Inven_Consume);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Alpha7)) ++PlayerStatData.Level;
     }
 }

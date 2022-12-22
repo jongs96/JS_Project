@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   ItemName: Energy_Potion
-  Value: 20
+  Value: 50
   Droprate: 100
   MaxCount: 5
   Resource: {fileID: 1305883699301654, guid: 505d16a0417bdc64eac4cb356c0d0a48, type: 3}

@@ -31,11 +31,11 @@ public class UIManager : MonoBehaviour
     {
         Ability[] abil = Equip.GetComponentsInChildren<Ability>();
         abil[0].statValue.text = DataManager.Inst.PlayerStatData.Level.ToString();
-        abil[1].statValue.text = DataManager.Inst.PlayerStatData.CurExp.ToString()
+        abil[1].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurExp).ToString()
             + "/" + DataManager.Inst.PlayerStatData.MaxExp.ToString();
-        abil[2].statValue.text = DataManager.Inst.PlayerStatData.CurHP.ToString()
+        abil[2].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurHP).ToString()
             + "/" + DataManager.Inst.PlayerStatData.MaxHP.ToString();
-        abil[3].statValue.text = DataManager.Inst.PlayerStatData.CurEnergy.ToString()
+        abil[3].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurEnergy).ToString()
             + "/" + DataManager.Inst.PlayerStatData.MaxEnergy.ToString();
         abil[4].statValue.text = DataManager.Inst.PlayerStatData.AttackPower.ToString();
         abil[5].statValue.text = DataManager.Inst.PlayerStatData.DefensePower.ToString();
@@ -49,22 +49,46 @@ public class UIManager : MonoBehaviour
     {
         Ability[] abil = Equip.GetComponentsInChildren<Ability>();
         switch(value)
-        { 
+        {
+            case "Level":
+                abil[0].statValue.text = DataManager.Inst.PlayerStatData.Level.ToString();
+                break;
+            case "Exp":
+                abil[1].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurExp).ToString()
+                    + "/" + DataManager.Inst.PlayerStatData.MaxExp.ToString();
+                break;
+            case "HP":
+                abil[2].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurHP).ToString()
+                    + "/" + DataManager.Inst.PlayerStatData.MaxHP.ToString();
+                break;
+            case "Energy":
+                abil[3].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurEnergy).ToString()
+                    + "/" + DataManager.Inst.PlayerStatData.MaxEnergy.ToString();
+                break;
+            case "AttackPower":
+                abil[4].statValue.text = DataManager.Inst.PlayerStatData.AttackPower.ToString();
+                break;
+            case "DefensePower":
+                abil[5].statValue.text = DataManager.Inst.PlayerStatData.DefensePower.ToString();
+                break;
+            case "CriticalRate":
+                abil[6].statValue.text = DataManager.Inst.PlayerStatData.CriticalRate.ToString();
+                break;
+            case "Point":
+                abil[7].statValue.text = DataManager.Inst.PlayerStatData.Point.ToString();
+                break;
+            case "Strength":
+                abil[8].statValue.text = DataManager.Inst.PlayerStatData.Strength.ToString();
+                break;
+            case "Agility":
+                abil[9].statValue.text = DataManager.Inst.PlayerStatData.Agility.ToString();
+                break;
+            case "Evation":
+                abil[10].statValue.text = DataManager.Inst.PlayerStatData.Evation.ToString();
+                break;
+            default:
+                break;
         }
-        abil[0].statValue.text = DataManager.Inst.PlayerStatData.Level.ToString();
-        abil[1].statValue.text = DataManager.Inst.PlayerStatData.CurExp.ToString()
-            + "/" + DataManager.Inst.PlayerStatData.MaxExp.ToString();
-        abil[2].statValue.text = DataManager.Inst.PlayerStatData.CurHP.ToString()
-            + "/" + DataManager.Inst.PlayerStatData.MaxHP.ToString();
-        abil[3].statValue.text = DataManager.Inst.PlayerStatData.CurEnergy.ToString()
-            + "/" + DataManager.Inst.PlayerStatData.MaxEnergy.ToString();
-        abil[4].statValue.text = DataManager.Inst.PlayerStatData.AttackPower.ToString();
-        abil[5].statValue.text = DataManager.Inst.PlayerStatData.DefensePower.ToString();
-        abil[6].statValue.text = DataManager.Inst.PlayerStatData.CriticalRate.ToString();
-        abil[7].statValue.text = DataManager.Inst.PlayerStatData.Point.ToString();
-        abil[8].statValue.text = DataManager.Inst.PlayerStatData.Strength.ToString();
-        abil[9].statValue.text = DataManager.Inst.PlayerStatData.Agility.ToString();
-        abil[10].statValue.text = DataManager.Inst.PlayerStatData.Evation.ToString();
     }
     // Update is called once per frame
     void Update()

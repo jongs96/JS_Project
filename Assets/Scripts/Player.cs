@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -82,7 +83,7 @@ public class Player : CharacterProperty, IBattle
             case STATE.Playing:
                 Hpbar.value = myStat.CurHP / myStat.MaxHP;
                 Energybar.value = myStat.CurEnergy / myStat.MaxEnergy;
-                //DataManager.Inst.PlayerStatData = myStat;
+                Recovery();
                 CheckGround();
                 break;
             case STATE.Pause:
@@ -90,6 +91,12 @@ public class Player : CharacterProperty, IBattle
             case STATE.Death:
                 break;
         }
+    }
+
+    void Recovery()
+    {
+        myStat.CurEnergy += Time.deltaTime * 1f;
+        UIManager.Inst.SetAbility("Energy");
     }
 
 
@@ -171,6 +178,7 @@ public class Player : CharacterProperty, IBattle
         {
             myAnim.SetTrigger("Skill");
             myStat.CurEnergy -= 30.0f;
+            UIManager.Inst.SetAbility("Energy");
         }
         //Move Portal
         if(Input.GetKeyDown(KeyCode.G) && canGo)

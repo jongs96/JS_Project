@@ -9,7 +9,14 @@ public class Stat
     public int Level
     {
         get => level;
-        set => level = Mathf.Clamp(value, 0, 30);
+        set
+        {
+            level = Mathf.Clamp(value, 0, 30);
+            CurHP = maxHp = 400 + level * 100;
+            curEnergy = maxEnergy = 90 + level * 10;
+            point += 5;
+            MaxExp += 20;
+        }
     }
     [SerializeField] float maxExp;
     [SerializeField] float curExp;
@@ -29,7 +36,6 @@ public class Stat
     public float MaxHP
     {
         get => maxHp;
-        set => maxHp =  400 + level * 100;
     }
     public float CurHP
     {
@@ -55,7 +61,6 @@ public class Stat
     public float MaxEnergy
     {
         get => maxEnergy;
-        set => maxEnergy = 90 + level * 10; 
     }
     public float CurEnergy
     {
