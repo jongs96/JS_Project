@@ -161,7 +161,7 @@ public class Monster : MobMovement, IBattle
     void Start()
     {       
         StartPos = transform.position;
-        mobStat = new MobStat(30.0f, 240.0f, 50.0f, 0.8f, 180.0f, 2.0f);
+        mobStat = new MobStat(30.0f, 300.0f, 50.0f, 0.8f, 180.0f, 2.0f);
         ChangeState(STATE.Normal);
     }
 

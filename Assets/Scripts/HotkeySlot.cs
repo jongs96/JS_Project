@@ -9,11 +9,25 @@ public class HotkeySlot : MonoBehaviour,IDropHandler
     int slotNum;
     public void OnDrop(PointerEventData eventData)
     {
-        itemInfo = eventData.pointerDrag.GetComponent<Item>().iteminfo;
-        if (GetComponentInChildren<HotKeyItem>() == null)
+        if (eventData.pointerDrag.GetComponent<Item>())
         {
-            GameObject obj = Instantiate(Resources.Load("Item/HotKeyItem"), transform) as GameObject;
-            obj.GetComponent<HotKeyItem>().iteminfo = itemInfo;
+            if (GetComponentInChildren<HotKeyItem>() == null)
+            {
+                itemInfo = eventData.pointerDrag.GetComponent<Item>().iteminfo;
+                GameObject obj = Instantiate(Resources.Load("Item/HotKeyItem"), transform) as GameObject;
+                obj.GetComponent<HotKeyItem>().iteminfo = itemInfo;
+                obj.GetComponent<HotKeyItem>().SetParent(this);
+            }
+        }
+        else
+        {
+            HotKeyItem child = GetComponentInChildren<HotKeyItem>();
+            HotKeyItem OndropIem = eventData.pointerDrag.GetComponent<HotKeyItem>();
+            child?.SetParent(OndropIem.myParent);
+            child.transform.parent.GetComponent<HotkeySlot>().itemInfo = child.iteminfo;
+            OndropIem?.SetParent(this);
+            itemInfo = OndropIem.iteminfo;
+            eventData.pointerDrag.transform.SetParent(transform);
         }
     }    
     // Start is called before the first frame update
@@ -27,11 +41,9 @@ public class HotkeySlot : MonoBehaviour,IDropHandler
     {
         if(Input.GetKeyDown((KeyCode)(slotNum+48)) && itemInfo != null)
         {
-            UseSlotItem();
+            DataManager.Inst.UseSlotItem(itemInfo);
+            transform.GetComponentInChildren<HotKeyItem>().SetCountText();
         }
     }
-    void UseSlotItem()
-    {
-        DataManager.Inst.OutPutItemData(itemInfo);        
-    }
+    
 }

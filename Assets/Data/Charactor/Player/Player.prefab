@@ -800,16 +800,21 @@ MonoBehaviour:
   Enemy:
     serializedVersion: 2
     m_Bits: 128
-  PlayerStat:
+  myStat:
+    level: 0
+    maxExp: 0
+    curExp: 0
     maxHp: 0
     curHp: 0
     attackPower: 0
-    moveSpeed: 0
-    rotSpeed: 0
-    attackDelay: 0
-    curAttackDelay: 0
+    strength: 0
     maxEnergy: 0
     curEnergy: 0
+    defensePower: 0
+    agility: 0
+    criticalRate: 0
+    evation: 0
+    point: 0
   IsPlaying: 1
 --- !u!54 &1753581359005701965
 Rigidbody:

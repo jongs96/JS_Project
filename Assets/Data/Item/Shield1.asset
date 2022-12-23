@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9882051bf059b04a8a2aece590a55f3, type: 3}
-  m_Name: Shield
+  m_Name: Shield1
   m_EditorClassIdentifier: 
   type: 1
   ItemName: Shield
-  Value: 0
+  Value: 100
   Droprate: 100
-  curCount: 1
   MaxCount: 1
   Resource: {fileID: 1796662798213081365, guid: 28618104199112945ab5935cf711e246, type: 3}

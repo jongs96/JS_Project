@@ -110,7 +110,7 @@ public class DataManager : MonoBehaviour
                 break;
         }
     }
-    public void OutPutItemData(ItemInfo item)//아이템 사용
+    void OutPutItemData(ItemInfo item)//아이템 사용
     {
         switch (item.type.ToString())
         {
@@ -130,25 +130,24 @@ public class DataManager : MonoBehaviour
                 {
                     if (ItemData.ContainsKey(item.type.ToString() + $"{i}"))
                     {
-                        SaveItem outputItem = new SaveItem(item, ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount);
-                        --outputItem.ItemCount;
-                        if (outputItem.ItemCount == 0)
+                        if (ItemData[item.type.ToString() + $"{i}"].itemInfo == item)
                         {
-                            ItemData.Remove(item.type.ToString() + $"{i}");
-                            Destroy(ConsumeSlots[i].GetChild(0).gameObject);
+                            SaveItem outputItem = ItemData[item.type.ToString() + $"{i}"];
+                            --outputItem.ItemCount;
+                            if (outputItem.ItemCount == 0)
+                            {
+                                ItemData.Remove(item.type.ToString() + $"{i}");
+                                Destroy(ConsumeSlots[i].GetChild(0).gameObject);
+                            }
+                            else
+                            {
+                                ItemData[item.type.ToString() + $"{i}"] = outputItem;
+                                --ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
+                            }
+                            SetItemTotalCount(item.ItemName, false);
+                            //setSlotCount?.Invoke();
+                            break;
                         }
-                        else
-                        {
-                            ItemData[item.type.ToString() + $"{i}"] = outputItem;
-                            --ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
-                        }
-                        SetItemTotalCount(item.ItemName, false);
-                        setSlotCount?.Invoke();
-                        break;
-                    }
-                    else
-                    {
-                        
                     }
                 }
                 break;
@@ -178,7 +177,39 @@ public class DataManager : MonoBehaviour
             --ItemTotalCount[itemName];
         }
     }
-    
+    public void UseSlotItem(ItemInfo itemInfo)
+    {
+        switch (itemInfo.type)
+        {
+            case ItemInfo.ItemType.Equip:
+                switch(itemInfo.ItemName)
+                {
+                    case "Sword":
+                        break;
+                    case "Shield":
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case ItemInfo.ItemType.Consume:
+                switch (itemInfo.ItemName)
+                {
+                    case "Hp_Potion":
+                        PlayerStatData.CurHP += itemInfo.Value;
+                        UIManager.Inst.SetAbility("HP");
+                        break;
+                    case "Energy_Potion":
+                        PlayerStatData.CurEnergy += itemInfo.Value;
+                        UIManager.Inst.SetAbility("Energy");
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+        OutPutItemData(itemInfo);
+    }
     // Start is called before the first frame update
     void Start()
     {

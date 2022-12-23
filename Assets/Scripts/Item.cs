@@ -9,6 +9,7 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
     public ItemInfo iteminfo = null;
     public Transform Count_text = null;
     public int mySlotNum;
+    GameObject draggingObj;
     int _itemCount = 0;
 
     [SerializeField]
@@ -36,12 +37,15 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
     public void OnPointerClick(PointerEventData eventData)
     {
         //마우스 클릭 했을때 아이템 사용&슬롯설정 팝업.
+        if(eventData.clickCount == 2)
+        {
+            DataManager.Inst.UseSlotItem(iteminfo);
+        }
     }
-    GameObject draggingObj;
     public void OnBeginDrag(PointerEventData eventData)
     {
         //드래그 시작
-        //Debug.Log("드래그 시작");        
+        //Debug.Log("드래그 시작");
         draggingObj = Instantiate(Resources.Load("Item/SlotItem"), UIManager.Inst.HotKeySlot.parent) as GameObject;
         draggingObj.GetComponent<Item>().iteminfo = iteminfo;
         Color color = draggingObj.GetComponent<Image>().color;
