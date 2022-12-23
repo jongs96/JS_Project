@@ -8,6 +8,9 @@ public class ItemInfo : ScriptableObject
     public enum ItemType
     { Consume, Equip }
     public ItemType type;
+    public enum EquipType
+    { None, Weapon, Shield}
+    public EquipType equiptype = EquipType.None;
     public string ItemName;
     //ConsumeItem recovery amount
     public int Value;

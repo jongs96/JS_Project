@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public static DataManager Inst = null;    
+    public static DataManager Inst = null;
+
+    //저장해야하는 데이터들
     public Dictionary<string, SaveItem> ItemData = new Dictionary<string, SaveItem>();
     public Dictionary<string, int> ItemTotalCount = new Dictionary<string, int>();
     public Stat PlayerStatData;
-
-    public int SceneNum;
     public Vector3 myPostion = Vector3.zero;
+    
+    public int SceneNum;
     public Inventory Inven_Equip;
     public Inventory Inven_Consume;
     public UnityAction setSlotCount;
@@ -182,11 +184,11 @@ public class DataManager : MonoBehaviour
         switch (itemInfo.type)
         {
             case ItemInfo.ItemType.Equip:
-                switch(itemInfo.ItemName)
+                switch(itemInfo.equiptype)
                 {
-                    case "Sword":
+                    case ItemInfo.EquipType.Weapon:
                         break;
-                    case "Shield":
+                    case ItemInfo.EquipType.Shield:
                         break;
                     default:
                         break;

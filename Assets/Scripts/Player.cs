@@ -218,7 +218,7 @@ public class Player : CharacterProperty, IBattle
         foreach(Collider col in list)
         {
             IBattle ib = col.GetComponent<IBattle>();
-            ib?.OnDamage(100.0f, transform);
+            ib?.OnDamage(myStat.AttackPower, transform);
         }
     }
     public void AttackSkill()
@@ -227,7 +227,7 @@ public class Player : CharacterProperty, IBattle
         foreach (Collider col in list)
         {
             IBattle ib = col.GetComponent<IBattle>();
-            ib?.OnDamage(200.0f, transform);
+            ib?.OnDamage(myStat.AttackPower, transform);
         }
     }
 
