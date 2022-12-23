@@ -60,4 +60,6 @@ statpoint : 레벨업당 5p
 방패 : 방어력증가
 
 저장되어야 하는 정보.
+슬롯, 장비 장착정보/ 인벤토리 정보.
 level, maxExp, curExp, 스텟(힘, 민첩, 회피)
+캐릭터 위치(position).
