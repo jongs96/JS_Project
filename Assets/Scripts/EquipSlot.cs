@@ -9,14 +9,24 @@ public class EquipSlot : MonoBehaviour,IDropHandler,IPointerClickHandler
     public ItemInfo itemInfo;
     public void OnDrop(PointerEventData eventData)
     {
+        GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/Eq_Slot");
         Item it = eventData.pointerDrag.GetComponent<Item>();
-        if(it !=null)
+        if(it !=null && name == it.iteminfo.equiptype.ToString())//¿Â¬¯∞°¥… ΩΩ∑‘ ∆«∫∞.
         {
-            itemInfo = it.iteminfo;
-            GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
-            obj.GetComponent<Image>().sprite = Resources.Load("Sprite/" + itemInfo.ItemName) as Sprite;
-            DataManager.Inst.PlayerStatData.AttackPower += itemInfo.Value;
-            UIManager.Inst.SetAbility("AttackPower");
+            if (transform.GetComponentInChildren<EquipItem>() == null)//∫ÛΩΩ∑‘ø° ¿Â¬¯.
+            {
+                it.IsDestroy = true;
+                itemInfo = it.iteminfo;
+                GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
+                obj.GetComponent<EquipItem>().iteminfo = itemInfo;
+                obj.GetComponent<EquipItem>().SetParent(transform);
+                Equipment(itemInfo.equiptype.ToString());
+
+            }
+            else//æ∆¿Ã≈€ ±≥√º.
+            {
+
+            }
         }
     }
     public void OnPointerClick(PointerEventData eventData)
@@ -36,5 +46,21 @@ public class EquipSlot : MonoBehaviour,IDropHandler,IPointerClickHandler
     void Update()
     {
         
+    }
+    public void Equipment(string equip)
+    {
+        switch(equip)
+        {
+            case "Weapon":
+                DataManager.Inst.PlayerStatData.AttackPower += itemInfo.Value;
+                UIManager.Inst.SetAbility("AttackPower");
+                break;
+            case "Shield":
+                DataManager.Inst.PlayerStatData.DefensePower += itemInfo.Value;
+                UIManager.Inst.SetAbility("DefensePower");
+                break;
+            default:
+                break;
+        }
     }
 }

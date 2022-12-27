@@ -47,13 +47,20 @@ public class Stat
     public float AttackPower
     {
         get => attackPower;
-        set => attackPower = strength * 20;
+        set
+        {
+            attackPower = value;
+        }
     }
     [SerializeField] int strength;
     public int Strength
     {
         get => strength;
-        set => strength = value;
+        set
+        {
+            attackPower += (value - strength) * 20;
+            strength = value;            
+        }
     }
 
     [SerializeField] float maxEnergy;
@@ -72,26 +79,34 @@ public class Stat
     public float DefensePower
     {
         get => defensePower;
-        set => defensePower = agility * 20;
+        set => defensePower = value;
     }
     [SerializeField] int agility;
     public int Agility
     {
         get => agility;
-        set => agility = value;
+        set
+        {
+            defensePower += (value - agility) * 20;
+            agility = value;
+        }
     }
 
     [SerializeField] float criticalRate;
     public float CriticalRate
     {
         get => criticalRate;
-        set => criticalRate = evation * 1;
+        set => criticalRate = value;
     }
     [SerializeField] int evation;
     public int Evation
     {
         get => evation;
-        set => evation = value;
+        set
+        {
+            criticalRate = (value - evation) * 1;
+            evation = value;
+        }
     }
 
     [SerializeField] int point;

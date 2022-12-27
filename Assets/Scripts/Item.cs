@@ -10,6 +10,7 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
     public Transform Count_text = null;
     public int mySlotNum;
     GameObject draggingObj;
+    public bool IsDestroy = false;
     int _itemCount = 0;
 
     [SerializeField]
@@ -64,7 +65,10 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
     public void OnEndDrag(PointerEventData eventData)
     {
         //드래그 끝
-        //Debug.Log("드래그 끝");        
+        if(IsDestroy)
+        {
+            Destroy(gameObject);
+        }
         Destroy(draggingObj, 0.01f);
     }
     // Start is called before the first frame update
