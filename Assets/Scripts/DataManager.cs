@@ -16,6 +16,8 @@ public class DataManager : MonoBehaviour
     public int SceneNum;
     public Inventory Inven_Equip;
     public Inventory Inven_Consume;
+    public EquipSlot WeaponSlot;
+    public EquipSlot ShieldSlot;
     public UnityAction setSlotCount;
 
     List<Transform> EquipSlots = new List<Transform>();
@@ -38,9 +40,10 @@ public class DataManager : MonoBehaviour
         Inst = this;
     }
 
-    void AppointedInventory()//타입별 inventory 저장.
+    void AppointedInventory()//타입별 inventory 저장.equipSlot 저장
     {
         Inventory[] invenM = UIManager.Inst.Inventory.GetComponentsInChildren<Inventory>();
+        EquipSlot[] eqSlots = UIManager.Inst.Equip.GetComponentsInChildren<EquipSlot>();
         for (int i = 0; i < invenM.Length; ++i)
         {
             switch (invenM[i].name)
@@ -50,6 +53,20 @@ public class DataManager : MonoBehaviour
                     break;
                 case "Consume":
                     Inven_Consume = invenM[i];
+                    break;
+                default:
+                    break;
+            }
+        }
+        for (int i = 0; i < eqSlots.Length; ++i)
+        {
+            switch (eqSlots[i].name)
+            {
+                case "Weapon":
+                    WeaponSlot = eqSlots[i];
+                    break;
+                case "Shield":
+                    ShieldSlot = eqSlots[i];
                     break;
                 default:
                     break;
@@ -122,7 +139,6 @@ public class DataManager : MonoBehaviour
                     if (ItemData.ContainsKey(item.type.ToString() + $"{i}"))
                     {
                         ItemData.Remove(item.type.ToString() + $"{i}");//데이터 삭제.
-                        Destroy(EquipSlots[i].GetChild(0).gameObject);//사용한 장비 삭제
                         break;
                     }
                 }
@@ -181,14 +197,38 @@ public class DataManager : MonoBehaviour
     }
     public void UseSlotItem(ItemInfo itemInfo)
     {
-        switch (itemInfo.type)
+        switch (itemInfo.type)//스텟 증가감소만 관리.
         {
             case ItemInfo.ItemType.Equip:
-                switch(itemInfo.equiptype)
+                switch (itemInfo.equiptype)
                 {
                     case ItemInfo.EquipType.Weapon:
+                        EquipItem eqwpItem = WeaponSlot.GetComponentInChildren<EquipItem>();
+                        if (eqwpItem != null)//이미 장착한 무기 존재
+                        {
+                            PlayerStatData.AttackPower -= eqwpItem.iteminfo.Value;
+                            PlayerStatData.AttackPower += itemInfo.Value;
+                            UIManager.Inst.SetAbility("AttackPower");
+                        }
+                        else
+                        {
+                            PlayerStatData.AttackPower += itemInfo.Value;
+                            UIManager.Inst.SetAbility("AttackPower");
+                        }
                         break;
                     case ItemInfo.EquipType.Shield:
+                        EquipItem eqshItem = ShieldSlot.GetComponentInChildren<EquipItem>();
+                        if (eqshItem != null)//이미 장착한 방패 존재
+                        {
+                            PlayerStatData.DefensePower -= eqshItem.iteminfo.Value;
+                            PlayerStatData.DefensePower += itemInfo.Value;
+                            UIManager.Inst.SetAbility("DefensePower");
+                        }
+                        else
+                        {
+                            PlayerStatData.DefensePower += itemInfo.Value;
+                            UIManager.Inst.SetAbility("DefensePower");
+                        }
                         break;
                     default:
                         break;

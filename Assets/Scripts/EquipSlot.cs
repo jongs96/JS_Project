@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class EquipSlot : MonoBehaviour,IDropHandler,IPointerClickHandler
+public class EquipSlot : MonoBehaviour,IDropHandler
 {
     public ItemInfo itemInfo;
     public void OnDrop(PointerEventData eventData)
     {
-        GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/Eq_Slot");
+        ChangeImg("Sprite/Eq_Slot");
         Item it = eventData.pointerDrag.GetComponent<Item>();
         if(it !=null && name == it.iteminfo.equiptype.ToString())//장착가능 슬롯 판별.
         {
@@ -17,23 +17,15 @@ public class EquipSlot : MonoBehaviour,IDropHandler,IPointerClickHandler
             {
                 it.IsDestroy = true;
                 itemInfo = it.iteminfo;
+                DataManager.Inst.UseSlotItem(itemInfo);//사용 스텟증감처리
                 GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
                 obj.GetComponent<EquipItem>().iteminfo = itemInfo;
                 obj.GetComponent<EquipItem>().SetParent(transform);
-                Equipment(itemInfo.equiptype.ToString());
-
             }
             else//아이템 교체.
             {
 
             }
-        }
-    }
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if(eventData.clickCount >=2)
-        {
-
         }
     }
     // Start is called before the first frame update
@@ -47,20 +39,26 @@ public class EquipSlot : MonoBehaviour,IDropHandler,IPointerClickHandler
     {
         
     }
-    public void Equipment(string equip)
+    public void Equipment(string equip, bool Increase)
     {
         switch(equip)
         {
             case "Weapon":
-                DataManager.Inst.PlayerStatData.AttackPower += itemInfo.Value;
+                if(Increase) DataManager.Inst.PlayerStatData.AttackPower += itemInfo.Value;
+                else DataManager.Inst.PlayerStatData.AttackPower -= itemInfo.Value;
                 UIManager.Inst.SetAbility("AttackPower");
                 break;
             case "Shield":
-                DataManager.Inst.PlayerStatData.DefensePower += itemInfo.Value;
+                if(Increase) DataManager.Inst.PlayerStatData.DefensePower += itemInfo.Value;
+                else DataManager.Inst.PlayerStatData.DefensePower -= itemInfo.Value;
                 UIManager.Inst.SetAbility("DefensePower");
                 break;
             default:
                 break;
         }
+    }
+    public void ChangeImg(string path)
+    {
+        GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   equiptype: 1
-  ItemName: Sword
+  ItemName: Sword0
   Value: 0
   Droprate: 100
   MaxCount: 1

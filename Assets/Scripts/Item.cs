@@ -37,9 +37,36 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
     
     public void OnPointerClick(PointerEventData eventData)
     {
-        //마우스 클릭 했을때 아이템 사용&슬롯설정 팝업.
+        //마우스 클릭 했을때 소비 아이템 사용 & 장비장착
         if(eventData.clickCount == 2)
         {
+            switch(iteminfo.equiptype)
+            {
+                case ItemInfo.EquipType.Weapon:
+                    EquipItem eqwpItem = DataManager.Inst.WeaponSlot.GetComponentInChildren<EquipItem>();
+                    if (eqwpItem != null)//이미 장착한 무기 존재
+                    {
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                    break;
+                case ItemInfo.EquipType.Shield:
+                    EquipItem eqsdItem = DataManager.Inst.ShieldSlot.GetComponentInChildren<EquipItem>();
+                    if (eqsdItem != null)//이미 장착한 방패 존재
+                    {
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                    break;
+                default:
+                    break;
+            }
             DataManager.Inst.UseSlotItem(iteminfo);
         }
     }
@@ -65,7 +92,7 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
     public void OnEndDrag(PointerEventData eventData)
     {
         //드래그 끝
-        if(IsDestroy)
+        if(IsDestroy)//장비를 드래그드랍한 경우.
         {
             Destroy(gameObject);
         }

@@ -11,9 +11,13 @@ public class EquipItem : MonoBehaviour, IPointerClickHandler
     public Transform myParent;
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.clickCount >= 2)
+        if (eventData.clickCount == 2)//ÀåÂøÇØÁ¦
         {
+            string path = "Sprite/" + transform.parent.name+ "_Slot";
+            transform.GetComponentInParent<EquipSlot>().ChangeImg(path);
             Destroy(gameObject);
+            DataManager.Inst.InputItemData(iteminfo);
+            GetComponentInParent<EquipSlot>().Equipment(iteminfo.equiptype.ToString(), false);
         }
     }
 

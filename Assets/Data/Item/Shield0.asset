@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   equiptype: 2
-  ItemName: Shield
+  ItemName: Shield0
   Value: 0
   Droprate: 100
   MaxCount: 1
