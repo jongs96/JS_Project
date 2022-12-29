@@ -19,9 +19,8 @@ public class DataManager : MonoBehaviour
     public EquipSlot WeaponSlot;
     public EquipSlot ShieldSlot;
     public UnityAction setSlotCount;
-
-    List<Transform> EquipSlots = new List<Transform>();
-    List<Transform> ConsumeSlots = new List<Transform>();
+    public List<Transform> EquipSlots = new List<Transform>();
+    public List<Transform> ConsumeSlots = new List<Transform>();
     public struct SaveItem
     {
         public ItemInfo itemInfo;
@@ -148,7 +147,8 @@ public class DataManager : MonoBehaviour
                             if (outputItem.ItemCount == 0)
                             {
                                 ItemData.Remove($"{item.iteminfo.type}{i}");
-                                Destroy(ConsumeSlots[i].GetChild(0).gameObject);
+                                
+                                Destroy(ConsumeSlots[i].GetChild(0).gameObject);//list에서 제거.
                             }
                             else
                             {

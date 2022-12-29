@@ -7,7 +7,6 @@ public class HotkeySlot : MonoBehaviour,IDropHandler
 {
     public ItemInfo itemInfo;
     public List<Item> connectIT = new List<Item>();
-    Item it = null;
     int slotNum;
     public void OnDrop(PointerEventData eventData)
     {
@@ -25,11 +24,13 @@ public class HotkeySlot : MonoBehaviour,IDropHandler
         else if(GetComponentInChildren<HotKeyItem>())
         {
             HotKeyItem child = GetComponentInChildren<HotKeyItem>();
-            HotKeyItem OndropIem = eventData.pointerDrag.GetComponent<HotKeyItem>();
-            child?.SetParent(OndropIem.myParent);
+            HotKeyItem OndropItem = eventData.pointerDrag.GetComponent<HotKeyItem>();
+            child?.SetParent(OndropItem.myParent);
             child.transform.parent.GetComponent<HotkeySlot>().itemInfo = child.iteminfo;
-            OndropIem?.SetParent(this);
-            itemInfo = OndropIem.iteminfo;
+            child.GetComponentInParent<HotkeySlot>().ConnectItem();
+            OndropItem?.SetParent(this);
+            itemInfo = OndropItem.iteminfo;
+            ConnectItem();
             eventData.pointerDrag.transform.SetParent(transform);
         }
     }    
@@ -44,17 +45,19 @@ public class HotkeySlot : MonoBehaviour,IDropHandler
     {
         if(Input.GetKeyDown((KeyCode)(slotNum+48)) && itemInfo != null)
         {
-            DataManager.Inst.UseSlotItem(it);
+            DataManager.Inst.UseSlotItem(connectIT[0]);//
             transform.GetComponentInChildren<HotKeyItem>().SetCountText();
         }
     }
-    void ConnectItem()//리스트에 해당 아이템들을 추가.
+    public void ConnectItem()//리스트에 해당 아이템들을 추가.
     {
-        for (int i = 0; i < 21; ++i)
+        connectIT.Clear();
+        Item[] items = DataManager.Inst.Inven_Consume.GetComponentsInChildren<Item>();
+        for (int i = 0; i < items.Length; ++i)
         {
-            if (DataManager.Inst.ItemData[$"{itemInfo.type}{i}"].itemInfo == itemInfo)
+            if (items[i].iteminfo.ItemName == itemInfo.ItemName)
             {
-                break;
+                connectIT.Add(items[i]);
             }
         }
     }
