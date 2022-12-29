@@ -13,7 +13,7 @@ public class EquipItem : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.clickCount == 2)//¿Â¬¯«ÿ¡¶
         {
-            string path = "Sprite/" + transform.parent.name+ "_Slot";
+            string path = $"Sprite/{transform.parent.name}_Slot";
             transform.GetComponentInParent<EquipSlot>().ChangeImg(path);
             Destroy(gameObject);
             DataManager.Inst.InputItemData(iteminfo);
@@ -24,7 +24,7 @@ public class EquipItem : MonoBehaviour, IPointerClickHandler
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/" + iteminfo.ItemName);
+        GetComponent<Image>().sprite = Resources.Load<Sprite>($"Sprite/{iteminfo.ItemName}");
     }
 
     // Update is called once per frame

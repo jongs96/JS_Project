@@ -9,15 +9,15 @@ public class EquipSlot : MonoBehaviour,IDropHandler
     public ItemInfo itemInfo;
     public void OnDrop(PointerEventData eventData)
     {
-        ChangeImg("Sprite/Eq_Slot");
         Item it = eventData.pointerDrag.GetComponent<Item>();
         if(it !=null && name == it.iteminfo.equiptype.ToString())//ÀåÂø°¡´É ½½·Ô ÆÇº°.
         {
+            ChangeImg("Sprite/Eq_Slot");
             if (transform.GetComponentInChildren<EquipItem>() == null)//ºó½½·Ô¿¡ ÀåÂø.
             {
                 it.IsDestroy = true;
                 itemInfo = it.iteminfo;
-                DataManager.Inst.UseSlotItem(itemInfo);//»ç¿ë ½ºÅÝÁõ°¨Ã³¸®
+                DataManager.Inst.UseSlotItem(it);//»ç¿ë ½ºÅÝÁõ°¨Ã³¸®
                 GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
                 obj.GetComponent<EquipItem>().iteminfo = itemInfo;
                 obj.GetComponent<EquipItem>().SetParent(transform);

@@ -16,7 +16,7 @@ public class HotKeyItem : MonoBehaviour, IDragHandler,IBeginDragHandler,IEndDrag
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/" + iteminfo.ItemName);
+        GetComponent<Image>().sprite = Resources.Load<Sprite>($"Sprite/{iteminfo.ItemName}");
         SetCountText();
         DataManager.Inst.setSlotCount = SetCountText;
     }

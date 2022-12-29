@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   equiptype: 2
-  ItemName: Shield
+  ItemName: Shield1
   Value: 100
   Droprate: 100
   MaxCount: 1
-  Resource: {fileID: 8308779551080991626, guid: 616a8f1880f412f46bc851e52efab203, type: 3}
+  Resource: {fileID: 4659253618845691966, guid: 616a8f1880f412f46bc851e52efab203, type: 3}

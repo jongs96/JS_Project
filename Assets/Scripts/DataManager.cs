@@ -93,8 +93,8 @@ public class DataManager : MonoBehaviour
                     {
                         SaveItem inputItem = new SaveItem(item, i);
                         ++inputItem.ItemCount;
-                        ItemData[item.type.ToString() + $"{i}"] = inputItem;
-                        SetItemToInventoryChildren(EquipSlots[i], item.type.ToString() + $"{i}");//인벤토리 자식으로 설정(생성).
+                        ItemData[$"{item.type}{i}"] = inputItem;
+                        SetItemToInventoryChildren(EquipSlots[i], $"{item.type}{i}");//인벤토리 자식으로 설정(생성).
                         break;
                     }
                 }
@@ -102,22 +102,22 @@ public class DataManager : MonoBehaviour
             case "Consume":
                 for (int i = 0; i < 21; ++i)
                 {
-                    if (!ItemData.ContainsKey(item.type.ToString() + $"{i}"))//slot empty
+                    if (!ItemData.ContainsKey($"{item.type}{i}"))//빈슬롯에 새 아이템 추가. 단축키list 존재확인 후 add
                     {
                         SaveItem inputItem = new SaveItem(item, i);
                         ++inputItem.ItemCount;
-                        ItemData[item.type.ToString() + $"{i}"] = inputItem;
-                        SetItemToInventoryChildren(ConsumeSlots[i], item.type.ToString() + $"{i}");
+                        ItemData[$"{item.type}{i}"] = inputItem;
+                        SetItemToInventoryChildren(ConsumeSlots[i], $"{item.type}{i}");
                         SetItemTotalCount(item.ItemName, true);
                         setSlotCount?.Invoke();
                         break;
                     }
-                    else if(ItemData[item.type.ToString() + $"{i}"].itemInfo.ItemName == item.ItemName//같은이름의 아이템이 있는경우
-                        && ItemData[item.type.ToString() + $"{i}"].ItemCount < item.MaxCount)//슬롯에 겹쳐지는 최대 갯수보다 작을 때
+                    else if(ItemData[$"{item.type}{i}"].itemInfo.ItemName == item.ItemName//같은이름의 아이템이 있는경우
+                        && ItemData[$"{item.type}{i}"].ItemCount < item.MaxCount)//슬롯에 겹쳐지는 최대 갯수보다 작을 때
                     {
-                        SaveItem inputItem = ItemData[item.type.ToString() + $"{i}"];
+                        SaveItem inputItem = ItemData[$"{item.type}{i}"];
                         ++inputItem.ItemCount;
-                        ItemData[item.type.ToString() + $"{i}"] = inputItem;
+                        ItemData[$"{item.type}{i}"] = inputItem;
                         ++ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
                         SetItemTotalCount(item.ItemName, true);
                         setSlotCount?.Invoke();
@@ -129,40 +129,33 @@ public class DataManager : MonoBehaviour
                 break;
         }
     }
-    void OutPutItemData(ItemInfo item)//아이템 사용
+    void OutPutItemData(Item item)//아이템 사용 데이터 제거.
     {
-        switch (item.type.ToString())
+        switch (item.iteminfo.type.ToString())
         {
             case "Equip":
-                for (int i = 0; i < 21; ++i)
-                {
-                    if (ItemData.ContainsKey(item.type.ToString() + $"{i}"))
-                    {
-                        ItemData.Remove(item.type.ToString() + $"{i}");//데이터 삭제.
-                        break;
-                    }
-                }
+                ItemData.Remove($"{item.iteminfo.type}{item.mySlotNum}");//데이터 삭제.
                 break;
             case "Consume":
                 for (int i = 0; i < 21; ++i)
                 {
-                    if (ItemData.ContainsKey(item.type.ToString() + $"{i}"))
+                    if (ItemData.ContainsKey($"{item.iteminfo.type}{i}"))
                     {
-                        if (ItemData[item.type.ToString() + $"{i}"].itemInfo == item)
+                        if (ItemData[$"{item.iteminfo.type}{i}"].itemInfo == item.iteminfo)
                         {
-                            SaveItem outputItem = ItemData[item.type.ToString() + $"{i}"];
+                            SaveItem outputItem = ItemData[$"{item.iteminfo.type}{i}"];
                             --outputItem.ItemCount;
                             if (outputItem.ItemCount == 0)
                             {
-                                ItemData.Remove(item.type.ToString() + $"{i}");
+                                ItemData.Remove($"{item.iteminfo.type}{i}");
                                 Destroy(ConsumeSlots[i].GetChild(0).gameObject);
                             }
                             else
                             {
-                                ItemData[item.type.ToString() + $"{i}"] = outputItem;
+                                ItemData[$"{item.iteminfo.type}{i}"] = outputItem;
                                 --ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
                             }
-                            SetItemTotalCount(item.ItemName, false);
+                            SetItemTotalCount(item.iteminfo.ItemName, false);
                             //setSlotCount?.Invoke();
                             break;
                         }
@@ -178,6 +171,7 @@ public class DataManager : MonoBehaviour
         GameObject obj = Instantiate(Resources.Load("Item/SlotItem"), parent) as GameObject;
         obj.GetComponent<Item>().iteminfo = ItemData[key].itemInfo;
         obj.GetComponent<Item>().ItemCount = ItemData[key].ItemCount;
+        obj.GetComponent<Item>().mySlotNum = ItemData[key].Slotnum;
     }
     void SetItemTotalCount(string itemName, bool type)//increase : true, decrease : false
     {//소비아이템의 총 갯수 저장
@@ -195,24 +189,24 @@ public class DataManager : MonoBehaviour
             --ItemTotalCount[itemName];
         }
     }
-    public void UseSlotItem(ItemInfo itemInfo)
+    public void UseSlotItem(Item item)
     {
-        switch (itemInfo.type)//스텟 증가감소만 관리.
+        switch (item.iteminfo.type)//스텟 증가감소만 관리.
         {
             case ItemInfo.ItemType.Equip:
-                switch (itemInfo.equiptype)
+                switch (item.iteminfo.equiptype)
                 {
                     case ItemInfo.EquipType.Weapon:
                         EquipItem eqwpItem = WeaponSlot.GetComponentInChildren<EquipItem>();
                         if (eqwpItem != null)//이미 장착한 무기 존재
                         {
                             PlayerStatData.AttackPower -= eqwpItem.iteminfo.Value;
-                            PlayerStatData.AttackPower += itemInfo.Value;
+                            PlayerStatData.AttackPower += item.iteminfo.Value;
                             UIManager.Inst.SetAbility("AttackPower");
                         }
                         else
                         {
-                            PlayerStatData.AttackPower += itemInfo.Value;
+                            PlayerStatData.AttackPower += item.iteminfo.Value;
                             UIManager.Inst.SetAbility("AttackPower");
                         }
                         break;
@@ -221,12 +215,12 @@ public class DataManager : MonoBehaviour
                         if (eqshItem != null)//이미 장착한 방패 존재
                         {
                             PlayerStatData.DefensePower -= eqshItem.iteminfo.Value;
-                            PlayerStatData.DefensePower += itemInfo.Value;
+                            PlayerStatData.DefensePower += item.iteminfo.Value;
                             UIManager.Inst.SetAbility("DefensePower");
                         }
                         else
                         {
-                            PlayerStatData.DefensePower += itemInfo.Value;
+                            PlayerStatData.DefensePower += item.iteminfo.Value;
                             UIManager.Inst.SetAbility("DefensePower");
                         }
                         break;
@@ -235,14 +229,14 @@ public class DataManager : MonoBehaviour
                 }
                 break;
             case ItemInfo.ItemType.Consume:
-                switch (itemInfo.ItemName)
+                switch (item.iteminfo.ItemName)
                 {
                     case "Hp_Potion":
-                        PlayerStatData.CurHP += itemInfo.Value;
+                        PlayerStatData.CurHP += item.iteminfo.Value;
                         UIManager.Inst.SetAbility("HP");
                         break;
                     case "Energy_Potion":
-                        PlayerStatData.CurEnergy += itemInfo.Value;
+                        PlayerStatData.CurEnergy += item.iteminfo.Value;
                         UIManager.Inst.SetAbility("Energy");
                         break;
                 }
@@ -250,7 +244,7 @@ public class DataManager : MonoBehaviour
             default:
                 break;
         }
-        OutPutItemData(itemInfo);
+        OutPutItemData(item);
     }
     // Start is called before the first frame update
     void Start()

@@ -31,12 +31,9 @@ public class UIManager : MonoBehaviour
     {
         Ability[] abil = Equip.GetComponentsInChildren<Ability>();
         abil[0].statValue.text = DataManager.Inst.PlayerStatData.Level.ToString();
-        abil[1].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurExp).ToString()
-            + "/" + DataManager.Inst.PlayerStatData.MaxExp.ToString();
-        abil[2].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurHP).ToString()
-            + "/" + DataManager.Inst.PlayerStatData.MaxHP.ToString();
-        abil[3].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurEnergy).ToString()
-            + "/" + DataManager.Inst.PlayerStatData.MaxEnergy.ToString();
+        abil[1].statValue.text = $"{Mathf.Floor(DataManager.Inst.PlayerStatData.CurExp)}/{ DataManager.Inst.PlayerStatData.MaxExp}";
+        abil[2].statValue.text = $"{Mathf.Floor(DataManager.Inst.PlayerStatData.CurHP)}/{DataManager.Inst.PlayerStatData.MaxHP}";
+        abil[3].statValue.text = $"{Mathf.Floor(DataManager.Inst.PlayerStatData.CurEnergy)}/{ DataManager.Inst.PlayerStatData.MaxEnergy}";
         abil[4].statValue.text = DataManager.Inst.PlayerStatData.AttackPower.ToString();
         abil[5].statValue.text = DataManager.Inst.PlayerStatData.DefensePower.ToString();
         abil[6].statValue.text = DataManager.Inst.PlayerStatData.CriticalRate.ToString();
@@ -54,16 +51,13 @@ public class UIManager : MonoBehaviour
                 abil[0].statValue.text = DataManager.Inst.PlayerStatData.Level.ToString();
                 break;
             case "Exp":
-                abil[1].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurExp).ToString()
-                    + "/" + DataManager.Inst.PlayerStatData.MaxExp.ToString();
+                abil[1].statValue.text = $"{Mathf.Floor(DataManager.Inst.PlayerStatData.CurExp)}/{ DataManager.Inst.PlayerStatData.MaxExp}";
                 break;
             case "HP":
-                abil[2].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurHP).ToString()
-                    + "/" + DataManager.Inst.PlayerStatData.MaxHP.ToString();
+                abil[2].statValue.text = $"{Mathf.Floor(DataManager.Inst.PlayerStatData.CurHP)}/{DataManager.Inst.PlayerStatData.MaxHP}";
                 break;
             case "Energy":
-                abil[3].statValue.text = Mathf.Floor(DataManager.Inst.PlayerStatData.CurEnergy).ToString()
-                    + "/" + DataManager.Inst.PlayerStatData.MaxEnergy.ToString();
+                abil[3].statValue.text = $"{Mathf.Floor(DataManager.Inst.PlayerStatData.CurEnergy)}/{ DataManager.Inst.PlayerStatData.MaxEnergy}";
                 break;
             case "AttackPower":
                 abil[4].statValue.text = DataManager.Inst.PlayerStatData.AttackPower.ToString();

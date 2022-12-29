@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   equiptype: 1
-  ItemName: Sword
+  ItemName: Sword1
   Value: 100
   Droprate: 100
   MaxCount: 1
-  Resource: {fileID: 4553310710252076142, guid: bac38643116f6bb42ba922bf96184b22, type: 3}
+  Resource: {fileID: 7655171990557135135, guid: bac38643116f6bb42ba922bf96184b22, type: 3}

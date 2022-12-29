@@ -67,7 +67,7 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
                 default:
                     break;
             }
-            DataManager.Inst.UseSlotItem(iteminfo);
+            DataManager.Inst.UseSlotItem(this);
         }
     }
     public void OnBeginDrag(PointerEventData eventData)
@@ -101,7 +101,7 @@ public class Item : MonoBehaviour, IPointerClickHandler,IDragHandler,IBeginDragH
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprite/" + iteminfo.ItemName);
+        GetComponent<Image>().sprite = Resources.Load<Sprite>($"Sprite/{iteminfo.ItemName}");
     }
 
     // Update is called once per frame
