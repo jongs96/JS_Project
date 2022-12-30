@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9882051bf059b04a8a2aece590a55f3, type: 3}
-  m_Name: Sword0
+  m_Script: {fileID: 11500000, guid: d5b6439b6e6ce1642b18f056b3b2a12c, type: 3}
+  m_Name: Shield 0
   m_EditorClassIdentifier: 
-  type: 1
-  equiptype: 1
-  ItemName: Sword0
-  Value: 0
-  Droprate: 100
-  MaxCount: 1
-  Resource: {fileID: 5045243504749772121, guid: 94ff501c2fc6eff4881a7168f8b4ad26, type: 3}
+  EquipPostion: {x: -0.1, y: -0.05, z: 0.01}
+  EquipRotation: {x: 0, y: 90, z: -90}

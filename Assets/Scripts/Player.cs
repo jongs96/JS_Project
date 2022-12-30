@@ -25,6 +25,8 @@ public class Player : CharacterProperty, IBattle
     public Transform AttackPos = null;
     public Transform myCam = null;
     public Transform mainBody = null;
+    public Transform ShieldPos = null;
+    public Transform SwordPos = null;
     public Slider Hpbar = null;
     public Slider Energybar = null;
     
@@ -103,7 +105,7 @@ public class Player : CharacterProperty, IBattle
     // Start is called before the first frame update
     void Start()
     {
-        StatInitialize();
+        Initialize();
         ChangeState(STATE.Playing);
     }
     
@@ -282,7 +284,7 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("IsAir", true);
         }
     }
-    void StatInitialize()
+    void Initialize()
     {
         //if (SceneMgr.Inst.isNewGame)//ªı ∞‘¿”
         //{
@@ -293,6 +295,7 @@ public class Player : CharacterProperty, IBattle
 
         //}
         DataManager.Inst.PlayerStatData = myStat;
+        AttackPos = SwordPos.GetChild(0).GetChild(0);
     }
     private void OnCollisionEnter(Collision collision)
     {

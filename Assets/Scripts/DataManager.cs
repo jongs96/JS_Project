@@ -109,6 +109,7 @@ public class DataManager : MonoBehaviour
                         SetItemToInventoryChildren(ConsumeSlots[i], $"{item.type}{i}");
                         SetItemTotalCount(item.ItemName, true);
                         setSlotCount?.Invoke();
+                        HotKeyListAddRemv(ConsumeSlots[i].GetComponentInChildren<Item>(), true);
                         break;
                     }
                     else if(ItemData[$"{item.type}{i}"].itemInfo.ItemName == item.ItemName//같은이름의 아이템이 있는경우
@@ -147,8 +148,8 @@ public class DataManager : MonoBehaviour
                             if (outputItem.ItemCount == 0)
                             {
                                 ItemData.Remove($"{item.iteminfo.type}{i}");
-                                
-                                Destroy(ConsumeSlots[i].GetChild(0).gameObject);//list에서 제거.
+                                HotKeyListAddRemv(item, false);
+                                Destroy(ConsumeSlots[i].GetChild(0).gameObject);
                             }
                             else
                             {
@@ -245,6 +246,19 @@ public class DataManager : MonoBehaviour
                 break;
         }
         OutPutItemData(item);
+    }
+    void HotKeyListAddRemv(Item item, bool adrm)
+    {
+        HotkeySlot[] HkSlots = UIManager.Inst.HotKeySlot.GetComponentsInChildren<HotkeySlot>();
+        foreach (HotkeySlot hks in HkSlots)//list에서 제거.
+        {
+            if (hks.itemInfo == item.iteminfo)
+            {
+                if (!adrm) hks.connectIT.Remove(item);
+                else hks.connectIT.Add(item);
+                return;
+            }
+        }
     }
     // Start is called before the first frame update
     void Start()

@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class EquipSlot : MonoBehaviour,IDropHandler
 {
     public ItemInfo itemInfo;
+    public Transform objEquipPos = null;
     public void OnDrop(PointerEventData eventData)
     {
         Item it = eventData.pointerDrag.GetComponent<Item>();
         if(it !=null && name == it.iteminfo.equiptype.ToString())//¿Â¬¯∞°¥… ΩΩ∑‘ ∆«∫∞.
         {
             ChangeImg("Sprite/Eq_Slot");
-            if (transform.GetComponentInChildren<EquipItem>() == null)//∫ÛΩΩ∑‘ø° ¿Â¬¯.
+            EquipItem eqitem = transform.GetComponentInChildren<EquipItem>();
+            if (eqitem == null)//∫ÛΩΩ∑‘ø° ¿Â¬¯.
             {
                 it.IsDestroy = true;
                 itemInfo = it.iteminfo;
@@ -21,17 +23,31 @@ public class EquipSlot : MonoBehaviour,IDropHandler
                 GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
                 obj.GetComponent<EquipItem>().iteminfo = itemInfo;
                 obj.GetComponent<EquipItem>().SetParent(transform);
+                EquipmentObj();
             }
             else//æ∆¿Ã≈€ ±≥√º.
             {
-
+                ItemInfo eqitemInfo = eqitem.iteminfo;//¿Ã¿¸≈€¡§∫∏
+                it.IsDestroy = true;
+                itemInfo = it.iteminfo;
+                DataManager.Inst.UseSlotItem(it);//ªÁøÎ Ω∫≈›¡ı∞®√≥∏Æ
+                Destroy(eqitem.gameObject);
+                GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
+                obj.GetComponent<EquipItem>().iteminfo = itemInfo;
+                obj.GetComponent<EquipItem>().SetParent(transform);
+                GameObject beforeObj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.EquipSlots[it.mySlotNum]) as GameObject;
+                beforeObj.GetComponent<Item>().iteminfo = eqitemInfo;
+                beforeObj.GetComponent<Item>().ItemCount = it.ItemCount;
+                beforeObj.GetComponent<Item>().mySlotNum = it.mySlotNum;
+                EquipmentObj();
             }
         }
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        ChangeImg("Sprite/Eq_Slot");
+        itemInfo = GetComponentInChildren<EquipItem>().iteminfo;        
     }
 
     // Update is called once per frame
@@ -56,6 +72,11 @@ public class EquipSlot : MonoBehaviour,IDropHandler
             default:
                 break;
         }
+    }
+    public void EquipmentObj()
+    {
+        //if(GetComponentInChildren<EquipItem>())
+        GameObject obj = Instantiate(itemInfo.Resource, objEquipPos);
     }
     public void ChangeImg(string path)
     {
