@@ -23,7 +23,6 @@ public class EquipSlot : MonoBehaviour,IDropHandler
                 GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
                 obj.GetComponent<EquipItem>().iteminfo = itemInfo;
                 obj.GetComponent<EquipItem>().SetParent(transform);
-                EquipmentObj();
             }
             else//아이템 교체.
             {
@@ -35,12 +34,13 @@ public class EquipSlot : MonoBehaviour,IDropHandler
                 GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), transform) as GameObject;
                 obj.GetComponent<EquipItem>().iteminfo = itemInfo;
                 obj.GetComponent<EquipItem>().SetParent(transform);
+                DataManager.Inst.InputItemData(eqitemInfo);//교체되는 아이템 dictionary에 전달
                 GameObject beforeObj = Instantiate(Resources.Load("Item/SlotItem"), DataManager.Inst.EquipSlots[it.mySlotNum]) as GameObject;
                 beforeObj.GetComponent<Item>().iteminfo = eqitemInfo;
                 beforeObj.GetComponent<Item>().ItemCount = it.ItemCount;
                 beforeObj.GetComponent<Item>().mySlotNum = it.mySlotNum;
-                EquipmentObj();
             }
+            EquipmentObj();
         }
     }
     // Start is called before the first frame update
@@ -75,8 +75,16 @@ public class EquipSlot : MonoBehaviour,IDropHandler
     }
     public void EquipmentObj()
     {
-        //if(GetComponentInChildren<EquipItem>())
+        if (GetComponentInChildren<EquipItem>())//장착된 장비가 있는지 확인.
+        {
+
+            Destroy(objEquipPos.GetChild(0).gameObject);
+        }
         GameObject obj = Instantiate(itemInfo.Resource, objEquipPos);
+        EqItemInfo objtransInfo = Resources.Load<EqItemInfo>($"Item/Data/{itemInfo.ItemName}");
+        obj.transform.localPosition = objtransInfo.EquipPostion;
+        obj.transform.localEulerAngles = objtransInfo.EquipRotation;
+        Player.Inst.AttackPos = objEquipPos.GetChild(0).GetChild(0);
     }
     public void ChangeImg(string path)
     {

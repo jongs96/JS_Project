@@ -8,6 +8,12 @@ using UnityEngine.UI;
 
 public class Player : CharacterProperty, IBattle
 {
+    public static Player Inst = null;
+    private void Awake()
+    {
+        if (Inst != null) Destroy(gameObject);
+        Inst = this;
+    }
     public enum STATE
     {
         Create, Playing, Pause, Death
@@ -272,9 +278,9 @@ public class Player : CharacterProperty, IBattle
     void CheckGround()
     {
         Ray ray = new Ray();
-        ray.origin = transform.position;
+        ray.origin = transform.position + new Vector3(0, 0.05f, 0);
         ray.direction = -transform.up;
-        Debug.DrawRay(transform.position, -transform.up * 0.1f, Color.white);
+        Debug.DrawRay(transform.position, -transform.up * 0.1f, Color.red);
         if (Physics.Raycast(ray, 0.1f, 1 << LayerMask.NameToLayer("Ground")))
         {
             myAnim.SetBool("IsAir", false);
