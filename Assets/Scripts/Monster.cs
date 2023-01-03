@@ -5,7 +5,6 @@ using UnityEngine;
 public class Monster : MobMovement, IBattle
 {
     Transform myTarget = null;
-    Vector3 StartPos = Vector3.zero;
     Coroutine co = null;
     public MobStat mobStat;
     public LayerMask Target;
@@ -121,7 +120,7 @@ public class Monster : MobMovement, IBattle
     }
 
     //AnimationEvent Attack function
-    public void AttackTarget()
+    public void AttackTarget()//실제 데미지
     {
         Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.5f, Target);
         foreach (Collider col in list)
@@ -153,14 +152,20 @@ public class Monster : MobMovement, IBattle
 
     public void DropItem()
     {
-        GameObject obj = Instantiate(Resources.Load("Item/DropItem"), transform.position, Quaternion.identity, ItemParents) as GameObject;
-        obj.GetComponent<DropItem>().iteminfo = myItems[0];
+        foreach(ItemInfo item in myItems)
+        {
+            int rate = Random.Range(1, 101);
+            if (rate < item.Droprate)
+            {
+                GameObject obj = Instantiate(Resources.Load("Item/DropItem"), transform.position, Quaternion.identity, ItemParents) as GameObject;
+                obj.GetComponent<DropItem>().iteminfo = item;
+            }
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {       
-        StartPos = transform.position;
         mobStat = new MobStat(30.0f, 300.0f, 50.0f, 0.8f, 180.0f, 2.0f);
         ChangeState(STATE.Normal);
     }

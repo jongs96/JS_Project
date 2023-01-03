@@ -58,7 +58,10 @@ public class MobMovement : CharacterProperty
             if(!myAnim.GetBool("IsAttacking"))
             {
                 float delta = movSpeed * Time.deltaTime;
-                if(delta > dist)
+                //if (Physics.Raycast(transform.position + dir * delta + transform.up, transform.forward, 1.0f, LayerMask.NameToLayer("Wall")))
+                //    dir = -dir;
+                //Debug.DrawRay(transform.position + dir * delta + transform.up, transform.forward * 1.0f, Color.red);
+                if (delta > dist)
                 {
                     delta = dist;
                 }
