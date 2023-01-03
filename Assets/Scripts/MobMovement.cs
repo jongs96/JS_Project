@@ -89,7 +89,7 @@ public class MobMovement : CharacterProperty
     {
         float MadTime = 15.0f;
         float CurTime = 0.0f;
-        float AttackRange = 1.1f;
+        float AttackRange = myCollider.bounds.size.x + 0.5f;
         while (target != null)
         {
             Vector3 dir = target.position - transform.position;

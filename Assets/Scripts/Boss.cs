@@ -9,6 +9,9 @@ public class Boss : MobMovement, IBattle
     public List<ItemInfo> myItems = new List<ItemInfo>();
     public Transform ItemParents;
 
+    List<string> animArray = new List<string>();
+    Animation attackAnim = null;
+
     public enum STATE
     {
         Create, Normal, Battle, Death
@@ -53,15 +56,11 @@ public class Boss : MobMovement, IBattle
                 break;
             case STATE.Normal:
                 StopAllCoroutines();
-                bossStat.MoveSpeed = 0.8f;
-                bossStat.RotSpeed = 180.0f;
                 myAnim.SetBool("IsMoving", false);
                 myAnim.SetBool("Battle", false);
                 break;
             case STATE.Battle:
                 StopAllCoroutines();
-                bossStat.MoveSpeed = 2.0f;
-                bossStat.RotSpeed = 360.0f;
                 myAnim.SetBool("Battle", true);
                 FollowTarget(myTarget, bossStat.MoveSpeed, bossStat.RotSpeed, OnAttack);
                 break;
@@ -79,12 +78,33 @@ public class Boss : MobMovement, IBattle
 
     void OnAttack()
     {
+        int attackType = Random.Range(0, animArray.Count);
+        attackAnim.clip = attackAnim.GetClip(animArray[attackType]);
         if (!myAnim.GetBool("IsAttacking"))
         {
             myAnim.SetTrigger("Attack");
         }
     }
 
+    void Initialize()
+    {
+        ChangeState(STATE.Normal);
+        attackAnim = transform.GetChild(0).GetChild(4).GetComponent<Animation>();
+
+        foreach (AnimationState state in attackAnim)
+        {
+            animArray.Add(state.name);
+        }
+    }
+    public void AttackTarget()//실제 데미지
+    {
+        //Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.5f, Target);
+        //foreach (Collider col in list)
+        //{
+        //    IBattle ib = col.GetComponent<IBattle>();
+        //    ib?.OnDamage(mobStat.AttackPower, transform);
+        //}
+    }
     public void DropItem()
     {
         foreach (ItemInfo item in myItems)
@@ -123,7 +143,7 @@ public class Boss : MobMovement, IBattle
     // Start is called before the first frame update
     void Start()
     {
-        ChangeState(STATE.Normal);
+        Initialize();
     }
 
     // Update is called once per frame
