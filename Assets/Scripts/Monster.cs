@@ -73,6 +73,9 @@ public class Monster : MobMovement, IBattle
                 DropItem();
                 StopAllCoroutines();
                 myAnim.SetTrigger("Death");
+                
+                myTarget.GetComponent<Player>().myStat.CurExp += mobStat.Exp;
+                myTarget.GetComponent<Player>().LevelUp();
 
                 GetComponent<Collider>().enabled = false;
                 GetComponent<Rigidbody>().useGravity = false;

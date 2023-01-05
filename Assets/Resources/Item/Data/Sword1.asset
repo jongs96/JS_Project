@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b6439b6e6ce1642b18f056b3b2a12c, type: 3}
   m_Name: Sword1
   m_EditorClassIdentifier: 
-  EquipPostion: {x: -0.45, y: 0.1, z: 0.02}
+  EquipPostion: {x: -0.45, y: 0.1, z: 0.12}
   EquipRotation: {x: -4, y: -90, z: 90}
+  Range: 0.7

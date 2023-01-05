@@ -6,14 +6,15 @@ using UnityEngine.Events;
 public class AnimEventFuc : MonoBehaviour
 {
     public UnityEvent EndDeath = null;
-    public UnityEvent Attack = null;
+    public float AttackRange = 0.2f;
+    public UnityEvent<float> Attack = null;
     public UnityEvent Skill = null;
     public UnityEvent ComboCheckStart = null;
     public UnityEvent ComboCheckEnd = null;
 
     public void OnAttack()
     {
-        Attack?.Invoke();
+        Attack?.Invoke(AttackRange);
     }
     public void OnSkill()
     {

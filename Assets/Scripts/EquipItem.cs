@@ -15,7 +15,15 @@ public class EquipItem : MonoBehaviour, IPointerClickHandler
         {
             string path = $"Sprite/{transform.parent.name}_Slot";
             transform.GetComponentInParent<EquipSlot>().ChangeImg(path);
+            if (GetComponentInParent<EquipSlot>().objEquipPos.childCount != 0)//장착된 장비가 있는지 확인.
+            {
+                Destroy(GetComponentInParent<EquipSlot>().objEquipPos.GetChild(0).gameObject);
+            }
             Destroy(gameObject);
+            if (transform.parent.name == "Weapon")
+            {
+                Player.Inst.GetComponentInChildren<AnimEventFuc>().AttackRange = 0.2f;
+            }
             DataManager.Inst.InputItemData(iteminfo);
             GetComponentInParent<EquipSlot>().Equipment(iteminfo.equiptype.ToString(), false);
         }

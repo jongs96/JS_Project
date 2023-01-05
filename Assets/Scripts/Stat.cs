@@ -104,7 +104,7 @@ public class Stat
         get => evation;
         set
         {
-            criticalRate = (value - evation) * 1;
+            criticalRate += (value - evation) * 1;
             evation = value;
         }
     }
@@ -113,7 +113,7 @@ public class Stat
     public int Point
     {
         get => point;
-        set => point = value;
+        set => point = Mathf.Clamp(value, 0, 150);
     }
 
     public Stat(int level, float curExp, float maxExp, float curHp, int point, int strength, int agility, int evation)

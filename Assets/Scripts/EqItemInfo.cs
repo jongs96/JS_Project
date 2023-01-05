@@ -7,4 +7,5 @@ public class EqItemInfo : ScriptableObject
 {
     public Vector3 EquipPostion = Vector3.zero;
     public Vector3 EquipRotation = Vector3.zero;
+    public float Range = 0.0f;
 }

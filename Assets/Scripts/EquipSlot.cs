@@ -46,8 +46,6 @@ public class EquipSlot : MonoBehaviour,IDropHandler
     // Start is called before the first frame update
     void Start()
     {
-        ChangeImg("Sprite/Eq_Slot");
-        itemInfo = GetComponentInChildren<EquipItem>().iteminfo;        
     }
 
     // Update is called once per frame
@@ -75,16 +73,19 @@ public class EquipSlot : MonoBehaviour,IDropHandler
     }
     public void EquipmentObj()
     {
-        if (GetComponentInChildren<EquipItem>())//장착된 장비가 있는지 확인.
+        if (objEquipPos.childCount != 0)//장착된 장비가 있는지 확인.
         {
-
             Destroy(objEquipPos.GetChild(0).gameObject);
         }
         GameObject obj = Instantiate(itemInfo.Resource, objEquipPos);
         EqItemInfo objtransInfo = Resources.Load<EqItemInfo>($"Item/Data/{itemInfo.ItemName}");
         obj.transform.localPosition = objtransInfo.EquipPostion;
         obj.transform.localEulerAngles = objtransInfo.EquipRotation;
-        Player.Inst.AttackPos = objEquipPos.GetChild(0).GetChild(0);
+        if (name == "Weapon")
+        {
+            Player.Inst.GetComponentInChildren<AnimEventFuc>().AttackRange = objtransInfo.Range;
+        }
+        Player.Inst.AttackPos = obj.transform.GetChild(0);
     }
     public void ChangeImg(string path)
     {

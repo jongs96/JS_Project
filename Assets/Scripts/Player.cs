@@ -57,6 +57,7 @@ public class Player : CharacterProperty, IBattle
         {
             myAnim.SetTrigger("Damage");
         }
+        UIManager.Inst.SetAbility("HP");
     }
     void ChangeState(STATE s)
     {
@@ -164,7 +165,8 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("Sitting", false);
         }
         //Defence
-        if (!myAnim.GetBool("IsAir") && Input.GetMouseButton(1))
+        if (!myAnim.GetBool("IsAir") && DataManager.Inst.ShieldSlot.transform.childCount != 0
+            && Input.GetMouseButton(1))
         {
             myAnim.SetBool("Defending", true);
         }
@@ -173,11 +175,25 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("Defending", false);
         }
         //Attack
-        if(!myAnim.GetBool("IsAir") && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if(!myAnim.GetBool("IsAir") && DataManager.Inst.WeaponSlot.transform.childCount != 0 
+            && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            if(!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Attack");
+            if (!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Attack");
             if(IsComboable)
             {
+                ClickCount++;
+            }
+        }
+        else if(!myAnim.GetBool("IsAir") && DataManager.Inst.WeaponSlot.transform.childCount == 0
+            && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())//without weapon
+        {
+            if (!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Punch");
+            {
+                AttackPos = DataManager.Inst.ShieldSlot.objEquipPos;
+            }
+            if (IsComboable)
+            {
+                AttackPos = DataManager.Inst.WeaponSlot.objEquipPos;
                 ClickCount++;
             }
         }
@@ -212,6 +228,12 @@ public class Player : CharacterProperty, IBattle
                 UIManager.Inst.Equip.SetActive(true);
             else UIManager.Inst.Equip.SetActive(false);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            myStat.CurExp += 40;
+            LevelUp();
+            //UIManager.Inst.SetAbilityWindow();
+        }
     }
     public void JumpUp()
     {
@@ -220,9 +242,9 @@ public class Player : CharacterProperty, IBattle
     }
 
     //AnimationEvent Attack function
-    public void AttackTarget()
+    public void AttackTarget(float range)
     {
-        Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.55f, Enemy);
+        Collider[] list = Physics.OverlapSphere(AttackPos.position, range, Enemy);
         foreach(Collider col in list)
         {
             IBattle ib = col.GetComponent<IBattle>();
@@ -290,6 +312,56 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("IsAir", true);
         }
     }
+    public void LevelUp()
+    {
+        if (myStat.CurExp >= myStat.MaxExp)
+        {
+            myStat.CurExp -= myStat.MaxExp;
+            ++myStat.Level;
+            UIManager.Inst.SetAbilityWindow();
+        }
+        else
+        {
+            return;
+        }
+        LevelUp();
+    }
+    public void StatUp(string type)
+    {
+        switch(type)
+        {
+            case "Strength":
+                if(myStat.Point > 0)
+                {
+                    --myStat.Point;
+                    ++myStat.Strength;
+                    UIManager.Inst.SetAbility("Strength");
+                    UIManager.Inst.SetAbility("Point");
+                    UIManager.Inst.SetAbility("AttackPower");
+                }
+                break;
+            case "Agility":
+                if (myStat.Point > 0)
+                {
+                    --myStat.Point;
+                    ++myStat.Agility;
+                    UIManager.Inst.SetAbility("Agility");
+                    UIManager.Inst.SetAbility("Point");
+                    UIManager.Inst.SetAbility("DefensePower");
+                }
+                break;
+            case "Evation":
+                if (myStat.Point > 0)
+                {
+                    --myStat.Point;
+                    ++myStat.Evation;
+                    UIManager.Inst.SetAbility("Evation");
+                    UIManager.Inst.SetAbility("Point");
+                    UIManager.Inst.SetAbility("CriticalRate");
+                }
+                break;
+        }
+    }
     void Initialize()
     {
         //if (SceneMgr.Inst.isNewGame)//ªı ∞‘¿”
@@ -301,7 +373,6 @@ public class Player : CharacterProperty, IBattle
 
         //}
         DataManager.Inst.PlayerStatData = myStat;
-        AttackPos = SwordPos.GetChild(0).GetChild(0);
     }
     private void OnCollisionEnter(Collision collision)
     {
