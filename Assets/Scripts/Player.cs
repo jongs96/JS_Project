@@ -318,6 +318,7 @@ public class Player : CharacterProperty, IBattle
         {
             myStat.CurExp -= myStat.MaxExp;
             ++myStat.Level;
+            GameObject obj = Instantiate(Resources.Load("Effect/LevelUp"), transform.position, Quaternion.Euler(-90.0f, 0.0f, 0.0f), transform) as GameObject;
             UIManager.Inst.SetAbilityWindow();
         }
         else

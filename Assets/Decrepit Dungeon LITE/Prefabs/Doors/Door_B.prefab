@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5357137530048616711}
   - component: {fileID: -4865093103426551263}
   - component: {fileID: 7433625443060665267}
-  m_Layer: 0
+  - component: {fileID: 806151586}
+  m_Layer: 9
   m_Name: Door_B
   m_TagString: Untagged
   m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 100006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.8016739, y: -2.5184848, z: 1.7281351}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 461646}
@@ -80,7 +81,20 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.5, y: 5.088, z: 3.523}
-  m_Center: {x: 1.25, y: 2.544, z: -1.7615}
+  m_Center: {x: 1.5, y: 2.544, z: -1.7615}
+--- !u!114 &806151586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 989f2e76a87afdd45bc974f4f4a1f063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MobManager: {fileID: 0}
 --- !u!1 &105728
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +107,7 @@ GameObject:
   - component: {fileID: 3330692}
   - component: {fileID: 2309046}
   - component: {fileID: 6450972}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Door_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +209,7 @@ GameObject:
   - component: {fileID: 3315754}
   - component: {fileID: 2335270}
   - component: {fileID: 6408620}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Handle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +307,7 @@ GameObject:
   - component: {fileID: 3324822}
   - component: {fileID: 2312142}
   - component: {fileID: 6414680}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Handle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

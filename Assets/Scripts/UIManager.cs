@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         invenLabels = Inventory.transform.GetComponentsInChildren<Inventory>();
+        SetPauseExitButton();
         SetAbilityWindow();
     }
     public void SetAbilityWindow()// text°ª Ãâ·Â.
@@ -83,6 +84,11 @@ public class UIManager : MonoBehaviour
             default:
                 break;
         }
+    }
+    void SetPauseExitButton()
+    {
+        Button[] buttons = PauseMenu.transform.GetChild(0).GetChild(1).GetComponentsInChildren<Button>();
+        buttons[2].onClick.AddListener(() => SceneMgr.Inst.MoveSceneToLoad(1));
     }
     // Update is called once per frame
     void Update()

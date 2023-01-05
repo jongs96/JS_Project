@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
-
+using System;
 public class DataManager : MonoBehaviour
 {
     public static DataManager Inst = null;
@@ -259,6 +259,11 @@ public class DataManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void ExitGame()
+    {
+
     }
     // Start is called before the first frame update
     void Start()
