@@ -16,9 +16,20 @@ public class FileManager : MonoBehaviour
             return;
         }
         Inst = this;
+        myBf = new BinaryFormatter();
     }
-    
-    public void SaveFile<T>(string filePath, T data)
+
+    public void SaveText(string filePath, string content)
+    {
+        File.WriteAllText(filePath, content);
+    }
+
+    public string LoadText(string filePath)
+    {
+        return File.ReadAllText(filePath);
+    }
+
+    public void SaveBinary<T>(string filePath, T data)
     {
         using (FileStream fs = File.Create(filePath))
         {
@@ -26,7 +37,7 @@ public class FileManager : MonoBehaviour
             fs.Close();
         }
     }
-    public T LoadFile<T>(string filePath)
+    public T LoadBinary<T>(string filePath)
     {
         T data = default;
         if(File.Exists(filePath))

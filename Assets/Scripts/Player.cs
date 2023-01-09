@@ -365,14 +365,21 @@ public class Player : CharacterProperty, IBattle
     }
     void Initialize()
     {
-        //if (SceneMgr.Inst.isNewGame)//새 게임
-        //{
-        myStat = new Stat(1, 0, 40, 500.0f, 0, 5, 5, 5);
-        //}
-        //else//로드 게임
-        //{
+        if (SceneMgr.Inst.isNewGame)//새 게임
+        {
+            myStat = new Stat(1, 0, 40, 500.0f, 0, 5, 5, 5);
+        }
+        else//로드 게임
+        {
+            string data = FileManager.Inst.LoadText(Application.dataPath + @"\PlayerData.json");
+            PlayerData statData = JsonUtility.FromJson<PlayerData>(data);
+            myStat = statData.playerStat;
+            transform.position = statData.Position;
 
-        //}
+            //data = FileManager.Inst.LoadText(Application.dataPath + @"\ChildData.json");
+            //ChildData childData = JsonUtility.FromJson<ChildData>(data);
+
+        }
         DataManager.Inst.PlayerStatData = myStat;
     }
     private void OnCollisionEnter(Collision collision)

@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 using System;
+
+public struct SaveItem
+{
+    public ItemInfo itemInfo;
+    public int Slotnum;
+    public int ItemCount;
+    public SaveItem(ItemInfo iteminfo, int slotnum)
+    {
+        itemInfo = iteminfo;
+        Slotnum = slotnum;
+        ItemCount = 0;
+    }
+}
 public class DataManager : MonoBehaviour
 {
     public static DataManager Inst = null;
@@ -21,18 +34,7 @@ public class DataManager : MonoBehaviour
     public UnityAction setSlotCount;
     public List<Transform> EquipSlots = new List<Transform>();
     public List<Transform> ConsumeSlots = new List<Transform>();
-    public struct SaveItem
-    {
-        public ItemInfo itemInfo;
-        public int Slotnum;
-        public int ItemCount;
-        public SaveItem(ItemInfo iteminfo, int slotnum)
-        {
-            itemInfo = iteminfo;
-            Slotnum = slotnum;
-            ItemCount = 0;
-        }
-    }
+    
     private void Awake()
     {
         if (Inst != null) Destroy(gameObject);
@@ -88,12 +90,12 @@ public class DataManager : MonoBehaviour
             case "Equip":
                 for (int i = 0; i < 21; ++i)
                 {
-                    if (!ItemData.ContainsKey(item.type.ToString() + $"{i}"))
+                    if (!ItemData.ContainsKey($"{item.type}.{i}"))
                     {
                         SaveItem inputItem = new SaveItem(item, i);
                         ++inputItem.ItemCount;
-                        ItemData[$"{item.type}{i}"] = inputItem;
-                        SetItemToInventoryChildren(EquipSlots[i], $"{item.type}{i}");//인벤토리 자식으로 설정(생성).
+                        ItemData[$"{item.type}.{i}"] = inputItem;
+                        SetItemToInventoryChildren(EquipSlots[i], $"{item.type}.{i}");//인벤토리 자식으로 설정(생성).
                         break;
                     }
                 }
@@ -101,23 +103,23 @@ public class DataManager : MonoBehaviour
             case "Consume":
                 for (int i = 0; i < 21; ++i)
                 {
-                    if (!ItemData.ContainsKey($"{item.type}{i}"))//빈슬롯에 새 아이템 추가. 단축키list 존재확인 후 add
+                    if (!ItemData.ContainsKey($"{item.type}.{i}"))//빈슬롯에 새 아이템 추가. 단축키list 존재확인 후 add
                     {
                         SaveItem inputItem = new SaveItem(item, i);
                         ++inputItem.ItemCount;
-                        ItemData[$"{item.type}{i}"] = inputItem;
-                        SetItemToInventoryChildren(ConsumeSlots[i], $"{item.type}{i}");
+                        ItemData[$"{item.type}.{i}"] = inputItem;
+                        SetItemToInventoryChildren(ConsumeSlots[i], $"{item.type}.{i}");
                         SetItemTotalCount(item.ItemName, true);
                         setSlotCount?.Invoke();
                         HotKeyListAddRemv(ConsumeSlots[i].GetComponentInChildren<Item>(), true);
                         break;
                     }
-                    else if(ItemData[$"{item.type}{i}"].itemInfo.ItemName == item.ItemName//같은이름의 아이템이 있는경우
-                        && ItemData[$"{item.type}{i}"].ItemCount < item.MaxCount)//슬롯에 겹쳐지는 최대 갯수보다 작을 때
+                    else if(ItemData[$"{item.type}.{i}"].itemInfo.ItemName == item.ItemName//같은이름의 아이템이 있는경우
+                        && ItemData[$"{item.type}.{i}"].ItemCount < item.MaxCount)//슬롯에 겹쳐지는 최대 갯수보다 작을 때
                     {
-                        SaveItem inputItem = ItemData[$"{item.type}{i}"];
+                        SaveItem inputItem = ItemData[$"{item.type}.{i}"];
                         ++inputItem.ItemCount;
-                        ItemData[$"{item.type}{i}"] = inputItem;
+                        ItemData[$"{item.type}.{i}"] = inputItem;
                         ++ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
                         SetItemTotalCount(item.ItemName, true);
                         setSlotCount?.Invoke();
@@ -134,26 +136,26 @@ public class DataManager : MonoBehaviour
         switch (item.iteminfo.type.ToString())
         {
             case "Equip":
-                ItemData.Remove($"{item.iteminfo.type}{item.mySlotNum}");//데이터 삭제.
+                ItemData.Remove($"{item.iteminfo.type}.{item.mySlotNum}");//데이터 삭제.
                 break;
             case "Consume":
                 for (int i = 0; i < 21; ++i)
                 {
-                    if (ItemData.ContainsKey($"{item.iteminfo.type}{i}"))
+                    if (ItemData.ContainsKey($"{item.iteminfo.type}.{i}"))
                     {
-                        if (ItemData[$"{item.iteminfo.type}{i}"].itemInfo == item.iteminfo)
+                        if (ItemData[$"{item.iteminfo.type}.{i}"].itemInfo == item.iteminfo)
                         {
-                            SaveItem outputItem = ItemData[$"{item.iteminfo.type}{i}"];
+                            SaveItem outputItem = ItemData[$"{item.iteminfo.type}.{i}"];
                             --outputItem.ItemCount;
                             if (outputItem.ItemCount == 0)
                             {
-                                ItemData.Remove($"{item.iteminfo.type}{i}");
+                                ItemData.Remove($"{item.iteminfo.type}.{i}");
                                 HotKeyListAddRemv(item, false);
                                 Destroy(ConsumeSlots[i].GetChild(0).gameObject);
                             }
                             else
                             {
-                                ItemData[$"{item.iteminfo.type}{i}"] = outputItem;
+                                ItemData[$"{item.iteminfo.type}.{i}"] = outputItem;
                                 --ConsumeSlots[i].GetComponentInChildren<Item>().ItemCount;
                             }
                             SetItemTotalCount(item.iteminfo.ItemName, false);
@@ -260,10 +262,68 @@ public class DataManager : MonoBehaviour
             }
         }
     }
+    void SavePlayerData()
+    {
+        PlayerData player = new PlayerData();
+        player.Position = Player.Inst.transform.position;
+        player.playerStat = PlayerStatData;
+        string data = JsonUtility.ToJson(player, true);
+        FileManager.Inst.SaveText(Application.dataPath + @"\PlayerData.json", data);
 
+        InventoryData inventoryData = new InventoryData();
+        inventoryData.InventoryKey = new List<string>();
+        inventoryData.InventoryValue = new List<SaveItem>();
+        foreach (string Key in ItemData.Keys)
+        {
+            inventoryData.InventoryKey.Add(Key);
+        }
+        foreach (SaveItem Value in ItemData.Values)
+        {
+            inventoryData.InventoryValue.Add(Value);
+        }
+        data = JsonUtility.ToJson(inventoryData, true);
+        FileManager.Inst.SaveText(Application.dataPath + @"\InventoryData.json", data);
+
+        /*
+        ChildData childData = new ChildData();
+        childData.ShieldSlotChild = ShieldSlot.transform.GetComponentInChildren<EquipItem>();
+        childData.WeaponSlotChild = WeaponSlot.transform.GetComponentInChildren<EquipItem>();
+        HotkeySlot[] HkSlots = UIManager.Inst.HotKeySlot.GetComponentsInChildren<HotkeySlot>();
+        childData.itemSlotChild = new List<HotKeyItem>();
+        foreach(HotkeySlot hks in HkSlots)
+        {
+            if (hks.transform.childCount > 2)
+            {
+                childData.itemSlotChild.Add(hks.transform.GetComponentInChildren<HotKeyItem>());
+            }
+        }
+        data = JsonUtility.ToJson(childData, true);
+        FileManager.Inst.SaveText(Application.dataPath + @"\ChildData.json", data);
+        */
+    }
+    void LoadData()
+    {
+        string data = FileManager.Inst.LoadText(Application.dataPath + @"\InventoryData.Json");
+        InventoryData invenData = JsonUtility.FromJson<InventoryData>(data);
+        for (int i = 0; i < invenData.InventoryKey.Count; ++i)
+        {
+            ItemData.Add(invenData.InventoryKey[i], invenData.InventoryValue[i]);
+            string[]typenum = invenData.InventoryKey[i].Split(".");
+            switch(typenum[0])
+            {
+                case "Equip":
+                    SetItemToInventoryChildren(EquipSlots[i], $"Equip.{i}");
+                    break;
+                case "Consume":
+
+                    break;
+            }
+        }
+    }
     public void ExitGame()
     {
-
+        SavePlayerData();
+        SceneMgr.Inst.MoveSceneToLoad(1);
     }
     // Start is called before the first frame update
     void Start()
@@ -271,6 +331,10 @@ public class DataManager : MonoBehaviour
         AppointedInventory();
         GetInventorySlots(EquipSlots, Inven_Equip);
         GetInventorySlots(ConsumeSlots, Inven_Consume);
+        if(!SceneMgr.Inst.isNewGame)
+        {
+            
+        }
     }
 
     // Update is called once per frame
