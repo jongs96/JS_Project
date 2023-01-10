@@ -272,51 +272,81 @@ public class DataManager : MonoBehaviour
 
         InventoryData inventoryData = new InventoryData();
         inventoryData.InventoryKey = new List<string>();
-        inventoryData.InventoryValue = new List<SaveItem>();
+        inventoryData.InventoryItemInfo = new List<ItemInfo>();
+        inventoryData.InventorySlotnum = new List<int>();
+        inventoryData.InventoryItemCount = new List<int>();
+
         foreach (string Key in ItemData.Keys)
         {
             inventoryData.InventoryKey.Add(Key);
         }
         foreach (SaveItem Value in ItemData.Values)
         {
-            inventoryData.InventoryValue.Add(Value);
+            inventoryData.InventoryItemInfo.Add(Value.itemInfo);
+            inventoryData.InventorySlotnum.Add(Value.Slotnum);
+            inventoryData.InventoryItemCount.Add(Value.ItemCount);
         }
         data = JsonUtility.ToJson(inventoryData, true);
         FileManager.Inst.SaveText(Application.dataPath + @"\InventoryData.json", data);
 
-        /*
         ChildData childData = new ChildData();
-        childData.ShieldSlotChild = ShieldSlot.transform.GetComponentInChildren<EquipItem>();
-        childData.WeaponSlotChild = WeaponSlot.transform.GetComponentInChildren<EquipItem>();
+        childData.ShieldSlotChild = ShieldSlot.transform.GetComponentInChildren<EquipItem>().iteminfo;
+        childData.WeaponSlotChild = WeaponSlot.transform.GetComponentInChildren<EquipItem>().iteminfo;
         HotkeySlot[] HkSlots = UIManager.Inst.HotKeySlot.GetComponentsInChildren<HotkeySlot>();
-        childData.itemSlotChild = new List<HotKeyItem>();
-        foreach(HotkeySlot hks in HkSlots)
+        childData.itemSlotChild = new ItemInfo[HkSlots.Length];
+        for(int i = 0; i < HkSlots.Length; ++i)
         {
-            if (hks.transform.childCount > 2)
-            {
-                childData.itemSlotChild.Add(hks.transform.GetComponentInChildren<HotKeyItem>());
-            }
+            childData.itemSlotChild[i] = HkSlots[i].itemInfo;
         }
         data = JsonUtility.ToJson(childData, true);
         FileManager.Inst.SaveText(Application.dataPath + @"\ChildData.json", data);
-        */
     }
     void LoadData()
-    {
+    {//ItemData
         string data = FileManager.Inst.LoadText(Application.dataPath + @"\InventoryData.Json");
         InventoryData invenData = JsonUtility.FromJson<InventoryData>(data);
         for (int i = 0; i < invenData.InventoryKey.Count; ++i)
         {
-            ItemData.Add(invenData.InventoryKey[i], invenData.InventoryValue[i]);
+            SaveItem saveItem = new SaveItem();
+            saveItem.ItemCount = invenData.InventoryItemCount[i];
+            saveItem.Slotnum = invenData.InventorySlotnum[i];
+            saveItem.itemInfo = invenData.InventoryItemInfo[i];
+            ItemData.Add(invenData.InventoryKey[i], saveItem);
             string[]typenum = invenData.InventoryKey[i].Split(".");
             switch(typenum[0])
             {
                 case "Equip":
-                    SetItemToInventoryChildren(EquipSlots[i], $"Equip.{i}");
+                    SetItemToInventoryChildren(EquipSlots[int.Parse(typenum[1])], $"Equip.{int.Parse(typenum[1])}");
                     break;
                 case "Consume":
-
+                    SetItemToInventoryChildren(ConsumeSlots[int.Parse(typenum[1])], $"Consume.{int.Parse(typenum[1])}");                    
                     break;
+            }
+        }
+        //hotkeyslot, equipslot
+        data = FileManager.Inst.LoadText(Application.dataPath + @"\ChildData.Json");
+        ChildData childData = JsonUtility.FromJson<ChildData>(data);
+        if (childData.WeaponSlotChild != null)
+        {
+            GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), WeaponSlot.transform) as GameObject;
+            obj.GetComponent<EquipItem>().iteminfo = childData.WeaponSlotChild;
+            obj.GetComponent<EquipItem>().SetParent(transform);
+        }
+        if (childData.ShieldSlotChild != null)
+        {
+            GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), ShieldSlot.transform) as GameObject;
+            obj.GetComponent<EquipItem>().iteminfo = childData.ShieldSlotChild;
+            obj.GetComponent<EquipItem>().SetParent(transform);
+        }
+        HotkeySlot[] HkSlots = UIManager.Inst.HotKeySlot.GetComponentsInChildren<HotkeySlot>();
+        for (int i = 0; i < HkSlots.Length; ++i)
+        {
+            if(childData.itemSlotChild[i] != null)
+            {
+                GameObject obj = Instantiate(Resources.Load("Item/HotKeyItem"), HkSlots[i].transform) as GameObject;
+                obj.GetComponent<HotKeyItem>().iteminfo = childData.itemSlotChild[i];
+                obj.GetComponent<HotKeyItem>().SetParent(HkSlots[i]);
+                HkSlots[i].GetComponent<HotkeySlot>().ConnectItem();
             }
         }
     }
@@ -333,7 +363,7 @@ public class DataManager : MonoBehaviour
         GetInventorySlots(ConsumeSlots, Inven_Consume);
         if(!SceneMgr.Inst.isNewGame)
         {
-            
+            LoadData();
         }
     }
 

@@ -1,23 +1,23 @@
 {
     "Position": {
-        "x": -1.5203572511672974,
-        "y": -5.960464477539063e-8,
-        "z": -91.18488311767578
+        "x": -1.4787582159042359,
+        "y": -0.0000019669532775878908,
+        "z": -89.0411376953125
     },
     "playerStat": {
-        "level": 3,
-        "maxExp": 80.0,
-        "curExp": 60.0,
-        "maxHp": 700.0,
-        "curHp": 700.0,
+        "level": 1,
+        "maxExp": 40.0,
+        "curExp": 0.0,
+        "maxHp": 500.0,
+        "curHp": 500.0,
         "attackPower": 100.0,
         "strength": 5,
-        "maxEnergy": 120.0,
-        "curEnergy": 120.0,
+        "maxEnergy": 100.0,
+        "curEnergy": 90.62334442138672,
         "defensePower": 100.0,
         "agility": 5,
         "criticalRate": 5.0,
         "evation": 5,
-        "point": 10
+        "point": 0
     }
 }

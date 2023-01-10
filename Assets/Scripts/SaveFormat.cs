@@ -14,13 +14,15 @@ public struct PlayerData
 public struct InventoryData
 {
     public List<string> InventoryKey;
-    public List<SaveItem> InventoryValue;
+    public List<ItemInfo> InventoryItemInfo;
+    public List<int> InventorySlotnum;
+    public List<int> InventoryItemCount;
 }
 
 [Serializable]
 public struct ChildData
 {
-    public List<string> itemSlotChild;
-    public string WeaponSlotChild;
-    public string ShieldSlotChild;
+    public ItemInfo[] itemSlotChild;
+    public ItemInfo WeaponSlotChild;
+    public ItemInfo ShieldSlotChild;
 }

@@ -375,10 +375,6 @@ public class Player : CharacterProperty, IBattle
             PlayerData statData = JsonUtility.FromJson<PlayerData>(data);
             myStat = statData.playerStat;
             transform.position = statData.Position;
-
-            //data = FileManager.Inst.LoadText(Application.dataPath + @"\ChildData.json");
-            //ChildData childData = JsonUtility.FromJson<ChildData>(data);
-
         }
         DataManager.Inst.PlayerStatData = myStat;
     }
