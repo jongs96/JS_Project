@@ -1,28 +1,6 @@
 {
-    "InventoryKey": [
-        "Consume.0",
-        "Consume.1",
-        "Consume.2"
-    ],
-    "InventoryItemInfo": [
-        {
-            "instanceID": 29236
-        },
-        {
-            "instanceID": 29234
-        },
-        {
-            "instanceID": 29236
-        }
-    ],
-    "InventorySlotnum": [
-        0,
-        1,
-        2
-    ],
-    "InventoryItemCount": [
-        5,
-        3,
-        1
-    ]
+    "InventoryKey": [],
+    "InventoryItemInfo": [],
+    "InventorySlotnum": [],
+    "InventoryItemCount": []
 }

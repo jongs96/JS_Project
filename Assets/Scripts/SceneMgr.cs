@@ -6,18 +6,33 @@ using UnityEngine.UI;
 
 public class SceneMgr : MonoBehaviour
 {
-    public static SceneMgr Inst = null;
+    static SceneMgr _inst = null;
+    public static SceneMgr Inst
+    {
+        get
+        {
+            if (_inst == null)
+            {
+                _inst = FindObjectOfType<SceneMgr>();
+                if (_inst == null)
+                {
+                    _inst = (new GameObject("SceneLoader")).AddComponent<SceneMgr>();
+                }
+            }
+            return _inst;
+        }
+    }
     public bool isNewGame;
     public Slider LoadingBar;
 
     private void Awake()
     {
-        if(Inst != null)
+        if(_inst != null)
         {
             Destroy(gameObject);
             Destroy(LoadingBar);
         }
-        Inst = this;
+        _inst = this;
         DontDestroyOnLoad(gameObject);
     }
     public void QuickMoveScene(int SceneNum)

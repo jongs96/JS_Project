@@ -1,16 +1,16 @@
 {
     "itemSlotChild": [
         {
-            "instanceID": 29234
+            "instanceID": 0
         },
         {
-            "instanceID": 29236
+            "instanceID": 0
         }
     ],
     "WeaponSlotChild": {
-        "instanceID": 29352
+        "instanceID": 0
     },
     "ShieldSlotChild": {
-        "instanceID": 29272
+        "instanceID": 0
     }
 }

@@ -288,10 +288,16 @@ public class DataManager : MonoBehaviour
         }
         data = JsonUtility.ToJson(inventoryData, true);
         FileManager.Inst.SaveText(Application.dataPath + @"\InventoryData.json", data);
-
+        
         ChildData childData = new ChildData();
-        childData.ShieldSlotChild = ShieldSlot.transform.GetComponentInChildren<EquipItem>().iteminfo;
-        childData.WeaponSlotChild = WeaponSlot.transform.GetComponentInChildren<EquipItem>().iteminfo;
+        if (ShieldSlot.transform.GetComponentInChildren<EquipItem>() != null)
+        {
+            childData.ShieldSlotChild = ShieldSlot.transform.GetComponentInChildren<EquipItem>().iteminfo;
+        }
+        if (WeaponSlot.transform.GetComponentInChildren<EquipItem>() != null)
+        {
+            childData.WeaponSlotChild = WeaponSlot.transform.GetComponentInChildren<EquipItem>().iteminfo;
+        }
         HotkeySlot[] HkSlots = UIManager.Inst.HotKeySlot.GetComponentsInChildren<HotkeySlot>();
         childData.itemSlotChild = new ItemInfo[HkSlots.Length];
         for(int i = 0; i < HkSlots.Length; ++i)
@@ -319,7 +325,15 @@ public class DataManager : MonoBehaviour
                     SetItemToInventoryChildren(EquipSlots[int.Parse(typenum[1])], $"Equip.{int.Parse(typenum[1])}");
                     break;
                 case "Consume":
-                    SetItemToInventoryChildren(ConsumeSlots[int.Parse(typenum[1])], $"Consume.{int.Parse(typenum[1])}");                    
+                    SetItemToInventoryChildren(ConsumeSlots[int.Parse(typenum[1])], $"Consume.{int.Parse(typenum[1])}");
+                    if (!ItemTotalCount.ContainsKey(saveItem.itemInfo.ItemName))
+                    {
+                        ItemTotalCount[saveItem.itemInfo.ItemName] = saveItem.ItemCount;
+                    }
+                    else
+                    {
+                        ItemTotalCount[saveItem.itemInfo.ItemName] += saveItem.ItemCount;
+                    }
                     break;
             }
         }
@@ -328,15 +342,21 @@ public class DataManager : MonoBehaviour
         ChildData childData = JsonUtility.FromJson<ChildData>(data);
         if (childData.WeaponSlotChild != null)
         {
+            WeaponSlot.GetComponent<EquipSlot>().itemInfo = childData.WeaponSlotChild;
             GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), WeaponSlot.transform) as GameObject;
+            WeaponSlot.GetComponent<EquipSlot>().ChangeImg("Sprite/Eq_Slot");
             obj.GetComponent<EquipItem>().iteminfo = childData.WeaponSlotChild;
-            obj.GetComponent<EquipItem>().SetParent(transform);
+            obj.GetComponent<EquipItem>().SetParent(WeaponSlot.transform);
+            WeaponSlot.GetComponent<EquipSlot>().EquipmentObj();
         }
         if (childData.ShieldSlotChild != null)
         {
+            ShieldSlot.GetComponent<EquipSlot>().itemInfo = childData.ShieldSlotChild;
             GameObject obj = Instantiate(Resources.Load("Item/EquipItem"), ShieldSlot.transform) as GameObject;
+            ShieldSlot.GetComponent<EquipSlot>().ChangeImg("Sprite/Eq_Slot");
             obj.GetComponent<EquipItem>().iteminfo = childData.ShieldSlotChild;
-            obj.GetComponent<EquipItem>().SetParent(transform);
+            obj.GetComponent<EquipItem>().SetParent(ShieldSlot.transform);
+            ShieldSlot.GetComponent<EquipSlot>().EquipmentObj();
         }
         HotkeySlot[] HkSlots = UIManager.Inst.HotKeySlot.GetComponentsInChildren<HotkeySlot>();
         for (int i = 0; i < HkSlots.Length; ++i)
@@ -346,6 +366,7 @@ public class DataManager : MonoBehaviour
                 GameObject obj = Instantiate(Resources.Load("Item/HotKeyItem"), HkSlots[i].transform) as GameObject;
                 obj.GetComponent<HotKeyItem>().iteminfo = childData.itemSlotChild[i];
                 obj.GetComponent<HotKeyItem>().SetParent(HkSlots[i]);
+                HkSlots[i].GetComponent<HotkeySlot>().itemInfo = obj.GetComponent<HotKeyItem>().iteminfo;
                 HkSlots[i].GetComponent<HotkeySlot>().ConnectItem();
             }
         }
@@ -354,6 +375,8 @@ public class DataManager : MonoBehaviour
     {
         SavePlayerData();
         SceneMgr.Inst.MoveSceneToLoad(1);
+
+        Time.timeScale = 1.0f;
     }
     // Start is called before the first frame update
     void Start()

@@ -62,7 +62,8 @@ public class Boss : MobMovement, IBattle
             case STATE.Battle:
                 StopAllCoroutines();
                 myAnim.SetBool("Battle", true);
-                FollowTarget(myTarget, bossStat.MoveSpeed, bossStat.RotSpeed, OnAttack);
+                
+                //FollowTarget(myTarget, bossStat.MoveSpeed, bossStat.RotSpeed, OnAttack);
                 break;
             case STATE.Death:
                 //if (myHpBar != null) Destroy(myHpBar.gameObject);
@@ -89,12 +90,6 @@ public class Boss : MobMovement, IBattle
     void Initialize()
     {
         ChangeState(STATE.Normal);
-        attackAnim = transform.GetChild(0).GetChild(4).GetComponent<Animation>();
-
-        foreach (AnimationState state in attackAnim)
-        {
-            animArray.Add(state.name);
-        }
     }
     public void AttackTarget()//실제 데미지
     {
