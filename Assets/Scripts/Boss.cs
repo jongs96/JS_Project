@@ -9,9 +9,6 @@ public class Boss : MobMovement, IBattle
     public List<ItemInfo> myItems = new List<ItemInfo>();
     public Transform ItemParents;
 
-    List<string> animArray = new List<string>();
-    Animation attackAnim = null;
-
     public enum STATE
     {
         Create, Normal, Battle, Death
@@ -57,7 +54,6 @@ public class Boss : MobMovement, IBattle
             case STATE.Normal:
                 StopAllCoroutines();
                 myAnim.SetBool("IsMoving", false);
-                myAnim.SetBool("Battle", false);
                 break;
             case STATE.Battle:
                 StopAllCoroutines();
@@ -79,8 +75,6 @@ public class Boss : MobMovement, IBattle
 
     void OnAttack()
     {
-        int attackType = Random.Range(0, animArray.Count);
-        attackAnim.clip = attackAnim.GetClip(animArray[attackType]);
         if (!myAnim.GetBool("IsAttacking"))
         {
             myAnim.SetTrigger("Attack");
