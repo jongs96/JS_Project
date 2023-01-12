@@ -78,18 +78,18 @@ public class MobMovement : CharacterProperty
         done?.Invoke();
     }
 
-    protected void FollowTarget(Transform target, float MovSpeed, float RotSpeed, MyAction reached = null)
+    protected void FollowTarget(Transform target, float MovSpeed, float RotSpeed, float AttackRange, MyAction reached = null)
     {
         if (coMove != null) StopCoroutine(coMove);
-        coMove = StartCoroutine(FollowingTarget(target, MovSpeed, RotSpeed, reached));
+        coMove = StartCoroutine(FollowingTarget(target, MovSpeed, RotSpeed, AttackRange, reached));
         if (coRot != null) StopCoroutine(coRot);
     }
     
-    IEnumerator FollowingTarget(Transform target, float MovSpeed, float RotSpeed, MyAction reached)
+    protected IEnumerator FollowingTarget(Transform target, float MovSpeed, float RotSpeed, float AttackRange, MyAction reached)
     {
         float MadTime = 15.0f;
         float CurTime = 0.0f;
-        float AttackRange = myCollider.bounds.size.x + 0.5f;
+        
         while (target != null)
         {
             Vector3 dir = target.position - transform.position;

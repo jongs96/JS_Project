@@ -57,9 +57,7 @@ public class Boss : MobMovement, IBattle
                 break;
             case STATE.Battle:
                 StopAllCoroutines();
-                myAnim.SetBool("Battle", true);
-                
-                //FollowTarget(myTarget, bossStat.MoveSpeed, bossStat.RotSpeed, OnAttack);
+                FollowTarget(myTarget, bossStat.MoveSpeed, bossStat.RotSpeed, 20.0f, OnAttack);
                 break;
             case STATE.Death:
                 //if (myHpBar != null) Destroy(myHpBar.gameObject);
@@ -72,41 +70,6 @@ public class Boss : MobMovement, IBattle
                 break;
         }
     }
-
-    void OnAttack()
-    {
-        if (!myAnim.GetBool("IsAttacking"))
-        {
-            myAnim.SetTrigger("Attack");
-        }
-    }
-
-    void Initialize()
-    {
-        ChangeState(STATE.Normal);
-    }
-    public void AttackTarget()//실제 데미지
-    {
-        //Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.5f, Target);
-        //foreach (Collider col in list)
-        //{
-        //    IBattle ib = col.GetComponent<IBattle>();
-        //    ib?.OnDamage(mobStat.AttackPower, transform);
-        //}
-    }
-    public void DropItem()
-    {
-        foreach (ItemInfo item in myItems)
-        {
-            int rate = Random.Range(1, 101);
-            if (rate < item.Droprate)
-            {
-                GameObject obj = Instantiate(Resources.Load("Item/DropItem"), transform.position, Quaternion.identity, ItemParents) as GameObject;
-                obj.GetComponent<DropItem>().iteminfo = item;
-            }
-        }
-    }
-
     void StateProcess()
     {
         switch (myState)
@@ -127,6 +90,53 @@ public class Boss : MobMovement, IBattle
                 break;
             case STATE.Death:
                 break;
+        }
+    }
+    void OnAttack()
+    {
+        float dist = (myTarget.position - transform.position).magnitude;
+        if(dist < 3.0f)//short attack
+        {
+            myAnim.SetInteger("RandNum", Random.Range(0, 2));
+        }
+        else if(dist >= 3.0f && dist < 10.0f)//middle attack
+        {
+            myAnim.SetInteger("RandNum", Random.Range(2, 4));
+        }
+        else if(dist >= 10.0f&& dist<15.0f)//long attack
+        {
+            myAnim.SetInteger("RandNum", 4);
+        }
+
+        if (!myAnim.GetBool("IsAttacking"))
+        {
+            myAnim.SetTrigger("Attack");
+        }
+    }
+
+    void Initialize()
+    {
+        ChangeState(STATE.Normal);
+    }
+    public void AttackTarget()//실제 데미지
+    {
+        //Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.5f, Target);
+        //foreach (Collider col in list)
+        //{
+        //    IBattle ib = col.GetComponent<IBattle>();
+        //    ib?.OnDamage(bossStat.AttackPower, transform);
+        //}
+    }
+    public void DropItem()
+    {
+        foreach (ItemInfo item in myItems)
+        {
+            int rate = Random.Range(1, 101);
+            if (rate < item.Droprate)
+            {
+                GameObject obj = Instantiate(Resources.Load("Item/DropItem"), transform.position, Quaternion.identity, ItemParents) as GameObject;
+                obj.GetComponent<DropItem>().iteminfo = item;
+            }
         }
     }
     // Start is called before the first frame update

@@ -66,7 +66,7 @@ public class Monster : MobMovement, IBattle
                 mobStat.MoveSpeed = 2.0f;
                 mobStat.RotSpeed = 360.0f;
                 myAnim.SetBool("Battle", true);
-                FollowTarget(myTarget, mobStat.MoveSpeed, mobStat.RotSpeed, OnAttack);
+                FollowTarget(myTarget, mobStat.MoveSpeed, mobStat.RotSpeed, myCollider.bounds.size.x + 0.5f, OnAttack);
                 break;
             case STATE.Death:
                 //if (myHpBar != null) Destroy(myHpBar.gameObject);
