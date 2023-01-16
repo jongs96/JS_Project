@@ -5,7 +5,7 @@ using UnityEngine;
 public class Boss : MobMovement, IBattle
 {
     Transform myTarget = null;
-    public MobStat bossStat =  new MobStat(200.0f, 2000.0f, 100.0f, 2.5f, 360.0f, 2.0f);
+    public MobStat bossStat =  new MobStat(200.0f, 2000.0f, 100.0f, 2.5f, 360.0f, 5.0f);
     public List<ItemInfo> myItems = new List<ItemInfo>();
     public Transform ItemParents;
 
@@ -94,6 +94,7 @@ public class Boss : MobMovement, IBattle
     }
     void OnAttack()
     {
+        /*
         float dist = (myTarget.position - transform.position).magnitude;
         if(dist < 3.0f)//short attack
         {
@@ -107,10 +108,15 @@ public class Boss : MobMovement, IBattle
         {
             myAnim.SetInteger("RandNum", 4);
         }
+        */
 
         if (!myAnim.GetBool("IsAttacking"))
         {
-            myAnim.SetTrigger("Attack");
+            if (bossStat.curAttackDelay > bossStat.AttackDelay)
+            {
+                myAnim.SetInteger("RandNum", Random.Range(0, 5));
+                myAnim.SetTrigger("Attack");
+            }
         }
     }
 
@@ -118,7 +124,7 @@ public class Boss : MobMovement, IBattle
     {
         ChangeState(STATE.Normal);
     }
-    public void AttackTarget()//실제 데미지
+    public void ShortAttackTarget()//실제 데미지
     {
         //Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.5f, Target);
         //foreach (Collider col in list)

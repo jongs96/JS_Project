@@ -47,6 +47,7 @@ public struct MobStat
 
     [SerializeField] float attackDelay;
     public float curAttackDelay;
+    
     public float AttackDelay
     {
         get => attackDelay;
@@ -60,6 +61,6 @@ public struct MobStat
         this.moveSpeed = moveSpeed;
         this.rotSpeed = rotSpeed;
         this.attackDelay = attackDelay;
-        curAttackDelay = 0.0f;
+        curAttackDelay =  0.0f;
     }
 }

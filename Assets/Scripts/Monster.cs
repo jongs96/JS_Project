@@ -118,7 +118,11 @@ public class Monster : MobMovement, IBattle
     {
         if (!myAnim.GetBool("IsAttacking"))
         {
-            myAnim.SetTrigger("Attack");
+            if (mobStat.curAttackDelay > mobStat.AttackDelay)
+            {
+                myAnim.SetTrigger("Attack");
+                mobStat.curAttackDelay = 0.0f;
+            }
         }
     }
 

@@ -101,7 +101,7 @@ public class MobMovement : CharacterProperty
             Vector3 rot = Vector3.RotateTowards(transform.forward, dir, RotSpeed * Mathf.Deg2Rad * Time.deltaTime, 0.0f);
             transform.rotation = Quaternion.LookRotation(rot);
 
-            if (!myAnim.GetBool("IsAttacking") && dist > AttackRange + 0.01f)
+            if (!myAnim.GetBool("IsAttacking") && dist < AttackRange + 0.01f)
             {
                 myAnim.SetBool("IsMoving", true);
                 dir.Normalize();

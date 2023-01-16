@@ -363,6 +363,7 @@ public class Player : CharacterProperty, IBattle
                 break;
         }
     }
+    
     void Initialize()
     {
         if (SceneMgr.Inst.isNewGame)//ªı ∞‘¿”
@@ -400,8 +401,7 @@ public class Player : CharacterProperty, IBattle
         {
             PickupItem(other.gameObject);
         }
-    }
-    
+    }    
     void PickupItem(GameObject item)
     {
         DataManager.Inst.InputItemData(item.GetComponent<DropItem>().iteminfo);
