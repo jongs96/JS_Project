@@ -93,7 +93,7 @@ public class Player : CharacterProperty, IBattle
                 Hpbar.value = myStat.CurHP / myStat.MaxHP;
                 Energybar.value = myStat.CurEnergy / myStat.MaxEnergy;
                 Recovery();
-                CheckGround();
+                //CheckGround();
                 break;
             case STATE.Pause:
                 break;
@@ -146,17 +146,16 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("IsMoving", false);
         }
 
-        //jump
-        if (!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.Space))
-        {
-            myAnim.SetTrigger("Jump");
-        }
-        else if(myAnim.GetBool("IsAir") && Input.GetKeyDown(KeyCode.Space))
+        //Roll
+        if(!myAnim.GetBool("IsRolling") && Input.GetKeyDown(KeyCode.Space))
         {
             myAnim.SetTrigger("Roll");
+            myStat.CurEnergy -= 15.0f;
+            UIManager.Inst.SetAbility("Energy");
         }
+
         //Sit
-        if(!myAnim.GetBool("IsAir") && Input.GetKey(KeyCode.LeftControl))
+        if(!myAnim.GetBool("IsRolling") && Input.GetKey(KeyCode.LeftControl))
         {
             myAnim.SetBool("Sitting", true);
         }
@@ -165,8 +164,7 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("Sitting", false);
         }
         //Defence
-        if (!myAnim.GetBool("IsAir") && DataManager.Inst.ShieldSlot.transform.childCount != 0
-            && Input.GetMouseButton(1))
+        if (!myAnim.GetBool("IsRolling") && DataManager.Inst.ShieldSlot.transform.childCount != 0 && Input.GetMouseButton(1))
         {
             myAnim.SetBool("Defending", true);
         }
@@ -175,8 +173,8 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("Defending", false);
         }
         //Attack
-        if(!myAnim.GetBool("IsAir") && DataManager.Inst.WeaponSlot.transform.childCount != 0 
-            && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if(!myAnim.GetBool("IsRolling") && DataManager.Inst.WeaponSlot.transform.childCount != 0 && Input.GetMouseButtonDown(0)
+             && !EventSystem.current.IsPointerOverGameObject())
         {
             if (!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Attack");
             if(IsComboable)
@@ -184,7 +182,7 @@ public class Player : CharacterProperty, IBattle
                 ClickCount++;
             }
         }
-        else if(!myAnim.GetBool("IsAir") && DataManager.Inst.WeaponSlot.transform.childCount == 0
+        else if(!myAnim.GetBool("IsRolling") && DataManager.Inst.WeaponSlot.transform.childCount == 0
             && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())//without weapon
         {
             if (!myAnim.GetBool("IsAttacking")) myAnim.SetTrigger("Punch");
@@ -198,10 +196,10 @@ public class Player : CharacterProperty, IBattle
             }
         }
         //JumpAttack
-        if (!myAnim.GetBool("IsAir") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.E) && myStat.CurEnergy > 30.0f)
+        if (!myAnim.GetBool("IsRolling") && !myAnim.GetBool("IsAttacking") && Input.GetKeyDown(KeyCode.E) && myStat.CurEnergy > 30.0f)
         {
             myAnim.SetTrigger("Skill");
-            myStat.CurEnergy -= 30.0f;
+            myStat.CurEnergy -= 20.0f;
             UIManager.Inst.SetAbility("Energy");
         }
         //Move Portal
@@ -235,11 +233,11 @@ public class Player : CharacterProperty, IBattle
             //UIManager.Inst.SetAbilityWindow();
         }
     }
-    public void JumpUp()
-    {
-        myAnim.SetBool("IsAir", true);
-        myRigid.AddForce((Vector3.up + transform.GetChild(0).forward * myAnim.GetFloat("Vertical") + transform.GetChild(0).right * myAnim.GetFloat("Horizontal")) * 200.0f);
-    }
+    //public void JumpUp()
+    //{
+    //    myAnim.SetBool("IsAir", true);
+    //    myRigid.AddForce((Vector3.up + transform.GetChild(0).forward * myAnim.GetFloat("Vertical") + transform.GetChild(0).right * myAnim.GetFloat("Horizontal")) * 200.0f);
+    //}
 
     //AnimationEvent Attack function
     public void AttackTarget(float range)
@@ -297,6 +295,7 @@ public class Player : CharacterProperty, IBattle
     {
         ChangeState(STATE.Playing);
     }
+    /*
     void CheckGround()
     {
         Ray ray = new Ray();
@@ -312,6 +311,7 @@ public class Player : CharacterProperty, IBattle
             myAnim.SetBool("IsAir", true);
         }
     }
+    */
     public void LevelUp()
     {
         if (myStat.CurExp >= myStat.MaxExp)

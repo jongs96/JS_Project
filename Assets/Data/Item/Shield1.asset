@@ -16,6 +16,6 @@ MonoBehaviour:
   equiptype: 2
   ItemName: Shield1
   Value: 100
-  Droprate: 100
+  Droprate: 30
   MaxCount: 1
   Resource: {fileID: 6668350062270007922, guid: 616a8f1880f412f46bc851e52efab203, type: 3}

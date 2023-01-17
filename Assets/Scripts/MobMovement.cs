@@ -58,9 +58,12 @@ public class MobMovement : CharacterProperty
             if(!myAnim.GetBool("IsAttacking"))
             {
                 float delta = movSpeed * Time.deltaTime;
-                //if (Physics.Raycast(transform.position + dir * delta + transform.up, transform.forward, 1.0f, LayerMask.NameToLayer("Wall")))
-                //    dir = -dir;
-                //Debug.DrawRay(transform.position + dir * delta + transform.up, transform.forward * 1.0f, Color.red);
+                if (Physics.Raycast(transform.position + dir * delta + transform.up, transform.forward, 1.0f, 1 << LayerMask.NameToLayer("Wall")))
+                {
+                    break;
+                    //dir = -dir;
+                }
+                Debug.DrawRay(transform.position + dir * delta + transform.up, transform.forward * 1.0f, Color.red);
                 if (delta > dist)
                 {
                     delta = dist;
@@ -99,14 +102,14 @@ public class MobMovement : CharacterProperty
             if (MadTime < CurTime && dist > 4.0f) OutRange = true;
 
             Vector3 rot = Vector3.RotateTowards(transform.forward, dir, RotSpeed * Mathf.Deg2Rad * Time.deltaTime, 0.0f);
-            transform.rotation = Quaternion.LookRotation(rot);
+            if(!myAnim.GetBool("IsAttacking")) transform.rotation = Quaternion.LookRotation(rot);
 
-            if (!myAnim.GetBool("IsAttacking") && dist < AttackRange + 0.01f)
+            if (!myAnim.GetBool("IsAttacking") && dist > AttackRange + 0.01f)
             {
                 myAnim.SetBool("IsMoving", true);
                 dir.Normalize();
                 float delta = MovSpeed * Time.deltaTime;
-                if (delta > dist - AttackRange)
+                if (dist - AttackRange > 0 && delta > dist - AttackRange)
                 {
                     delta = dist - AttackRange;
                     myAnim.SetBool("IsMoving", false);

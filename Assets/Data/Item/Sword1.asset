@@ -16,6 +16,6 @@ MonoBehaviour:
   equiptype: 1
   ItemName: Sword1
   Value: 100
-  Droprate: 100
+  Droprate: 30
   MaxCount: 1
   Resource: {fileID: 7655171990557135135, guid: bac38643116f6bb42ba922bf96184b22, type: 3}

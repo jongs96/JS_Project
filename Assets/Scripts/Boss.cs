@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Boss : MobMovement, IBattle
 {
-    Transform myTarget = null;
-    public MobStat bossStat =  new MobStat(200.0f, 2000.0f, 100.0f, 2.5f, 360.0f, 5.0f);
+    public Transform myTarget = null;
+    public MobStat bossStat =  new MobStat(200.0f, 2000.0f, 100.0f, 0.5f, 300.0f, 3.0f);
     public List<ItemInfo> myItems = new List<ItemInfo>();
     public Transform ItemParents;
+    public BossroomSensor mySensor;
 
     public enum STATE
     {
@@ -29,8 +30,8 @@ public class Boss : MobMovement, IBattle
     public Transform HeadPos { get => myHeadPos; }
 
     public void OnDamage(float dmg, Transform target)
-    {
-        myTarget = target;
+    {        
+        myTarget = target;        
         bossStat.CurHP -= dmg;
         if (Mathf.Approximately(bossStat.CurHP, 0.0f))
         {
@@ -39,6 +40,7 @@ public class Boss : MobMovement, IBattle
         else
         {
             ChangeState(STATE.Battle);
+            myAnim.SetInteger("RandNum", Random.Range(0, 2));
             myAnim.SetTrigger("Damage");
         }
     }
@@ -57,7 +59,8 @@ public class Boss : MobMovement, IBattle
                 break;
             case STATE.Battle:
                 StopAllCoroutines();
-                FollowTarget(myTarget, bossStat.MoveSpeed, bossStat.RotSpeed, 20.0f, OnAttack);
+                myAnim.SetBool("Battle", true);
+                FollowTarget(myTarget, bossStat.MoveSpeed, bossStat.RotSpeed, 15.0f, OnAttack);
                 break;
             case STATE.Death:
                 //if (myHpBar != null) Destroy(myHpBar.gameObject);
@@ -80,13 +83,6 @@ public class Boss : MobMovement, IBattle
                 break;
             case STATE.Battle:
                 if (!myAnim.GetBool("IsAttacking")) bossStat.curAttackDelay += Time.deltaTime;
-                //Lost Target
-                if (OutRange)
-                {
-                    myTarget = null;
-                    ChangeState(STATE.Normal);
-                    OutRange = false;
-                }
                 break;
             case STATE.Death:
                 break;
@@ -94,7 +90,7 @@ public class Boss : MobMovement, IBattle
     }
     void OnAttack()
     {
-        /*
+        
         float dist = (myTarget.position - transform.position).magnitude;
         if(dist < 3.0f)//short attack
         {
@@ -107,32 +103,33 @@ public class Boss : MobMovement, IBattle
         else if(dist >= 10.0f&& dist<15.0f)//long attack
         {
             myAnim.SetInteger("RandNum", 4);
-        }
-        */
+        }        
 
         if (!myAnim.GetBool("IsAttacking"))
         {
             if (bossStat.curAttackDelay > bossStat.AttackDelay)
             {
-                myAnim.SetInteger("RandNum", Random.Range(0, 5));
+                //myAnim.SetInteger("RandNum", Random.Range(0, 5));
                 myAnim.SetTrigger("Attack");
+                bossStat.curAttackDelay = 0.0f;
             }
         }
     }
-
+    public void GetDamage(Transform AttackPos)
+    {
+        Collider[] list = Physics.OverlapSphere(AttackPos.position, 2.0f, LayerMask.NameToLayer("Player"));
+        foreach (Collider col in list)
+        {
+            IBattle ib = col.GetComponent<IBattle>();
+            ib?.OnDamage(bossStat.AttackPower, transform);
+        }
+    }
     void Initialize()
     {
         ChangeState(STATE.Normal);
+        mySensor.FindTarget += () => { if(myState!=STATE.Death) ChangeState(STATE.Battle); };
     }
-    public void ShortAttackTarget()//실제 데미지
-    {
-        //Collider[] list = Physics.OverlapSphere(AttackPos.position, 0.5f, Target);
-        //foreach (Collider col in list)
-        //{
-        //    IBattle ib = col.GetComponent<IBattle>();
-        //    ib?.OnDamage(bossStat.AttackPower, transform);
-        //}
-    }
+    
     public void DropItem()
     {
         foreach (ItemInfo item in myItems)
