@@ -162,6 +162,14 @@ PrefabInstance:
       propertyPath: EndDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 9051135774227242732}
+    - target: {fileID: 4633642691623917821, guid: ec91ca4530460fd4a9e26299dad50eb7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4633642691623917821, guid: ec91ca4530460fd4a9e26299dad50eb7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec91ca4530460fd4a9e26299dad50eb7, type: 3}
 --- !u!4 &690660126862434304 stripped

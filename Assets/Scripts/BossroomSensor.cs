@@ -20,6 +20,13 @@ public class BossroomSensor : MonoBehaviour
     {
         
     }
+    void MakeHpBar()
+    {
+        //GameObject obj = Instantiate(Resources.Load("UI/BossHpBar")) as GameObject;
+        //myHpBar = obj.GetComponent<HpBar>();
+        //myHpBar.myTarget = myHeadPos;
+        //obj.transform.SetParent(UIManager.Inst.hpBars);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if ((myEnemy & 1 << other.gameObject.layer) != 0)

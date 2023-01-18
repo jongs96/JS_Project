@@ -401,7 +401,25 @@ public class Player : CharacterProperty, IBattle
         {
             PickupItem(other.gameObject);
         }
-    }    
+        if (other.gameObject.layer == LayerMask.NameToLayer("Portal"))
+        {
+            canGo = true;
+            //ui on
+            UIManager.Inst.InfoText.GetComponentInChildren<TMPro.TMP_Text>().text = "Pressd 'G'";
+            UIManager.Inst.InfoText.gameObject.SetActive(true);
+            goPos = other.gameObject.GetComponent<OpenDoor>().DoorOpen;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Portal"))
+        {
+            canGo = false;
+            //ui off
+            UIManager.Inst.InfoText.gameObject.SetActive(false);
+            other.gameObject.GetComponent<OpenDoor>().DoorClose();
+        }
+    }
     void PickupItem(GameObject item)
     {
         DataManager.Inst.InputItemData(item.GetComponent<DropItem>().iteminfo);

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Monster : MobMovement, IBattle
 {
+    HpBar myHpBar = null;
     Transform myTarget = null;
     Coroutine co = null;
     public MobStat mobStat;
@@ -34,13 +35,15 @@ public class Monster : MobMovement, IBattle
     {
         myTarget = target;
         mobStat.CurHP -= dmg;
-        if(Mathf.Approximately(mobStat.CurHP, 0.0f))
+        
+        if (Mathf.Approximately(mobStat.CurHP, 0.0f))
         {
             ChangeState(STATE.Death);
         }
         else
         {
             ChangeState(STATE.Battle);
+            myHpBar.mySlider.value = mobStat.CurHP / mobStat.TotalHP;
             myAnim.SetTrigger("Damage");
         }
     }
@@ -55,6 +58,7 @@ public class Monster : MobMovement, IBattle
                 break;
             case STATE.Normal:
                 StopAllCoroutines();
+                if (myHpBar != null) Destroy(myHpBar.gameObject);
                 mobStat.MoveSpeed = 0.8f;
                 mobStat.RotSpeed = 180.0f;
                 myAnim.SetBool("IsMoving", false);
@@ -63,13 +67,14 @@ public class Monster : MobMovement, IBattle
                 break;
             case STATE.Battle:
                 StopAllCoroutines();
+                MakeHpBar();
                 mobStat.MoveSpeed = 2.0f;
                 mobStat.RotSpeed = 360.0f;
                 myAnim.SetBool("Battle", true);
                 FollowTarget(myTarget, mobStat.MoveSpeed, mobStat.RotSpeed, myCollider.bounds.size.x + 0.5f, OnAttack);
                 break;
             case STATE.Death:
-                //if (myHpBar != null) Destroy(myHpBar.gameObject);
+                if (myHpBar != null) Destroy(myHpBar.gameObject);
                 DropItem();
                 StopAllCoroutines();
                 myAnim.SetTrigger("Death");
@@ -169,11 +174,18 @@ public class Monster : MobMovement, IBattle
             }
         }
     }
-
+    void MakeHpBar()
+    {
+        GameObject obj = Instantiate(Resources.Load("UI/HpBar")) as GameObject;
+        myHpBar = obj.GetComponent<HpBar>();
+        myHpBar.myTarget = myHeadPos;
+        obj.transform.SetParent(UIManager.Inst.hpBars);
+    }
     // Start is called before the first frame update
     void Start()
     {       
         mobStat = new MobStat(30.0f, 300.0f, 50.0f, 0.8f, 180.0f, 2.0f);
+        
         ChangeState(STATE.Normal);
     }
 
